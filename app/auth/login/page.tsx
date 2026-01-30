@@ -27,13 +27,14 @@ export default function IniciarSesion() {
   };
 
   return (
-   <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div>
+   <div className="w-150 h-180 border-1 flex items-center justify-center bg-gray-50">
 
   <div className="max-w-md w-full space-y-8">
 
     {/* Título */}
     <div>
-      <h2 className="text-center text-3xl font-extrabold text-gray-900">
+      <h2 className="text-center  text-4xl font-extrabold text-gray-900">
         Iniciar sesión
       </h2>
     </div>
@@ -106,15 +107,15 @@ export default function IniciarSesion() {
       </button>
 
     </form>
-
-{/* 
-    <div className="text-center text-sm text-gray-600 mt-4">
-      <p>Usuarios de prueba:</p>
-      <p>admin@test.com / 123456</p>
-      <p>usuario@test.com / 123</p>
-    </div>  */}
-
   </div>
+ 
+ 
 </div>
+{/* FOOTER */}
+<footer className=" border w-full h-20 flex justify-center items-center font-bold bg-gray-200 text-center text-gray-700">
+  Copyright © 2025 TruckWave
+</footer>
+  </div>
+
   );
 }
