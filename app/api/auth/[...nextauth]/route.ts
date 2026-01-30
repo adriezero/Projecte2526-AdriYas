@@ -6,20 +6,22 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
+import { Usuario } from '../../../interfaces/interfaces';
 
 function obtenerUsuarios() {
-  const filePath = path.join(process.cwd(), 'userTareas.json')  //ESTO HAY QUE CAMBIARLO , NO SE SI QUIERES TRABAJAR YA CON LA BASE DE DATOS DE UNA O TRABAJAR CON UN JSON , EN LOCAL DE MOMENTO 
+  const filePath = path.join(process.cwd(), 'pruebasUsers.json')  //ESTO HAY QUE CAMBIARLO , NO SE SI QUIERES TRABAJAR YA CON LA BASE DE DATOS DE UNA O TRABAJAR CON UN JSON , EN LOCAL DE MOMENTO 
   const fileContent = fs.readFileSync(filePath, 'utf8')
   const datos = JSON.parse(fileContent)
   
-  return Object.entries(datos.usuarios).map(([id, usuario]: [string, any]) => {
+  return Object.entries(datos.usuarios).map(([id, usuario]) => {
+    const u = usuario as Usuario;
     return {
       id: id,
-      correo: usuario.email,
-      nombre: usuario.name,
-      clave: usuario.password
+      correo: u.email,
+      nombre: u.name,
+      clave: u.password
     }
-  })
+  });
 }
 
 export const authOptions = {

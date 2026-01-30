@@ -1,0 +1,19 @@
+{
+  "usuarios": {
+    "1": {
+      "email": "juan@example.com",
+      "name": "Juan Pérez",
+      "password": "123456"
+    },
+    "2": {
+      "email": "ana@example.com",
+      "name": "Ana García",
+      "password": "654321"
+    },
+    "3": {
+      "email": "admin@example.com",
+      "name": "Administrador",
+      "password": "admin"
+    }
+  }
+}
