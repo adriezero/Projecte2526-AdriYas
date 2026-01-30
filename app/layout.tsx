@@ -1,5 +1,6 @@
 import './globals.css'
 import BarraNavegacion from "./componentes/BarraNavegacion";
+import LittleFooter from './componentes/littleFooter';
 
 export default function RootLayout({
   children,
@@ -8,10 +9,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head />
+      <head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
+      </head>
       <body>
         <BarraNavegacion/>
         {children}
+        <LittleFooter/>
       </body>
     </html>
   )

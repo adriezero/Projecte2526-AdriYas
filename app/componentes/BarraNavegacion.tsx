@@ -1,24 +1,25 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function NavBar() {
   return (
-    <nav className="w-full bg-white shadow-sm">
+    <nav className="w-full bg-white shadow-sm fixed">
 
       {/* BARRA SUPERIOR */}
       <div className="p-3 h-8 bg-[#1F4E79] text-white flex justify-end pr-6">
         ES ▼
       </div>
+      
       <div className="h-20 flex items-center justify-between px-10 py-3 border-b">
-
         {/* IZQUIERDA */}
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🚚</span>
-          <span className="font-bold text-lg">TRUCKWAVE</span>
+        <div className="flex items-center">
+          <Image src={"/img/camionlogo.png"} width={118} height={0} alt={"camionlogo"}/>
+          <span className="font-bold text-lg text-black">TRUCKWAVE</span>
         </div>
 
         {/* CENTRO */}
-        <ul className="flex gap-6">
+        <ul className="flex gap-6 text-black">
           <li><Link href="/">Home</Link></li>
           <li><Link href="/contacto">Contacto</Link></li>
           <li><Link href="/sobre-nosotros">Sobre nosotros</Link></li>
@@ -30,15 +31,14 @@ export default function NavBar() {
         </ul>
 
         {/* DERECHA */}
-        <div className="flex gap-5">
+        <div className="flex gap-5 text-black">
           <button className="bg-gray-200 border px-4 py-2 rounded">
             Solicitar Servicio
           </button>
-          <button className="text-black px-4 py-2">
+          <button className="px-4 py-2">
             Área Clientes
           </button>
         </div>
-
       </div>
     </nav>
   );
