@@ -9,7 +9,7 @@ export default function IniciarSesion() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const manejarEnvio = async (e: React.FormEvent) => {
+  const manejarEnvio = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError("");
 
@@ -96,12 +96,12 @@ export default function IniciarSesion() {
             </h2>
 
             {/* Botón registro */}
-            <button
-              type="button"
+            <a
+              href="/auth/register"
               className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
             >
               Registrarse
-            </button>
+            </a>
           </form>
         </div>
       </div>

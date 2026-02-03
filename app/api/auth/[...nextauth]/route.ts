@@ -6,10 +6,15 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-import { Usuario } from '../../../interfaces/interfaces';
+import { Usuario } from '@interfaces/interfaces';
 
+/**
+ * Método para tener todos los usuarios que están registrados.
+ * 
+ * @returns Todos los usarios
+ */
 function obtenerUsuarios() {
-  const filePath = path.join(process.cwd(), 'pruebasUsers.json')  //ESTO HAY QUE CAMBIARLO , NO SE SI QUIERES TRABAJAR YA CON LA BASE DE DATOS DE UNA O TRABAJAR CON UN JSON , EN LOCAL DE MOMENTO 
+  const filePath = path.join(process.cwd(), 'pruebasUsers.json') // Pruebas temporales con un JSON, luego se pasa a BBDD
   const fileContent = fs.readFileSync(filePath, 'utf8')
   const datos = JSON.parse(fileContent)
   
