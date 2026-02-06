@@ -1,6 +1,6 @@
 import './globals.css'
-import BarraNavegacion from "./componentes/BarraNavegacion";
-import LittleFooter from './componentes/FooterPequeño';
+import BarraNavegacion from "@componentes/BarraNavegacion";
+import LittleFooter from '@componentes/FooterPequeño';
 
 export default function RootLayout({
   children,

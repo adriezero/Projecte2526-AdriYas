@@ -1,30 +1,20 @@
 "use client";
-import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useLogin } from "@hooks/useLogin";
 
 export default function IniciarSesion() {
-  const [correo, setCorreo] = useState("");
-  const [clave, setClave] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
-
-  const manejarEnvio = async (e: React.SubmitEvent) => {
-    e.preventDefault();
-    setError("");
-
-    const resultado = await signIn("credentials", {
-      correo,
-      clave,
-      redirect: false,
-    });
-
-    if (resultado?.error) {
-      setError("Correo o contraseña incorrectos");
-    } else {
-      router.push("/dashboard");
-    }
-  };
+  const {
+    // Campos del form
+    correo,
+    setCorreo,
+    clave,
+    setClave,
+    // Para poder cambiar el estado de ver o no la contraseña
+    mostrarClave,
+    setMostrarClave,
+    // Error & handlers
+    error,
+    manejarEnvio,
+  } = useLogin();
 
   return (
     <div className="min-h-screen flex flex-col bg-[url('/img/camion.png')] bg-center bg-cover">
@@ -40,8 +30,8 @@ export default function IniciarSesion() {
           {/* Formulario */}
           <form className="mt-6 space-y-5" onSubmit={manejarEnvio}>
             {/* Usuario */}
-            <div>
-              <label className="text-gray-700 text-sm">Usuario</label>
+            <div className="py-2">
+              <label className="text-gray-700">Usuario</label>
               <input
                 type="email"
                 required
@@ -53,25 +43,40 @@ export default function IniciarSesion() {
             </div>
 
             {/* Contraseña */}
-            <div>
-              <label className="text-gray-700 text-sm">Contraseña</label>
-              <input
-                type="password"
-                required
-                className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-                placeholder="Contraseña"
-                value={clave}
-                onChange={(e) => setClave(e.target.value)}
-              />
+            <div className="py-2">
+              <label className="text-gray-700">Contraseña</label>
+              <div className="relative">
+                <input
+                  type={mostrarClave ? "text" : "password"}
+                  required
+                  className="w-full mt-1 px-3 py-2 pr-10 border border-gray-300 text-black rounded-md"
+                  placeholder="Contraseña"
+                  value={clave}
+                  onChange={(e) => setClave(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarClave(!mostrarClave)}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 bg-gray-200 px-2 py-1 rounded cursor-pointer"
+                >
+                  {mostrarClave ? (
+                    <i className="bi bi-eye text-xl"></i>
+                  ) : (
+                    <i className="bi bi-eye-slash text-xl"></i>
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Error */}
             {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                {error}
+              </div>
             )}
 
             {/* Olvidaste la contraseña */}
-            <div>
+            <div className="py-2 text-center">
               <a className="text-blue-600 text-sm hover:underline cursor-pointer">
                 ¿Olvidaste la contraseña?
               </a>
@@ -86,8 +91,14 @@ export default function IniciarSesion() {
             </button>
 
             {/* Separador */}
-            <div className="flex items-center justify-center">
-              <hr className="w-full border-black-300 h-10" />
+            <div className="flex items-center justify-center py-4 gap-2">
+              <hr className="flex-1 border-black" />
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+              </div>
+              <hr className="flex-1 border-black" />
             </div>
 
             {/* Texto: No tienes cuenta */}
@@ -96,10 +107,8 @@ export default function IniciarSesion() {
             </h2>
 
             {/* Botón registro */}
-            <a
-              href="/auth/register"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
-            >
+            <a href="/auth/register"
+              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer block text-center">
               Registrarse
             </a>
           </form>

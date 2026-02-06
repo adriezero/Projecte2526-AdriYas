@@ -20,7 +20,9 @@
     ],
     "baseUrl": "app",
     "paths": {
+      "@componentes/*": ["componentes/*"],
       "@interfaces/*": ["interfaces/*"],
+      "@hooks/*": ["hooks/*"],
     }
   },
   "include": [
