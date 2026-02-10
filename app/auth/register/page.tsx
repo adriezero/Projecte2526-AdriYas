@@ -1,144 +1,116 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRegister } from "@hooks/useRegister";
 import PasswordChecklist from "react-password-checklist";
-
-
-/* https://github.com/fazt/nextauth-prisma-credentials/blob/master/src/app/auth/register/page.jsx */
 
 export default function Register() {
     const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm();
-    const router = useRouter();
-    const [password, setPassword] = useState("");
-    const [confirmarContraseña, setconfirmarContraseña] = useState("");
-
-    const onSubmit = handleSubmit(async (data) => {
-        if (data.password !== data.confirmarContraseña) {
-            return alert("Las contraseñas no coinciden!!");
-        }
-
-        const res = await fetch("/api/auth/register", {
-            method: "POST",
-            body: JSON.stringify({
-                username: data.username,
-                email: data.email,
-                password: data.password,
-            }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (res.ok) {
-            router.push("/auth/login");
-        }
-    });
-
-    console.log(errors);
+        username,
+        setUsername,
+        email,
+        setEmail,
+        password,
+        setPassword,
+        confirmarContraseña,
+        setConfirmarContraseña,
+        rol,
+        setRol,
+        mostrarClave,
+        setMostrarClave,
+        mostrarConfirmarClave,
+        setMostrarConfirmarClave,
+        error,
+        manejarEnvio,
+    } = useRegister();
 
     return (
-        <div className="min-h-screen flex bg-[url('/img/camionRegister.png')] bg-right bg-cover">
-            <div className="w-180 flex items-center justify-center bg-gray-50">
-                <div className="max-w-md w-full space-y-8 gap-24">
+        <div className="min-h-screen flex flex-col bg-[url('/img/camionRegistro.jpg')] bg-center bg-cover">
+            <div className="w-150 h-180 border grow flex items-center justify-center bg-gray-50">
+                <div className="max-w-md w-full space-y-8 gap-24 px-6 py-6">
                     {/* Título */}
                     <div>
-                        <h2 className="text-center text-4xl font-extrabold text-gray-900">
+                        <h2 className="text-center text-3xl font-extrabold text-gray-900">
                             Registrarse
                         </h2>
                     </div>
 
                     {/* Formulario */}
-                    <form className="mt-6 space-y-8" onSubmit={onSubmit}>
+                    <form className="mt-5 space-y-4" onSubmit={manejarEnvio}>
                         {/* Usuario */}
                         <div>
-                            <label className="text-gray-700 text-sm">Usuario</label>
+                            <label className="text-gray-700">Usuario</label>
                             <input
                                 type="text"
-                                {...register("username", {
-                                    required: {
-                                        value: true,
-                                        message: "Username is required",
-                                    },
-                                })}
+                                required
                                 className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
                                 placeholder="tuUsuario123"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
-                            {errors.username && (
-                                <span className="text-red-500 text-xs">
-                                    {errors.username.message as string}
-                                </span>
-                            )}
                         </div>
 
                         {/* Email */}
                         <div>
-                            <label htmlFor="email" className="text-gray-700 text-sm">Email</label>
+                            <label className="text-gray-700">Email</label>
                             <input
                                 type="email"
-                                {...register("email", {
-                                    required: {
-                                        value: true,
-                                        message: "Email is required",
-                                    },
-                                })}
+                                required
                                 className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
                                 placeholder="usuario@gmail.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
-                        {errors.email && (
-                            <span className="text-red-500 text-xs">{errors.email.message as string}</span>
-                        )}
                         {/* Contraseña */}
                         <div>
-                            <label htmlFor="password" className="text-gray-700 text-sm">
-                                Contraseña
-                            </label>
-                            <input
-                                type="password"
-                                {...register("password", {
-                                    required: {
-                                        value: true,
-                                        message: "Se requiere contraseña",
-                                    },
-                                })}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-                                placeholder="********"
-                            />
-                            {errors.password && (
-                                <span className="text-red-500 text-xs">
-                                    {errors.password.message as string}
-                                </span>
-                            )}
+                            <label className="text-gray-700">Contraseña</label>
+                            <div className="relative">
+                                <input
+                                    type={mostrarClave ? "text" : "password"}
+                                    required
+                                    className="w-full mt-1 px-3 py-2 pr-10 border border-gray-300 text-black rounded-md"
+                                    placeholder="Introduce una contraseña"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setMostrarClave(!mostrarClave)}
+                                    className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 bg-gray-200 px-2 py-1 rounded cursor-pointer"
+                                >
+                                    {mostrarClave ? (
+                                        <i className="bi bi-eye text-xl"></i>
+                                    ) : (
+                                        <i className="bi bi-eye-slash text-xl"></i>
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
+                        {/* Confirmar Contraseña */}
                         <div>
-                            <label htmlFor="confirmarContraseña" className="text-gray-700 text-sm">
-                                Confirmar Contraseña
-                            </label>
-                            <input
-                                type="password"
-                                {...register("confirmarContraseña", {
-                                    required: {
-                                        value: true,
-                                        message: "Se requiere confirmacion de contraseña",
-                                    },
-                                })}
-                                onChange={(e) => setconfirmarContraseña(e.target.value)}
-                                className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-                                placeholder="Confirma contraseña"
-                            />
-                            {errors.confirmarContraseña && (
-                                <span className="text-red-500 text-xs">
-                                    {errors.confirmarContraseña.message as string}
-                                </span>
-                            )}
+                            <label className="text-gray-700">Confirmar Contraseña</label>
+                            <div className="relative">
+                                <input
+                                    type={mostrarConfirmarClave ? "text" : "password"}
+                                    required
+                                    className="w-full mt-1 px-3 py-2 pr-10 border border-gray-300 text-black rounded-md"
+                                    placeholder="********"
+                                    value={confirmarContraseña}
+                                    onChange={(e) => setConfirmarContraseña(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setMostrarConfirmarClave(!mostrarConfirmarClave)}
+                                    className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-800 bg-gray-200 px-2 py-1 rounded cursor-pointer"
+                                >
+                                    {mostrarConfirmarClave ? (
+                                        <i className="bi bi-eye text-xl"></i>
+                                    ) : (
+                                        <i className="bi bi-eye-slash text-xl"></i>
+                                    )}
+                                </button>
+                            </div>
                         </div>
 
                         <PasswordChecklist
@@ -155,28 +127,28 @@ export default function Register() {
                             }}
                         />
 
+                        {/* Rol */}
                         <div>
-                            <label htmlFor="rol" className="text-gray-700 text-sm">Rol</label>
+                            <label className="text-gray-700">Rol</label>
                             <select
-                                {...register("rol", {
-                                    required: {
-                                        value: true,
-                                        message: "Selecciona un rol",
-                                    },
-                                })}
+                                required
                                 className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
+                                value={rol}
+                                onChange={(e) => setRol(e.target.value)}
                             >
                                 <option value="">Selecciona un rol</option>
                                 <option value="cliente">Cliente</option>
                                 <option value="dispatcher">Dispatcher</option>
                                 <option value="transportista">Transportista</option>
                             </select>
-                            {errors.rol && (
-                                <span className="text-red-500 text-xs">
-                                    {errors.rol.message as string}
-                                </span>
-                            )}
                         </div>
+
+                        {/* Error */}
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                                {error}
+                            </div>
+                        )}
 
                         {/* Botón iniciar sesión */}
                         <button
@@ -187,20 +159,24 @@ export default function Register() {
                         </button>
 
                         {/* Separador */}
-                        <div className="flex items-center justify-center">
-                            <hr className="w-full border-black-300 h-10" />
+                        <div className="flex items-center justify-center py-3 gap-2">
+                            <hr className="flex-1 border-black" />
+                            <div className="flex gap-1">
+                                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                            </div>
+                            <hr className="flex-1 border-black" />
                         </div>
 
                         {/* Texto: No tienes cuenta */}
-                        <h2 className="text-center text-2xl font-semibold text-gray-800">
+                        <h2 className="text-center text-xl font-semibold text-gray-800">
                             ¿Tienes cuenta? Inicia Sesion.
                         </h2>
 
                         {/* Botón login */}
-                        <a
-                            href="/auth/login"
-                            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer block text-center"
-                        >
+                        <a href="/auth/login"
+                            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer block text-center">
                             Iniciar Sesion
                         </a>
                     </form>
