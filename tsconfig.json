@@ -25,6 +25,7 @@
       "@hooks/*": ["app/hooks/*"],
       "@generated/prisma": ["app/generated/prisma/client"],
       "@lib/*": ["lib/*"],
+      "@css/*": ["app/css/*"]
     }
   },
   "include": [
