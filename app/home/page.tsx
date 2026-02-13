@@ -81,7 +81,7 @@ export default function Home() {
       <div>
         <ul className="space-y-6">
           <li className="flex gap-4">
-            <span className="w-6 h-6 mt-1 bg-blue-600 rounded-full flex-shrink-0"></span>
+            <span className="w-6 h-6 mt-1 bg-blue-600 rounded-full shrink-0"></span>
             <div>
               <strong className="text-lg">Flota Moderna</strong>
               <p className="text-gray-600">
@@ -91,7 +91,7 @@ export default function Home() {
           </li>
 
           <li className="flex gap-4">
-            <span className="w-6 h-6 mt-1 bg-blue-600 rounded-full flex-shrink-0"></span>
+            <span className="w-6 h-6 mt-1 bg-blue-600 rounded-full shrink-0"></span>
             <div>
               <strong className="text-lg">Personal Calificado</strong>
               <p className="text-gray-600">
@@ -101,7 +101,7 @@ export default function Home() {
           </li>
 
           <li className="flex gap-4">
-            <span className="w-6 h-6 mt-1 bg-blue-600 rounded-full flex-shrink-0"></span>
+            <span className="w-6 h-6 mt-1 bg-blue-600 rounded-full shrink-0"></span>
             <div>
               <strong className="text-lg">Monitoreo 24/7</strong>
               <p className="text-gray-600">

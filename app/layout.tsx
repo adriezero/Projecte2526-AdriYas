@@ -1,7 +1,9 @@
-import './globals.css'
-import BarraNavegacion from "@componentes/BarraNavegacion";
-import LittleFooter from '@componentes/FooterPequeño';
+import '@css/globals.css'
+import { Metadata } from 'next'
 
+export const metadata: Metadata = {
+  title: 'TruckWave'
+}
 export default function RootLayout({
   children,
 }: {
@@ -14,9 +16,7 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
       </head>
       <body>
-        <BarraNavegacion/>
         {children}
-        <LittleFooter/>
       </body>
     </html>
   )

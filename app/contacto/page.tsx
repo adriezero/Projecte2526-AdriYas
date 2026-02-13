@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import FooterGrande from "../componentes/FooterGrande";
 
 export default function Contacto() {
   const [nombre, setNombre] = useState("");
@@ -115,7 +114,6 @@ export default function Contacto() {
           </form>
         </div>
       </div>
-      <FooterGrande />
     </>
   );
 }

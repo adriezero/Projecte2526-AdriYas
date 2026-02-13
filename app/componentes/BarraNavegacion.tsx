@@ -1,8 +1,8 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import NavLink from './NavLink'
 
 export default function NavBar() {
   return (
@@ -22,18 +22,16 @@ export default function NavBar() {
         {/* CENTRO */}
         <ul className="flex gap-6 text-black">
           <li>
-            <Link href="/">Home</Link>
+            <NavLink href="/home" className="hover:text-blue-600">Home</NavLink>
           </li>
           <li>
-            <Link href="/contacto">Contacto</Link>
+            <NavLink href="/contacto" className="hover:text-blue-600">Contacto</NavLink>
           </li>
           <li>
-            <Link href="/sobre-nosotros">Sobre nosotros</Link>
+            <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
           </li>
           <li>
-            <Link href="/auth/login">
-              <span className="font-semibold">Iniciar sesión</span>
-            </Link>
+            <NavLink href="/auth/login" className="hover:text-blue-600">Iniciar sesión</NavLink>
           </li>
         </ul>
 

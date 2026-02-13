@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function FooterGrande() {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12">
+    <footer className="mt-auto bg-gray-900 text-gray-300 py-12">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         
         {/* Información de Contacto */}
@@ -29,9 +29,9 @@ export default function FooterGrande() {
         <div>
           <h3 className="text-white font-bold text-lg mb-4">Enlaces Rápidos</h3>
           <ul className="space-y-2">
-            <li><Link href="/" className="hover:text-white transition-colors">Inicio</Link></li>
+            <li><Link href="/home" className="hover:text-white transition-colors">Inicio</Link></li>
             <li><Link href="/servicios" className="hover:text-white transition-colors">Servicios</Link></li>
-            <li><Link href="/nosotros" className="hover:text-white transition-colors">Nosotros</Link></li>
+            <li><Link href="/sobre-nosotros" className="hover:text-white transition-colors">Nosotros</Link></li>
             <li><Link href="/contacto" className="hover:text-white transition-colors">Contacto</Link></li>
           </ul>
         </div>
