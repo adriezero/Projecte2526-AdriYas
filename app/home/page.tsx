@@ -23,20 +23,19 @@ export default function Home() {
       <button className="px-8 py-3 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
         Rastrea Tu Envío
       </button>
-
-    <button className="px-10 py-4rounded-lg font-semibold text-lg flex items-center gap-3 transition group">
-  <span className="text-2xl transform transition-transform group-hover:translate-y-1">
-    🡫
-  </span>
-</button>
-
     </div>
+
+    <a href="#servicios" className="mt-16 inline-flex items-center justify-center transition group">
+      <span className="text-4xl transform transition-transform group-hover:translate-y-1">
+        🡫
+      </span>
+    </a>
   </div>
 </section>
 
 
       {/* SERVICIOS */}
-      <section className="bg-white py-16 px-6">
+      <section id="servicios" className="bg-white py-16 px-6">
         <h2 className="text-3xl font-bold text-center mb-3">Nuestros Servicios</h2>
         <p className="text-center text-gray-600 mb-12">
           Ofrecemos una amplia gama de soluciones de transporte
