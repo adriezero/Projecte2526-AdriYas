@@ -17,7 +17,7 @@ export function useRegister() {
     setError("");
 
     if (password !== confirmarContraseña) {
-      setError("Las contraseñas no coinciden");
+      setError("Las contraseñas no coinciden.");
       return;
     }
 
@@ -31,10 +31,10 @@ export function useRegister() {
       if (res.ok) {
         router.push("/auth/login");
       } else {
-        setError("Error al registrarse");
+        setError("Error al registrarse. Inténtelo de nuevo.");
       }
     } catch (err) {
-      setError("Error de conexión");
+      setError("Error de conexión.");
     }
   };
 

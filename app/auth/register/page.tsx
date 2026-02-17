@@ -1,8 +1,11 @@
 "use client";
 import { useRegister } from "@hooks/useRegister";
 import PasswordChecklist from "react-password-checklist";
+import { useState } from "react";
 
 export default function Register() {
+    const [passwordValida, setPasswordValida] = useState(false);
+    
     const {
         username,
         setUsername,
@@ -25,7 +28,7 @@ export default function Register() {
     return (
         <div className="min-h-screen flex flex-col bg-[url('/img/camionRegistro.jpg')] bg-center bg-cover">
             <div className="w-150 h-180 border grow flex items-center justify-center bg-gray-50">
-                <div className="max-w-md w-full space-y-8 gap-24 px-6 py-6">
+                <div className="max-w-md w-full space-y-8 gap-24">
                     {/* Título */}
                     <div>
                         <h2 className="text-center text-3xl font-extrabold text-gray-900">
@@ -34,9 +37,9 @@ export default function Register() {
                     </div>
 
                     {/* Formulario */}
-                    <form className="mt-5 space-y-4" onSubmit={manejarEnvio}>
+                    <form className="mt-6 space-y-5" onSubmit={manejarEnvio}>
                         {/* Usuario */}
-                        <div>
+                        <div className="py-2">
                             <label className="text-gray-700">Usuario</label>
                             <input
                                 type="text"
@@ -49,7 +52,7 @@ export default function Register() {
                         </div>
 
                         {/* Email */}
-                        <div>
+                        <div className="py-2">
                             <label className="text-gray-700">Email</label>
                             <input
                                 type="email"
@@ -62,7 +65,7 @@ export default function Register() {
                         </div>
 
                         {/* Contraseña */}
-                        <div>
+                        <div className="py-2">
                             <label className="text-gray-700">Contraseña</label>
                             <div className="relative">
                                 <input
@@ -88,14 +91,14 @@ export default function Register() {
                         </div>
 
                         {/* Confirmar Contraseña */}
-                        <div>
-                            <label className="text-gray-700">Confirmar Contraseña</label>
+                        <div className="py-2">
+                            <label className="text-gray-700">Confirmar contraseña</label>
                             <div className="relative">
                                 <input
                                     type={mostrarConfirmarClave ? "text" : "password"}
                                     required
                                     className="w-full mt-1 px-3 py-2 pr-10 border border-gray-300 text-black rounded-md"
-                                    placeholder="********"
+                                    placeholder="Confirmar contraseña"
                                     value={confirmarContraseña}
                                     onChange={(e) => setConfirmarContraseña(e.target.value)}
                                 />
@@ -113,22 +116,32 @@ export default function Register() {
                             </div>
                         </div>
 
-                        <PasswordChecklist
-                            rules={["minLength","specialChar","number","capital","match"]}
-                            minLength={8}
-                            value={password}
-                            valueAgain={confirmarContraseña}
-                            messages={{
-                                minLength: "La contraseña tiene más de 8 caracteres.",
-                                specialChar: "La contraseña tiene caracteres especiales.",
-                                number: "La contraseña tiene un número.",
-                                capital: "La contraseña tiene una letra mayúscula.",
-                                match: "Las contraseñas coinciden.",
-                            }}
-                        />
+                        {password.length > 0 && !passwordValida && (
+                            <div className="text-black border-red-600 bg-red-100 border border-dashed rounded-md">
+                                <PasswordChecklist
+                                    rules={["minLength", "specialChar", "number", "capital", "match"]}
+                                    minLength={8}
+                                    value={password}
+                                    valueAgain={confirmarContraseña}
+                                    onChange={(isValid) => setPasswordValida(isValid)}
+                                    className="text-sm"
+                                    iconComponents={{
+                                        ValidIcon: <i className="bi bi-check-circle-fill text-green-500 px-1.5"></i>,
+                                        InvalidIcon: <i className="bi bi-x-circle-fill text-red-500 px-1.5"></i>
+                                    }}
+                                    messages={{
+                                        minLength: "La contraseña tiene más de 8 caracteres.",
+                                        specialChar: "La contraseña tiene caracteres especiales.",
+                                        number: "La contraseña tiene un número.",
+                                        capital: "La contraseña tiene una letra mayúscula.",
+                                        match: "Las contraseñas coinciden.",
+                                    }}
+                                />
+                            </div>
+                        )}
 
                         {/* Rol */}
-                        <div>
+                        <div className="py-2">
                             <label className="text-gray-700">Rol</label>
                             <select
                                 required
@@ -145,18 +158,22 @@ export default function Register() {
 
                         {/* Error */}
                         {error && (
-                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                                {error}
+                            <div className="py-3">
+                                <div className="bg-red-100 border border-red-400 px-4 py-3 rounded">
+                                    <p className="text-red-700">{error}</p>
+                                </div>
                             </div>
                         )}
 
                         {/* Botón iniciar sesión */}
-                        <button
-                            type="submit"
-                            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
-                        >
-                            Registrarse
-                        </button>
+                        <div className="py-2">
+                            <button
+                                type="submit"
+                                className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
+                            >
+                                Registrarse
+                            </button>
+                        </div>
 
                         {/* Separador */}
                         <div className="flex items-center justify-center py-3 gap-2">
@@ -171,13 +188,13 @@ export default function Register() {
 
                         {/* Texto: No tienes cuenta */}
                         <h2 className="text-center text-xl font-semibold text-gray-800">
-                            ¿Tienes cuenta? Inicia Sesion.
+                            ¿Tienes cuenta? Inicia sesión.
                         </h2>
 
                         {/* Botón login */}
                         <a href="/auth/login"
                             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer block text-center">
-                            Iniciar Sesion
+                            Iniciar sesión
                         </a>
                     </form>
                 </div>
