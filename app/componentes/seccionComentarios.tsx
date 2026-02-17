@@ -19,7 +19,7 @@ export default function ReviewsSection() {
         <RatingsSummary average={4.7} />
 
         <div className="grid md:grid-cols-2 gap-6">
-          {reviews.map((r: any) => (
+          {reviews.map((r: (any)) => (
             <ReviewCard
               key={r.id}
               name={r.name}

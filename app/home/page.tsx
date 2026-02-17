@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="bg-gray-100 text-gray-900">
@@ -16,13 +18,10 @@ export default function Home() {
     </p>
 
     <div className="flex justify-center gap-4 flex-wrap">
-      <button className="px-8 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-100 transition">
+      <a href="#servicios" className="px-8 py-3 bg-white text-black rounded-lg font-semibold hover:bg-gray-100 transition">
         Descubre Nuestros Servicios
-      </button>
-
-      <button className="px-8 py-3 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
-        Rastrea Tu Envío
-      </button>
+      </a>
+      <Link href="/auth/login" className="px-8 py-3 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition"> Rastrea Tu Envío</Link>
     </div>
 
     <a href="#servicios" className="mt-16 inline-flex items-center justify-center transition group">
@@ -127,10 +126,7 @@ export default function Home() {
     <p className="text-lg opacity-90 mb-8">
       Contáctanos y obtén una cotización personalizada para tus necesidades de transporte.
     </p>
-
-    <button className="px-10 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition text-lg">
-      Solicitar Servicio
-    </button>
+ <Link href="/auth/login" className=" px-10 py-4 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition text-lg"> Solicitar Servicio</Link>
   </div>
 </section>
 

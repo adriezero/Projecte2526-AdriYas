@@ -7,7 +7,7 @@ import NavLink from './NavLink'
 
 export default function NavBar() {
   return (
-    <nav className="w-full bg-white shadow-sm fixed">
+    <nav className="w-full bg-white shadow-sm fixed z-50">
       <div className="h-20 flex items-center justify-between px-10 py-3 border-b">
         {/* IZQUIERDA */}
         <div className="flex items-center">
