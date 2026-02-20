@@ -3,8 +3,10 @@ generator client {
   output   = "../app/generated/prisma"
 }
 
+
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model administrador {

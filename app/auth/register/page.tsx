@@ -1,11 +1,20 @@
 "use client";
 import { useRegister } from "@hooks/useRegister";
 import PasswordChecklist from "react-password-checklist";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Register() {
     const [passwordValida, setPasswordValida] = useState(false);
-    
+
+    // Esto inserta los roles de la BBDD en el drop-down list de ROL
+    const [roles, setRoles] = useState<{ ID: number; Nombre: string }[]>([]);
+    useEffect(() => {
+        fetch('/api/roles')
+            .then(res => res.json())
+            .then(data => setRoles(data))
+            .catch(err => console.error('Error cargando roles:', err));
+    }, []);
+
     const {
         username,
         setUsername,
@@ -45,7 +54,7 @@ export default function Register() {
                                 type="text"
                                 required
                                 className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-                                placeholder="tuUsuario123"
+                                placeholder="Usuario"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
@@ -150,9 +159,11 @@ export default function Register() {
                                 onChange={(e) => setRol(e.target.value)}
                             >
                                 <option value="">Selecciona un rol</option>
-                                <option value="cliente">Cliente</option>
-                                <option value="dispatcher">Dispatcher</option>
-                                <option value="transportista">Transportista</option>
+                                {roles.map((r) => (
+                                    <option key={r.ID} value={r.Nombre}>
+                                        {r.Nombre}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
