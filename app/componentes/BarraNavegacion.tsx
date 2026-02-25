@@ -1,13 +1,12 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavLink from './NavLink'
 
 export default function NavBar() {
   return (
-    <nav className="w-full bg-white shadow-sm fixed z-50">
+    <nav className="w-full bg-white shadow-sm fixed">
       <div className="h-20 flex items-center justify-between px-10 py-3 border-b">
         {/* IZQUIERDA */}
         <div className="flex items-center">
@@ -38,12 +37,14 @@ export default function NavBar() {
 
         {/* DERECHA */}
         <div className="flex gap-5 text-black">
-          <Link href="/contacto" className="bg-gray-200 border px-4 py-2 rounded">Solicitar Servicio</Link>
-          <Link href="/auth/login" className="px-4 py-2">Área Clientes</Link>
+          <button className="bg-gray-200 border px-4 py-2 rounded">
+            Solicitar Servicio
+          </button>
+          <button className="px-4 py-2">Área Clientes</button>
           
           {/* IDIOMA */}
           <Menu as="div" className="relative inline-block">
-            <MenuButton suppressHydrationWarning className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50">
+            <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50">
               Idioma
               <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
             </MenuButton>

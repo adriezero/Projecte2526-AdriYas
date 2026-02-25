@@ -5,9 +5,7 @@ export default function SobreNosotrosLayout({ children }: { children: React.Reac
   return (
     <>
       <BarraNavegacion />
-      <main className="pt-20">
-        {children}
-      </main>
+      {children}
       <BigFooter />
     </>
   )
