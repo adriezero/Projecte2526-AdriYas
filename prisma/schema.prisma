@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
 }
 
@@ -8,6 +8,7 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 
 model administrador {
   ID          Int                  @id @default(autoincrement())
@@ -54,19 +55,22 @@ model cliente {
 model comentarios {
   ID            Int            @id @default(autoincrement())
   Contenido     String?        @db.VarChar(200)
-  Fecha         DateTime       @db.Date
+  EsPositivo    Boolean        @default(true)
+  Fecha         DateTime       @default(now())
   Moderado      Boolean?       @default(false)
   Administrador Int?
   Ruta          Int
   Cliente       Int
-  administrador administrador? @relation(fields: [Administrador], references: [ID], onDelete: Cascade, map: "fk_idAdministrador")
-  cliente       cliente        @relation(fields: [Cliente], references: [ID], onDelete: Cascade, map: "fk_idCliente")
-  rutas         rutas          @relation(fields: [Ruta], references: [ID], onDelete: Cascade, map: "fk_idRuta")
+  administrador administrador? @relation(fields: [Administrador], references: [ID], onDelete: Cascade)
+  cliente       cliente        @relation(fields: [Cliente], references: [ID], onDelete: Cascade)
+  rutas         rutas          @relation(fields: [Ruta], references: [ID], onDelete: Cascade)
 
-  @@index([Administrador], map: "comentarios_ibfk_7")
-  @@index([Ruta], map: "comentarios_ibfk_8")
-  @@index([Cliente], map: "comentarios_ibfk_9")
+  @@index([Administrador])
+  @@index([Ruta])
+  @@index([Cliente])
 }
+
+
 
 model dispatcher {
   ID              Int          @id @default(autoincrement())

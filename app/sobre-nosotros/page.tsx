@@ -1,5 +1,11 @@
-"use client";
+import SeccionInfo from "@componentes/SeccionInformacion";
+import SeccionReseñas from "@componentes/seccionComentarios";
 
-export default function SobreNosotros() {
-    return (<div><br /><br /><br /><br /><br /><br /><br />Probando página sobre nosotros con el footer grande y navbar solo<br /><br /><br />Probando página sobre nosotros con el footer grande y navbar solo<br /><br /><br /><br /><br /><br /><br />Probando página sobre nosotros con el footer grande y navbar solo<br /><br /><br /><br /><br /><br /><br /><br /><br />Probando página sobre nosotros con el footer grande y navbar solo<br /><br /><br /><br /><br /><br /><br /><br /><br /></div>);
+export default function sobreNosotros() {
+  return (
+    <>
+      <SeccionInfo />
+      <SeccionReseñas />
+    </>
+  );
 }
