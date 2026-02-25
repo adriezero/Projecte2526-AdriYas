@@ -14,8 +14,15 @@ export default function ReviewsSection() {
 
   useEffect(() => {
     fetch("/api/reviews")
-      .then(res => res.json())
-      .then(data => setReseñas(data));
+      .then(res => {
+        if (!res.ok) throw new Error('Error al cargar reseñas');
+        return res.json();
+      })
+      .then(data => setReseñas(data))
+      .catch(err => {
+        console.error(err);
+        setReseñas([]);
+      });
   }, []);
 
   const positivas = reseñas.filter(r => r.isPositive).length;
