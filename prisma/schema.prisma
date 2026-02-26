@@ -15,7 +15,7 @@ model administrador {
   Nombre      String               @db.VarChar(50)
   Email       String?              @db.VarChar(50)
   Permisos    String?              @db.VarChar(255)
-  Contrase_a  String               @map("Contraseña") @db.VarChar(25)
+  Contrase_a  String               @map("Contraseña") @db.VarChar(60)
   Estado      administrador_Estado @default(dbgenerated("(Disponible)"))
   comentarios comentarios[]
   rol         rol[]
@@ -44,7 +44,7 @@ model cliente {
   NombreEmpresa     String               @db.VarChar(150)
   RazonSocial       String?              @db.VarChar(255)
   Email             String?              @db.VarChar(50)
-  Contrase_a        String               @map("Contraseña") @db.VarChar(25)
+  Contrase_a        String               @map("Contraseña") @db.VarChar(60)
   Telf              String               @db.VarChar(10)
   EstadoCuenta      cliente_EstadoCuenta @default(dbgenerated("(Disponible)"))
   comentarios       comentarios[]
@@ -76,7 +76,7 @@ model dispatcher {
   ID              Int          @id @default(autoincrement())
   Nombre          String       @db.VarChar(50)
   Email           String       @db.VarChar(50)
-  Contrase_a      String       @map("Contraseña") @db.VarChar(25)
+  Contrase_a      String       @map("Contraseña") @db.VarChar(60)  
   CentroOperacion String?      @db.VarChar(255)
   documentos      documentos[]
   informes        informes[]

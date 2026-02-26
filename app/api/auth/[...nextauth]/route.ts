@@ -18,19 +18,37 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials?.correo || !credentials?.clave) return null;
 
-        // Buscar el usuario en la tabla cliente
-        const usuario = await prisma.cliente.findFirst({
+        // Buscar en cliente
+        let usuario = await prisma.cliente.findFirst({
           where: { Email: credentials.correo },
         });
+        let tipo = 'cliente';
+
+        // Si no es cliente, buscar en dispatcher
+        if (!usuario) {
+          usuario = await prisma.dispatcher.findFirst({
+            where: { Email: credentials.correo },
+          });
+          tipo = 'dispatcher';
+        }
+
+        // Si no es dispatcher, buscar en administrador
+        if (!usuario) {
+          usuario = await prisma.administrador.findFirst({
+            where: { Email: credentials.correo },
+          });
+          tipo = 'administrador';
+        }
 
         if (!usuario) return null;
 
-        // Si usas hash (recomendado)
-        if (await bcrypt.compare(credentials.clave, usuario.Contrase_a)) {
+        // Comparación directa (temporal - contraseñas en texto plano)
+        if (credentials.clave === usuario.Contrase_a) {
           return {
             id: usuario.ID.toString(),
             email: usuario.Email,
             name: usuario.Nombre,
+            role: tipo,
           };
         }
 
