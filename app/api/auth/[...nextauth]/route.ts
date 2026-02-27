@@ -19,7 +19,7 @@ export const authOptions = {
         if (!credentials?.correo || !credentials?.clave) return null;
 
         // Buscar en cliente
-        let usuario = await prisma.cliente.findFirst({
+        let usuario: any = await prisma.cliente.findFirst({
           where: { Email: credentials.correo },
         });
         let tipo = 'cliente';
