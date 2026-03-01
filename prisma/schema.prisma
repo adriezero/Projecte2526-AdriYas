@@ -3,12 +3,10 @@ generator client {
   output   = "../app/generated/prisma"
 }
 
-
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 
 model administrador {
   ID          Int                  @id @default(autoincrement())
@@ -16,7 +14,7 @@ model administrador {
   Email       String?              @db.VarChar(50)
   Permisos    String?              @db.VarChar(255)
   Contrase_a  String               @map("Contraseña") @db.VarChar(60)
-  Estado      administrador_Estado @default(dbgenerated("(Disponible)"))
+  Estado      administrador_Estado @default(Disponible)
   comentarios comentarios[]
   rol         rol[]
 }
@@ -31,11 +29,11 @@ model camionero {
   idTurno           Int
   FechaInicio       DateTime            @db.Date
   FechaFinal        DateTime            @db.Date
-  turnos            turnos              @relation(fields: [idTurno], references: [ID], onDelete: Cascade, map: "fk_idCamionero")
+  turnos            turnos              @relation(fields: [idTurno], references: [ID], onDelete: Cascade)
   rutas             rutas[]
   solicitud_reserva solicitud_reserva[]
 
-  @@index([idTurno], map: "camionero_ibfk_5")
+  @@index([idTurno])
 }
 
 model cliente {
@@ -46,7 +44,7 @@ model cliente {
   Email             String?              @db.VarChar(50)
   Contrase_a        String               @map("Contraseña") @db.VarChar(60)
   Telf              String               @db.VarChar(10)
-  EstadoCuenta      cliente_EstadoCuenta @default(dbgenerated("(Disponible)"))
+  EstadoCuenta      cliente_EstadoCuenta @default(Disponible)
   comentarios       comentarios[]
   informes          informes[]
   solicitud_reserva solicitud_reserva[]
@@ -70,13 +68,11 @@ model comentarios {
   @@index([Cliente])
 }
 
-
-
 model dispatcher {
   ID              Int          @id @default(autoincrement())
   Nombre          String       @db.VarChar(50)
   Email           String       @db.VarChar(50)
-  Contrase_a      String       @map("Contraseña") @db.VarChar(60)  
+  Contrase_a      String       @map("Contraseña") @db.VarChar(60)
   CentroOperacion String?      @db.VarChar(255)
   documentos      documentos[]
   informes        informes[]
@@ -88,9 +84,9 @@ model documentos {
   Descripci_n String     @map("Descripción") @db.VarChar(150)
   FechaSubida DateTime   @db.Date
   Dispatcher  Int
-  dispatcher  dispatcher @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade, map: "fk_idDispatcher")
+  dispatcher  dispatcher @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
 
-  @@index([Dispatcher], map: "documentos_ibfk_2")
+  @@index([Dispatcher])
 }
 
 model informes {
@@ -100,11 +96,11 @@ model informes {
   FechaSubida  DateTime          @db.Date
   idDispatcher Int
   idCliente    Int
-  cliente      cliente           @relation(fields: [idCliente], references: [ID], onDelete: Cascade, map: "fk_idCliente_2")
-  dispatcher   dispatcher        @relation(fields: [idDispatcher], references: [ID], onDelete: Cascade, map: "fk_idDispatcher_2")
+  cliente      cliente           @relation(fields: [idCliente], references: [ID], onDelete: Cascade)
+  dispatcher   dispatcher        @relation(fields: [idDispatcher], references: [ID], onDelete: Cascade)
 
-  @@index([idDispatcher], map: "informes_ibfk_3")
-  @@index([idCliente], map: "informes_ibfk_4")
+  @@index([idDispatcher])
+  @@index([idCliente])
 }
 
 model reservas {
@@ -120,38 +116,38 @@ model rol {
   Nombre        String        @db.VarChar(50)
   Descripci_n   String?       @map("Descripción") @db.VarChar(150)
   idAdmin       Int
-  administrador administrador @relation(fields: [idAdmin], references: [ID], onDelete: Cascade, map: "fk_idAdministrador_2")
+  administrador administrador @relation(fields: [idAdmin], references: [ID], onDelete: Cascade)
 
-  @@index([idAdmin], map: "rol_ibfk_1")
+  @@index([idAdmin])
 }
 
 model rutas {
   ID           Int           @id @default(autoincrement())
   Estado       rutas_Estado?
-  Reservas     String        @db.LongText
-  Cargas       String        @db.LongText
+  Reservas     String        @db.Text
+  Cargas       String        @db.Text
   EnTiempoReal Boolean       @default(false)
   Camionero    Int
   Origen       String        @db.VarChar(255)
   Destino      String        @db.VarChar(255)
   comentarios  comentarios[]
-  camionero    camionero     @relation(fields: [Camionero], references: [ID], onDelete: Cascade, map: "fk_idCamionero_2")
+  camionero    camionero     @relation(fields: [Camionero], references: [ID], onDelete: Cascade)
 
-  @@index([Camionero], map: "rutas_ibfk_6")
+  @@index([Camionero])
 }
 
 model solicitud_reserva {
   idReserva   Int
   idCliente   Int
   idCamionero Int
-  camionero   camionero @relation(fields: [idCamionero], references: [ID], onUpdate: Restrict, map: "fk_idCamionero_3")
-  cliente     cliente   @relation(fields: [idCliente], references: [ID], onUpdate: Restrict, map: "fk_idCliente_3")
-  reservas    reservas  @relation(fields: [idReserva], references: [ID], onUpdate: Restrict, map: "fk_idReserva")
+  camionero   camionero @relation(fields: [idCamionero], references: [ID], onUpdate: Restrict)
+  cliente     cliente   @relation(fields: [idCliente], references: [ID], onUpdate: Restrict)
+  reservas    reservas  @relation(fields: [idReserva], references: [ID], onUpdate: Restrict)
 
   @@id([idReserva, idCliente])
-  @@index([idCamionero], map: "idCamionero")
-  @@index([idCliente], map: "idCliente")
-  @@index([idReserva], map: "idReserva")
+  @@index([idCamionero])
+  @@index([idCliente])
+  @@index([idReserva])
 }
 
 model turnos {
