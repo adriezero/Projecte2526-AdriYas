@@ -20,8 +20,15 @@ export function useAuth() {
     
     if (resultado?.error) {
       setError("Correo o contraseña incorrectos.");
-    } else {
-      router.push("/dashboard");
+    } else if (resultado?.ok) {
+      const res = await fetch('/api/auth/session');
+      const session = await res.json();
+      const rutas: Record<string, string> = {
+        administrador: "/admin/gestionUsers",
+        dispatcher: "/dispatcher",
+        cliente: "/home"
+      };
+      router.push(rutas[session?.user?.role] || "/home");
     }
   };
 
