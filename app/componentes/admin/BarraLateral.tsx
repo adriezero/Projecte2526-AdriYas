@@ -26,7 +26,7 @@ export default function BarraLateral() {
           </Link>
 
           <Link
-            href="/usuarios"
+            href="/admin/gestionUsers"
             className="flex items-center gap-3 p-3 rounded-lg bg-[#2E3A4D] transition"
           >
             👥 Usuarios
@@ -48,7 +48,7 @@ export default function BarraLateral() {
             JD
           </div>
           <div className="text-sm">
-            <p className="font-semibold">John Doe</p>
+            <p className="font-semibold"></p>
             <p className="text-gray-400 text-xs">Administrator</p>
           </div>
         </div>
