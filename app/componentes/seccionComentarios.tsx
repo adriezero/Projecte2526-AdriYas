@@ -32,8 +32,6 @@ export default function ReviewsSection() {
   
   if (filtro === 'positivas') {
     reseñasFiltradas = reseñas.filter(r => r.isPositive);
-  } else if (filtro === 'comentarios') {
-    reseñasFiltradas = reseñas.filter(r => r.comment.trim().length > 0);
   } else if (filtro === 'recientes') {
     reseñasFiltradas = [...reseñas].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } else if (filtro === 'negativas') {
@@ -55,8 +53,8 @@ export default function ReviewsSection() {
     <section className="bg-gray-100 py-16 px-6 flex justify-center">
       <div className="max-w-6xl w-full space-y-10">
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-4">Valoraciones y Comentarios de Usuarios</h2>
-          <p>Descubre lo que otros usuarios piensan sobre el servicio recibido.</p>
+          <h2 className="text-3xl font-bold text-black mb-4">Valoraciones y Comentarios de Usuarios</h2>
+          <p className="text-gray-600 mb-6" >Descubre lo que otros usuarios piensan sobre el servicio recibido.</p>
           <p className="text-lg">
             <span className="text-green-500 font-bold">{positivas} 👍</span>
             {' / '}
@@ -68,13 +66,12 @@ export default function ReviewsSection() {
           <select 
             value={filtro} 
             onChange={(e) => { setFiltro(e.target.value); setPaginaActual(1); }}
-            className="px-4 py-2 border border-gray-300 rounded-lg bg-white"
+            className="px-4 py-2 text-black border border-gray-300 rounded-lg bg-white"
           >
-            <option value="todas">Todas las valoraciones</option>
-            <option value="recientes">Más recientes</option>
-            <option value="comentarios">Con comentarios</option>
-            <option value="positivas">Positivas</option>
-            <option value="negativas">Negativas</option>
+            <option className="text-black" value="todas">Todas las valoraciones</option>
+            <option className="text-blue-500"  value="recientes">Más recientes</option>
+            <option className="text-green-400" value="positivas">Positivas</option>
+            <option className="text-red-600" value="negativas">Negativas</option>
           </select>
           
           <input
@@ -82,7 +79,7 @@ export default function ReviewsSection() {
             placeholder="Buscar en valoraciones..."
             value={busqueda}
             onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1); }}
-            className="px-4 py-2 border border-gray-300 rounded-lg w-full md:w-64"
+            className="text-gray-600 mb-6 px-4 py-2 border border-gray-300 rounded-lg w-full md:w-64"
           />
         </div>
 

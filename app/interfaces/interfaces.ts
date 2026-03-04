@@ -11,3 +11,11 @@ export interface Reseña {
   date: string;
   route: string;
 }
+
+ export interface Props {
+  name: string;
+  comment: string;
+  isPositive: boolean;
+  date?: string;
+  route?: string;
+}

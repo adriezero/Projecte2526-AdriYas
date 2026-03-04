@@ -1,11 +1,5 @@
 // app/componentes/reviewCard.tsx
-interface Props {
-  name: string;
-  comment: string;
-  isPositive: boolean;
-  date?: string;
-  route?: string;
-}
+import { Props } from '@interfaces/interfaces';
 
 export default function Reseñas({ name, comment, isPositive, date, route }: Props) {
   return (
@@ -18,7 +12,7 @@ export default function Reseñas({ name, comment, isPositive, date, route }: Pro
         {date && <p className="text-sm text-gray-500 mt-1">{new Date(date).toLocaleDateString('es-ES')}</p>}
       </div>
 
-      <div className="text-5xl mb-4 text-center">
+      <div className="text-5xl mb-4 text-center text-black">
         {isPositive ? '👍' : '👎'}
       </div>
 
