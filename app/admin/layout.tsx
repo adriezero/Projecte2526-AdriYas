@@ -12,6 +12,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <>
       
       <div className="ml-64">
+        <BarraLateral />
         {children}
       </div>
     </>

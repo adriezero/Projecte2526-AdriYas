@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import BarraLateral from '@componentes/admin/BarraLateral'
 
 export const metadata: Metadata = {
-  title: 'TruckWave'
+  title: 'Admin_Gestion Usuarios - TruckWave'
 }
 export default function RootLayout({
   children,
@@ -12,9 +12,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
-      <BarraLateral />
-      {children}
-    </>
+  
+    <div className="ml-64">
+         </div>
   )
 }
