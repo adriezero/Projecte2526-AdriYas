@@ -1,19 +1,13 @@
 import '@css/globals.css'
-import FooterGrande from '@componentes/FooterGrande'
 import { Metadata } from 'next'
-import BarraLateral from '@componentes/admin/BarraLateral'
 
 export const metadata: Metadata = {
   title: 'Admin_Gestion Usuarios - TruckWave'
 }
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+
+export default function GestionUsersPage() {
   return (
-  
     <div className="ml-64">
-         </div>
+    </div>
   )
 }
