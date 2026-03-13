@@ -10,11 +10,8 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      
-      <div className="ml-64">
-        <BarraLateral />
-        {children}
-      </div>
+      <BarraLateral />
+      {children}
     </>
   )
 }
