@@ -24,7 +24,7 @@ export function useRegister() {
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
-        body: JSON.stringify({ username, email, password }),
+        body: JSON.stringify({ username, email, password, rol }),
         headers: { "Content-Type": "application/json" },
       });
 
