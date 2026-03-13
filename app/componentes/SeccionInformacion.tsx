@@ -23,7 +23,7 @@ export default function InfoSection() {
           <h3 className="text-center font-extrabold text-2xl mb-6">
             Una historia de esfuerzo y compromiso
           </h3>
-<br />
+          <br />
           <p className="text-base text-gray-700 leading-relaxed mt-4">
             Esta empresa nació del esfuerzo de una sola persona que decidió emprender 
             en el sector del transporte en Mercabarna. Con dedicación, responsabilidad 
@@ -37,15 +37,13 @@ export default function InfoSection() {
           </p>
 
           {/* Imagen superpuesta */}
-          <div className="absolute top-1/2 -translate-y-1/2 -right-130 w-[560px] h-[380px]
+          <div className="absolute top-1/2 -translate-y-1/2 -right-130 w-140 h-95
                           bg-[url('/img/camionFamilia.jpg')] 
                           bg-cover bg-center 
                           border border-gray-400 
                           shadow-lg z-20">
           </div>
-
         </div>
-
       </div>
     </section>
   );

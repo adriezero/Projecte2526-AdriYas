@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function Contacto() {
   const [nombre, setNombre] = useState("");
@@ -9,7 +8,6 @@ export default function Contacto() {
   const [mensaje, setMensaje] = useState("");
   const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
 
   const manejarEnvio = async (e: React.FormEvent) => {
     e.preventDefault();

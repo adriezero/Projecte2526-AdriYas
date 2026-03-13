@@ -31,10 +31,8 @@ export default function Home() {
     </a>
   </div>
 </section>
-
-
       {/* SERVICIOS */}
-      <section id="servicios" className="bg-gradient-to-b from-white to-gray-50 py-20 px-6">
+      <section id="servicios" className="bg-linear-to-b from-white to-gray-50 py-20 px-6">
         <h2 className="text-4xl font-bold text-center mb-4">Nuestros Servicios</h2>
         <p className="text-center text-gray-600 text-lg mb-16">
           Ofrecemos una amplia gama de soluciones de transporte
@@ -47,7 +45,7 @@ export default function Home() {
         key={item}
         className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
       >
-        <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
+        <div className="w-20 h-20 mx-auto mb-6 bg-linear-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
           <i className="bi bi-truck text-3xl text-white"></i>
         </div>
         <h3 className="font-bold text-xl mb-3 text-gray-800">Transporte Terrestre</h3>
@@ -62,10 +60,7 @@ export default function Home() {
     ))}
   </div>
 </div>
-
-
       </section>
-
       {/* WHY US */}
      <section className="bg-gray-450 h-140 mb-40 flex items-center justify-center px-6">
   <div className="max-w-6xl w-full text-center">
@@ -81,7 +76,7 @@ export default function Home() {
       <div>
         <ul>
           <li className="flex gap-5 items-start">
-            <div className="w-12 h-12 mt-1 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shrink-0 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 mt-1 bg-linear-to-br from-blue-500 to-blue-700 rounded-xl shrink-0 flex items-center justify-center shadow-lg">
               <span className="text-white text-xl font-bold">✓</span>
             </div>
             <div>
@@ -93,7 +88,7 @@ export default function Home() {
           </li>
 
           <li className="flex gap-5 items-start mt-32">
-            <div className="w-12 h-12 mt-1 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shrink-0 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 mt-1 bg-linear-to-br from-blue-500 to-blue-700 rounded-xl shrink-0 flex items-center justify-center shadow-lg">
               <span className="text-white text-xl font-bold">✓</span>
             </div>
             <div>
@@ -105,7 +100,7 @@ export default function Home() {
           </li>
 
           <li className="flex gap-5 items-start mt-32">
-            <div className="w-12 h-12 mt-1 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shrink-0 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 mt-1 bg-linear-to-br from-blue-500 to-blue-700 rounded-xl shrink-0 flex items-center justify-center shadow-lg">
               <span className="text-white text-xl font-bold">✓</span>
             </div>
             <div>

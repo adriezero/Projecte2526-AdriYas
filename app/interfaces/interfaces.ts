@@ -3,6 +3,7 @@ export interface Usuario {
   name: string;
   password: string;
 }
+
 export interface Reseña {
   id: number;
   name: string;
@@ -12,7 +13,7 @@ export interface Reseña {
   route: string;
 }
 
- export interface Props {
+export interface Props {
   name: string;
   comment: string;
   isPositive: boolean;

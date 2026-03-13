@@ -1,5 +1,4 @@
 import '@css/globals.css'
-import FooterGrande from '@componentes/FooterGrande'
 import BarraLateral from '@componentes/admin/BarraLateral'
 import { Metadata } from 'next'
 
