@@ -6,11 +6,8 @@ import BarraLateral from '@componentes/admin/BarraLateral'
 export const metadata: Metadata = {
   title: 'Admin_reportes- TruckWave'
 }
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+
+export default function ReportesPage() {
   return (
     <>
       
