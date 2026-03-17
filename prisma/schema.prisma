@@ -9,14 +9,16 @@ datasource db {
 }
 
 model administrador {
-  ID          Int                  @id @default(autoincrement())
-  Nombre      String               @db.VarChar(50)
-  Email       String?              @db.VarChar(50)
-  Permisos    String?              @db.VarChar(255)
-  Contrase_a  String               @map("Contraseña") @db.VarChar(60)
-  Estado      administrador_Estado @default(Disponible)
-  comentarios comentarios[]
-  rol         rol[]
+  ID               Int                  @id @default(autoincrement())
+  Nombre           String               @db.VarChar(50)
+  Email            String?              @db.VarChar(50)
+  Permisos         String?              @db.VarChar(255)
+  Contrase_a       String               @map("Contraseña") @db.VarChar(60)
+  Estado           administrador_Estado @default(Disponible)
+  resetToken       String?              @unique
+  resetTokenExpiry DateTime?
+  comentarios      comentarios[]
+  rol              rol[]
 }
 
 model camionero {
@@ -30,6 +32,8 @@ model camionero {
   idTurno           Int
   FechaInicio       DateTime            @db.Date
   FechaFinal        DateTime            @db.Date
+  resetToken        String?             @unique
+  resetTokenExpiry  DateTime?
   turnos            turnos              @relation(fields: [idTurno], references: [ID], onDelete: Cascade)
   rutas             rutas[]
   solicitud_reserva solicitud_reserva[]
@@ -46,6 +50,8 @@ model cliente {
   Contrase_a        String               @map("Contraseña") @db.VarChar(60)
   Telf              String               @db.VarChar(10)
   EstadoCuenta      cliente_EstadoCuenta @default(Disponible)
+  resetToken        String?              @unique
+  resetTokenExpiry  DateTime?
   comentarios       comentarios[]
   informes          informes[]
   solicitud_reserva solicitud_reserva[]
@@ -70,13 +76,15 @@ model comentarios {
 }
 
 model dispatcher {
-  ID              Int          @id @default(autoincrement())
-  Nombre          String       @db.VarChar(50)
-  Email           String       @db.VarChar(50)
-  Contrase_a      String       @map("Contraseña") @db.VarChar(60)
-  CentroOperacion String?      @db.VarChar(255)
-  documentos      documentos[]
-  informes        informes[]
+  ID               Int          @id @default(autoincrement())
+  Nombre           String       @db.VarChar(50)
+  Email            String       @db.VarChar(50)
+  Contrase_a       String       @map("Contraseña") @db.VarChar(60)
+  CentroOperacion  String?      @db.VarChar(255)
+  resetToken       String?      @unique
+  resetTokenExpiry DateTime?
+  documentos       documentos[]
+  informes         informes[]
 }
 
 model documentos {
