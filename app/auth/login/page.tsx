@@ -77,7 +77,7 @@ export default function IniciarSesion() {
 
             {/* Olvidaste la contraseña */}
             <div className="py-2 text-center">
-              <a className="text-blue-600 text-sm hover:underline cursor-pointer">
+              <a href="/auth/forgot-password" className="text-blue-600 text-sm hover:underline cursor-pointer">
                 ¿Olvidaste la contraseña?
               </a>
             </div>
