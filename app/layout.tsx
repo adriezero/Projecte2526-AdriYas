@@ -1,5 +1,6 @@
 import '@css/globals.css'
 import { Metadata } from 'next'
+import AuthProvider from '@componentes/AuthProvider'
 
 export const metadata: Metadata = {
   title: 'TruckWave'
@@ -16,7 +17,9 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
       </head>
       <body>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   )

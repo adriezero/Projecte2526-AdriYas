@@ -26,6 +26,13 @@ export const authOptions = {
         }
 
         if (!usuario) {
+          usuario = await prisma.camionero.findFirst({
+            where: { Email: credentials.correo },
+          });
+          tipo = 'camionero';
+        }
+
+        if (!usuario) {
           usuario = await prisma.administrador.findFirst({
             where: { Email: credentials.correo },
           });
@@ -64,7 +71,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/auth/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

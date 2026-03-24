@@ -25,7 +25,8 @@ export function useAuth() {
       const session = await res.json();
       const rutas: Record<string, string> = {
         administrador: "/admin/gestionUsers",
-        dispatcher: "/dispatcher",
+        dispatcher: "/dispatcher/tareas",
+        camionero: "/camionero/horario",
         cliente: "/home"
       };
       router.push(rutas[session?.user?.role] || "/home");

@@ -4,8 +4,21 @@ import Link from "next/link";
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavLink from './NavLink'
+import { useSession, signOut } from 'next-auth/react'
 
 export default function NavBar() {
+  const { data: session, status } = useSession()
+  const isLoading = status === 'loading'
+
+  const roleRoutes: Record<string, string> = {
+    administrador: '/admin/gestionUsers',
+    dispatcher: '/dispatcher/tareas',
+    camionero: '/camionero/rutas',
+    cliente: '/cliente'
+  }
+
+  const userRoute = session?.user?.role ? roleRoutes[session.user.role as string] : '/auth/login'
+
   return (
     <nav className="w-full bg-white shadow-sm fixed z-50">
       <div className="h-20 flex items-center justify-between px-10 py-3 border-b">
@@ -31,15 +44,27 @@ export default function NavBar() {
           <li>
             <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
           </li>
-          <li>
-            <NavLink href="/auth/login" className="hover:text-blue-600">Iniciar sesión</NavLink>
-          </li>
+          {!isLoading && !session && (
+            <li>
+              <NavLink href="/auth/login" className="hover:text-blue-600">Iniciar sesión</NavLink>
+            </li>
+          )}
         </ul>
 
         {/* DERECHA */}
-        <div className="flex gap-5 text-black">
+        <div className="flex gap-5 text-black items-center">
           <Link href="/contacto" className="bg-gray-200 border px-4 py-2 rounded">Solicitar Servicio</Link>
-          <Link href="/auth/login" className="px-4 py-2">Área Clientes</Link>
+          
+          {isLoading ? (
+            <div className="px-4 py-2 text-gray-400">Cargando...</div>
+          ) : session ? (
+            <>
+              <Link href={userRoute} className="px-4 py-2 hover:text-blue-600">Mi Área</Link>
+              <button onClick={() => signOut({ callbackUrl: '/home' })} className="px-4 py-2 hover:text-red-600">Cerrar sesión</button>
+            </>
+          ) : (
+            <Link href="/auth/login" className="px-4 py-2">Área Clientes</Link>
+          )}
           
           {/* IDIOMA */}
           <Menu as="div" className="relative inline-block">
