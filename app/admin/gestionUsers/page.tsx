@@ -46,6 +46,19 @@ export default function GestionUsersPage() {
   const [dropRol,    setDropRol]    = useState(false)
   const [dropEstado, setDropEstado] = useState(false)
 
+  // Modal de confirmación de borrado
+  const [modalBorrar, setModalBorrar] = useState<{ id: number; tipo: string; nombre: string } | null>(null)
+
+  // ─── Elimina el usuario tras confirmar ──────────────────────────────────────
+  async function confirmarBorrado() {
+    if (!modalBorrar) return
+    await fetch(`/api/auth/usuarios/${modalBorrar.tipo}/${modalBorrar.id}`, { method: 'DELETE' })
+    setModalBorrar(null)
+    // Recarga la página actual
+    setUsuarios(prev => prev.filter(u => !(u.ID === modalBorrar.id && u.tipo === modalBorrar.tipo)))
+    setTotalUsuarios(prev => prev - 1)
+  }
+
   // Ordenamiento local (sobre la página actual)
   const [orden, setOrden] = useState<{ col: ColOrdenable | null; dir: 'asc' | 'desc' }>({
     col: null,
@@ -256,7 +269,11 @@ export default function GestionUsersPage() {
                           <button className="text-blue-600 hover:text-blue-800" title="Editar">
                             <i className="bi bi-pencil-fill" />
                           </button>
-                          <button className="text-red-600 hover:text-red-800" title="Eliminar">
+                          <button
+                            className="text-red-600 hover:text-red-800"
+                            title="Eliminar"
+                            onClick={() => setModalBorrar({ id: usuario.ID, tipo: usuario.tipo, nombre: usuario.Nombre })}
+                          >
                             <i className="bi bi-trash3-fill" />
                           </button>
                           <button className="text-gray-600 hover:text-black" title="Ver detalle">
@@ -311,6 +328,35 @@ export default function GestionUsersPage() {
         </div>
 
       </div>
+
+      {/* ── Modal de confirmación de borrado ── */}
+      {modalBorrar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md text-center">
+            <div className="text-red-500 text-5xl mb-4">⚠️</div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Confirmar Eliminación</h2>
+            <p className="text-gray-700 mb-1">
+              ¿Estás seguro de que deseas eliminar a <strong>{modalBorrar.nombre}</strong>?
+            </p>
+            <p className="text-red-600 text-sm mb-6">Esta acción es irreversible y eliminará permanentemente todos los datos asociados.</p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setModalBorrar(null)}
+                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarBorrado}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium"
+              >
+                Eliminar Usuario
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
