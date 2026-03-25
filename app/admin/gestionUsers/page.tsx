@@ -65,7 +65,7 @@ export default function GestionUsersPage() {
       estado:   estadoAplicado,
     })
 
-    fetch(`/api/auth/usaurios?${params}`)
+    fetch(`/api/auth/usuarios?${params}`)
       .then(res => res.json())
       .then(data => {
         setUsuarios(data.usuarios)
