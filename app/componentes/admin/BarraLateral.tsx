@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { signOut, useSession } from 'next-auth/react'
 
 export default function BarraLateral() {
   const pathname = usePathname()
+  const { data: session } = useSession()
   
   return (
     <aside className="fixed left-0 top-0 h-screen w-80 bg-[#1C2634] text-white flex flex-col justify-between p-6">
@@ -57,12 +59,15 @@ export default function BarraLateral() {
             JD
           </div>
           <div className="text-sm">
-            <p className="font-semibold"></p>
+            <p className="font-semibold">{session?.user?.name ?? ''}</p>
             <p className="text-gray-400 text-xs">Administrator</p>
           </div>
         </div>
 
-        <button className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition">
+        <button
+          onClick={() => signOut({ callbackUrl: '/auth/login' })}
+          className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition"
+        >
           🔓 Cerrar sesión
         </button>
       </div>

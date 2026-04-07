@@ -49,6 +49,44 @@ export default function GestionUsersPage() {
   // Modal de confirmación de borrado
   const [modalBorrar, setModalBorrar] = useState<{ id: number; tipo: string; nombre: string } | null>(null)
 
+  // Menú de acciones (3 rallitas)
+  const [menuAbierto, setMenuAbierto] = useState<string | null>(null)
+
+  // Modal de bloqueo
+  const [modalBloquear, setModalBloquear] = useState<{ id: number; tipo: string; nombre: string } | null>(null)
+
+  // Modal de edición
+  const [modalEditar, setModalEditar] = useState<Usuario & Record<string, unknown> | null>(null)
+  const [guardando, setGuardando] = useState(false)
+
+  // ─── Abre el modal de edición cargando datos completos del usuario ─────────
+  async function abrirEditar(usuario: Usuario) {
+    const res = await fetch(`/api/auth/usuarios/${usuario.tipo}/${usuario.ID}`)
+    const data = await res.json()
+    setModalEditar(data)
+  }
+
+  // ─── Guarda los cambios del usuario editado ───────────────────────────────
+  async function guardarEdicion() {
+    if (!modalEditar) return
+    setGuardando(true)
+    // Excluimos campos que no se deben enviar al PATCH
+    const { ID, tipo, resetToken, resetTokenExpiry, Contrase_a, ...campos } = modalEditar as Record<string, unknown>
+    void ID; void tipo; void resetToken; void resetTokenExpiry; void Contrase_a
+    await fetch(`/api/auth/usuarios/${modalEditar.tipo}/${modalEditar.ID}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(campos),
+    })
+    // Actualiza la fila en la tabla localmente
+    setUsuarios(prev => prev.map(u =>
+      u.ID === modalEditar.ID && u.tipo === modalEditar.tipo
+        ? { ...u, Nombre: modalEditar.Nombre, Email: modalEditar.Email } : u
+    ))
+    setGuardando(false)
+    setModalEditar(null)
+  }
+
   // ─── Elimina el usuario tras confirmar ──────────────────────────────────────
   async function confirmarBorrado() {
     if (!modalBorrar) return
@@ -57,6 +95,37 @@ export default function GestionUsersPage() {
     // Recarga la página actual
     setUsuarios(prev => prev.filter(u => !(u.ID === modalBorrar.id && u.tipo === modalBorrar.tipo)))
     setTotalUsuarios(prev => prev - 1)
+  }
+
+  // ─── Bloquea el usuario ──────────────────────────────────────────────────────────
+  async function confirmarBloqueo() {
+    if (!modalBloquear) return
+    await fetch(`/api/auth/usuarios/${modalBloquear.tipo}/${modalBloquear.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ EstadoCuenta: 'Bloqueado', Estado: 'Bloqueado', Disponible: false }),
+    })
+    setUsuarios(prev => prev.map(u =>
+      u.ID === modalBloquear.id && u.tipo === modalBloquear.tipo
+        ? { ...u, Estado: 'Bloqueado', EstadoCuenta: 'Bloqueado', Disponible: false }
+        : u
+    ))
+    setModalBloquear(null)
+  }
+
+  // ─── Desbloquea el usuario ───────────────────────────────────────────────────
+  async function desbloquearUsuario(usuario: Usuario) {
+    await fetch(`/api/auth/usuarios/${usuario.tipo}/${usuario.ID}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ EstadoCuenta: 'Disponible', Estado: 'Disponible', Disponible: true }),
+    })
+    setUsuarios(prev => prev.map(u =>
+      u.ID === usuario.ID && u.tipo === usuario.tipo
+        ? { ...u, Estado: 'Disponible', EstadoCuenta: 'Disponible', Disponible: true }
+        : u
+    ))
+    setMenuAbierto(null)
   }
 
   // Ordenamiento local (sobre la página actual)
@@ -81,9 +150,13 @@ export default function GestionUsersPage() {
     fetch(`/api/auth/usuarios?${params}`)
       .then(res => res.json())
       .then(data => {
-        setUsuarios(data.usuarios)
-        setTotalPaginas(data.totalPaginas)
-        setTotalUsuarios(data.total)
+        setUsuarios(data.usuarios ?? [])
+        setTotalPaginas(data.totalPaginas ?? 1)
+        setTotalUsuarios(data.total ?? 0)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Error cargando usuarios:', err)
         setLoading(false)
       })
   }, [pagina, busquedaAplicada, rolAplicado, estadoAplicado]) // se re-ejecuta cuando cambia alguno
@@ -240,10 +313,10 @@ export default function GestionUsersPage() {
               <tbody className="divide-y divide-gray-200">
                 {usuariosPagina.map((usuario, i) => {
                   const estado = getEstado(usuario)
-                  const esActivo = usuario.Estado === 'Disponible' || usuario.EstadoCuenta === 'Disponible' || usuario.Disponible
+                  const esActivo = (usuario.Estado === 'Disponible' || usuario.EstadoCuenta === 'Disponible' || usuario.Disponible) && usuario.Estado !== 'Bloqueado' && usuario.EstadoCuenta !== 'Bloqueado'
 
                   return (
-                    <tr key={`${usuario.ID}-${i}`} className="hover:bg-gray-50">
+                    <tr key={`${usuario.tipo}-${usuario.ID}`} className="hover:bg-gray-50">
                       <td className="px-6 py-4 text-sm text-gray-900">{usuario.Nombre}</td>
                       <td className="px-6 py-4 text-sm text-gray-600">{usuario.Email || 'N/A'}</td>
 
@@ -265,8 +338,12 @@ export default function GestionUsersPage() {
 
                       {/* Botones de acción por fila */}
                       <td className="px-6 py-4 text-sm">
-                        <div className="flex gap-3">
-                          <button className="text-blue-600 hover:text-blue-800" title="Editar">
+                        <div className="flex gap-3 items-center">
+                          <button
+                            className="text-blue-600 hover:text-blue-800"
+                            title="Editar"
+                            onClick={() => abrirEditar(usuario)}
+                          >
                             <i className="bi bi-pencil-fill" />
                           </button>
                           <button
@@ -276,9 +353,40 @@ export default function GestionUsersPage() {
                           >
                             <i className="bi bi-trash3-fill" />
                           </button>
-                          <button className="text-gray-600 hover:text-black" title="Ver detalle">
-                            <i className="bi bi-list" />
-                          </button>
+                          <div className="relative">
+                            <button
+                              className="text-gray-600 hover:text-black"
+                              title="Más opciones"
+                              onClick={() => {
+                                const key = `${usuario.tipo}-${usuario.ID}`
+                                setMenuAbierto(menuAbierto === key ? null : key)
+                              }}
+                            >
+                              <i className="bi bi-list text-lg" />
+                            </button>
+                            {menuAbierto === `${usuario.tipo}-${usuario.ID}` && (
+                              <div className="absolute right-0 z-20 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg w-44">
+                                {usuario.Estado === 'Bloqueado' || usuario.EstadoCuenta === 'Bloqueado' ? (
+                                  <button
+                                    className="w-full text-left px-4 py-2 text-sm text-green-700 hover:bg-green-50 flex items-center gap-2"
+                                    onClick={() => desbloquearUsuario(usuario)}
+                                  >
+                                    <i className="bi bi-unlock" /> Desbloquear usuario
+                                  </button>
+                                ) : (
+                                  <button
+                                    className="w-full text-left px-4 py-2 text-sm text-yellow-700 hover:bg-yellow-50 flex items-center gap-2"
+                                    onClick={() => {
+                                      setMenuAbierto(null)
+                                      setModalBloquear({ id: usuario.ID, tipo: usuario.tipo, nombre: usuario.Nombre })
+                                    }}
+                                  >
+                                    <i className="bi bi-slash-circle" /> Bloquear usuario
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -329,6 +437,119 @@ export default function GestionUsersPage() {
 
       </div>
 
+      {/* ── Modal de edición ── */}
+      {modalEditar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-lg">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">Editar Usuario</h2>
+
+            <div className="space-y-4">
+              <Campo label="Nombre" value={modalEditar.Nombre}
+                onChange={v => setModalEditar({ ...modalEditar, Nombre: v })} />
+              <Campo label="Email" value={modalEditar.Email ?? ''}
+                onChange={v => setModalEditar({ ...modalEditar, Email: v })} />
+
+              {/* Campos específicos por tipo */}
+              {(modalEditar.tipo === 'cliente' || modalEditar.tipo === 'camionero') && (
+                <Campo label="Teléfono" value={(modalEditar as Record<string, unknown>).Telf as string ?? ''}
+                  onChange={v => setModalEditar({ ...modalEditar, Telf: v } as typeof modalEditar)} />
+              )}
+              {modalEditar.tipo === 'cliente' && (
+                <>
+                  <Campo label="Empresa" value={(modalEditar as Record<string, unknown>).NombreEmpresa as string ?? ''}
+                    onChange={v => setModalEditar({ ...modalEditar, NombreEmpresa: v } as typeof modalEditar)} />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Estado Cuenta</label>
+                    <select
+                      value={(modalEditar as Record<string, unknown>).EstadoCuenta as string ?? ''}
+                      onChange={e => setModalEditar({ ...modalEditar, EstadoCuenta: e.target.value } as typeof modalEditar)}
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                    >
+                      {['Disponible','Ocupado','No molestar','Ausente','Día libre'].map(s => (
+                        <option key={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+                </>
+              )}
+              {modalEditar.tipo === 'dispatcher' && (
+                <Campo label="Centro de Operación" value={(modalEditar as Record<string, unknown>).CentroOperacion as string ?? ''}
+                  onChange={v => setModalEditar({ ...modalEditar, CentroOperacion: v } as typeof modalEditar)} />
+              )}
+              {modalEditar.tipo === 'administrador' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                  <select
+                    value={(modalEditar as Record<string, unknown>).Estado as string ?? ''}
+                    onChange={e => setModalEditar({ ...modalEditar, Estado: e.target.value } as typeof modalEditar)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
+                  >
+                    {['Disponible','Ocupado','No molestar','Ausente','Día libre'].map(s => (
+                      <option key={s}>{s}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {modalEditar.tipo === 'camionero' && (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="disponible"
+                    checked={(modalEditar as Record<string, unknown>).Disponible as boolean ?? false}
+                    onChange={e => setModalEditar({ ...modalEditar, Disponible: e.target.checked } as typeof modalEditar)}
+                    className="w-4 h-4"
+                  />
+                  <label htmlFor="disponible" className="text-sm font-medium text-gray-700">Disponible</label>
+                </div>
+              )}
+            </div>
+
+            <div className="flex gap-3 justify-end mt-6">
+              <button
+                onClick={() => setModalEditar(null)}
+                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={guardarEdicion}
+                disabled={guardando}
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50"
+              >
+                {guardando ? 'Guardando...' : 'Guardar cambios'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Modal de bloqueo ── */}
+      {modalBloquear && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md text-center">
+            <div className="text-yellow-500 text-5xl mb-4">🔒</div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Bloquear Usuario</h2>
+            <p className="text-gray-700 mb-6">
+              ¿Estás seguro de que deseas bloquear a <strong>{modalBloquear.nombre}</strong>?
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setModalBloquear(null)}
+                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-medium"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarBloqueo}
+                className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 font-medium"
+              >
+                Bloquear
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Modal de confirmación de borrado ── */}
       {modalBorrar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -357,6 +578,21 @@ export default function GestionUsersPage() {
         </div>
       )}
 
+    </div>
+  )
+}
+
+// ─── Componente reutilizable: Campo de texto ────────────────────────────────
+function Campo({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+      <input
+        type="text"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
     </div>
   )
 }
