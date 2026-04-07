@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { getToken } from 'next-auth/jwt'
+import { ROLE_ROUTES } from '@lib/roles'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -12,7 +13,7 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
   const role = token?.role as string | undefined
 
-  // Rutas protegidas por rol
+  // Rutas protegidas por rol - usando configuración centralizada
   const roleRoutes: Record<string, string> = {
     administrador: '/admin',
     dispatcher: '/dispatcher',
@@ -27,7 +28,8 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/auth/login', request.url))
       }
       if (role !== userRole) {
-        return NextResponse.redirect(new URL(roleRoutes[role] || '/home', request.url))
+        const redirectUrl = role ? ROLE_ROUTES[role] : undefined
+        return NextResponse.redirect(new URL(redirectUrl || '/home', request.url))
       }
     }
   }

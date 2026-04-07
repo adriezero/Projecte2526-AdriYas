@@ -1,6 +1,7 @@
 'use client'
 import '@css/globals.css'
 import { useEffect, useState } from 'react'
+import { ROLES_FILTRO } from '@lib/roles'
 
 // ─── Tipo de dato que representa un usuario del sistema ───────────────────────
 // Cada campo opcional (?) puede o no venir según el tipo de usuario (cliente, camionero, etc.)
@@ -15,7 +16,7 @@ type Usuario = {
 }
 
 // ─── Opciones fijas para los filtros ─────────────────────────────────────────
-const ROLES   = ['Todos', 'administrador', 'cliente', 'camionero', 'dispatcher']
+const ROLES = ROLES_FILTRO;
 const ESTADOS = ['Todos', 'Activo', 'Inactivo', 'suspendido', 'Pendiente']
 
 // ─── Columnas que se pueden ordenar en la tabla ───────────────────────────────

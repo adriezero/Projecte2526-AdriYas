@@ -3,12 +3,21 @@ import { prisma } from "@lib/prisma";
 import { Resend } from "resend";
 import bcrypt from "bcrypt";
 import { templateBienvenida } from "@lib/email-templates";
+import { ROLES_NOMBRES } from "@lib/roles";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
     const { username, email, password, rol } = await req.json();
+
+    // Validar que el rol sea válido
+    if (!ROLES_NOMBRES.includes(rol)) {
+      return NextResponse.json(
+        { error: "Rol no válido" },
+        { status: 400 }
+      );
+    }
 
     // Verificar si el email ya existe en cualquier tabla
     const [existeCliente, existeCamionero, existeDispatcher, existeAdmin] = await Promise.all([

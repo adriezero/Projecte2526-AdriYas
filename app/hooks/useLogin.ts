@@ -1,6 +1,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ROLE_ROUTES } from "@lib/roles";
 
 export function useLoginForm() {
   const [correo, setCorreo] = useState("");
@@ -23,13 +24,7 @@ export function useAuth() {
     } else if (resultado?.ok) {
       const res = await fetch('/api/auth/session');
       const session = await res.json();
-      const rutas: Record<string, string> = {
-        administrador: "/admin/gestionUsers",
-        dispatcher: "/dispatcher/tareas",
-        camionero: "/camionero/horario",
-        cliente: "/home"
-      };
-      router.push(rutas[session?.user?.role] || "/home");
+      router.push(ROLE_ROUTES[session?.user?.role] || "/home");
     }
   };
 

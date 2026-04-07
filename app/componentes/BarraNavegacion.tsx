@@ -5,19 +5,13 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavLink from './NavLink'
 import { useSession, signOut } from 'next-auth/react'
+import { ROLE_ROUTES } from '@lib/roles'
 
 export default function NavBar() {
   const { data: session, status } = useSession()
   const isLoading = status === 'loading'
 
-  const roleRoutes: Record<string, string> = {
-    administrador: '/admin/gestionUsers',
-    dispatcher: '/dispatcher/tareas',
-    camionero: '/camionero/rutas',
-    cliente: '/cliente'
-  }
-
-  const userRoute = session?.user?.role ? roleRoutes[session.user.role as string] : '/auth/login'
+  const userRoute = session?.user?.role ? ROLE_ROUTES[session.user.role as string] : '/auth/login'
 
   return (
     <nav className="w-full bg-white shadow-sm fixed z-50">
