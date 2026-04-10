@@ -25,13 +25,13 @@ model camionero {
   ID                Int                 @id @default(autoincrement())
   Nombre            String              @db.VarChar(50)
   Email             String?             @db.VarChar(50)
-  Contrase_a        String              @default("temp_password") @map("Contraseña") @db.VarChar(60)
   Licencia          camionero_Licencia
   Telf              String              @db.VarChar(10)
   Disponible        Boolean             @default(true)
   idTurno           Int
   FechaInicio       DateTime            @db.Date
   FechaFinal        DateTime            @db.Date
+  Contrase_a        String              @default("temp_password") @map("Contraseña") @db.VarChar(60)
   resetToken        String?             @unique
   resetTokenExpiry  DateTime?
   turnos            turnos              @relation(fields: [idTurno], references: [ID], onDelete: Cascade)
@@ -133,8 +133,8 @@ model rol {
 model rutas {
   ID           Int           @id @default(autoincrement())
   Estado       rutas_Estado?
-  Reservas     String        @db.Text
-  Cargas       String        @db.Text
+  Reservas     String
+  Cargas       String
   EnTiempoReal Boolean       @default(false)
   Camionero    Int
   Origen       String        @db.VarChar(255)
@@ -175,6 +175,24 @@ model Tarea {
   createdAt  DateTime @default(now())
 }
 
+model reportes {
+  ID            Int             @id @default(autoincrement())
+  Tipo          reportes_Tipo
+  FechaHora     DateTime        @default(now())
+  Estado        reportes_Estado @default(Pendiente)
+  idReportante  Int
+  rolReportante reportes_Rol
+}
+
+model Solicitud {
+  id        Int                @id @default(autoincrement())
+  cliente   String             @db.VarChar(100)
+  servicio  String             @db.VarChar(255)
+  fecha     DateTime           @default(now())
+  estado    Solicitud_Estado   @default(Pendiente)
+  createdAt DateTime           @default(now())
+}
+
 enum rutas_Estado {
   Programado
   Cargando
@@ -213,4 +231,31 @@ enum cliente_EstadoCuenta {
   No_molestar @map("No molestar")
   Ausente
   D_a_libre   @map("Día libre")
+}
+
+enum reportes_Estado {
+  Pendiente
+  En_revisi_n @map("En revisión")
+  Resuelto
+  Cerrado
+}
+
+enum reportes_Rol {
+  Administrador
+  Camionero
+  Cliente
+  Dispatcher
+}
+
+enum reportes_Tipo {
+  Problema_T_cnico @map("Problema Técnico")
+  Incidencia
+  Sugerencia
+}
+
+enum Solicitud_Estado {
+  Pendiente
+  En_Proceso  @map("En Proceso")
+  Aceptada
+  Rechazada
 }

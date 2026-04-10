@@ -31,3 +31,14 @@ export type Tarea = {
 };
 
 export type FiltroTarea = 'todas' | 'pendientes' | 'completadas';
+
+export type EstadoSolicitud = 'Pendiente' | 'En Proceso' | 'Aceptada' | 'Rechazada';
+export type FiltroSolicitud = 'todas' | 'pendientes' | 'en-proceso' | 'aceptadas' | 'rechazadas';
+
+export interface Solicitud {
+  id: number;
+  cliente: string;
+  servicio: string;
+  fecha: Date | string;
+  estado: EstadoSolicitud;
+}
