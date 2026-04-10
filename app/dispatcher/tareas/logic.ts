@@ -14,13 +14,13 @@ export function contarCompletadas(tareas: Tarea[]): number {
   return tareas.filter(t => t.completada).length;
 }
 
-export function crearTarea(nombre: string, prioridad: 'Alta' | 'Baja'): Tarea {
+export function crearTarea(nombre: string, prioridad: 'Alta' | 'Baja', usuario: string): Tarea {
   return {
     id: Date.now(),
     nombre,
     prioridad,
     fecha: 'Por definir',
-    usuario: 'JD',
+    usuario,
     completada: false,
   };
 }
