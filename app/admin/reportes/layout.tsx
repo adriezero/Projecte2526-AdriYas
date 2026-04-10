@@ -1,14 +1,9 @@
-import '@css/globals.css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Admin_reportes- TruckWave'
+  title: 'Reportes - TruckWave'
 }
 
-export default function ReportesPage() {
-  return (
-    <>
-      
-    </>
-  )
+export default function ReportesLayout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>
 }

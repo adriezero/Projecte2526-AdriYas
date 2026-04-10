@@ -165,6 +165,35 @@ model turnos {
   camionero   camionero[]
 }
 
+model reportes {
+  ID             Int             @id @default(autoincrement())
+  Tipo           reportes_Tipo
+  FechaHora      DateTime        @default(now())
+  Estado         reportes_Estado @default(Pendiente)
+  idReportante   Int
+  rolReportante  reportes_Rol
+}
+
+enum reportes_Rol {
+  Administrador
+  Camionero
+  Cliente
+  Dispatcher
+}
+
+enum reportes_Tipo {
+  Problema_Tecnico @map("Problema Técnico")
+  Incidencia
+  Sugerencia
+}
+
+enum reportes_Estado {
+  Pendiente
+  En_revision  @map("En revisión")
+  Resuelto
+  Cerrado
+}
+
 enum rutas_Estado {
   Programado
   Cargando
