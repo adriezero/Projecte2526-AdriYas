@@ -1,6 +1,6 @@
-import { Solicitud, EstadoSolicitud, FiltroSolicitud } from '@interfaces/interfaces';
+import { Solicitud, EstadoSolicitud, FiltroSolicitud, Cliente } from '@interfaces/interfaces';
 
-export { Solicitud, EstadoSolicitud, FiltroSolicitud };
+export type { Solicitud, EstadoSolicitud, FiltroSolicitud, Cliente };
 
 export function filtrarSolicitudes(solicitudes: Solicitud[], filtro: FiltroSolicitud): Solicitud[] {
   if (filtro === 'todas') return solicitudes;
@@ -41,13 +41,17 @@ export async function obtenerSolicitudes(): Promise<Solicitud[]> {
   return res.json();
 }
 
-export async function crearSolicitud(cliente: string, servicio: string, estado: EstadoSolicitud): Promise<Solicitud> {
+export async function crearSolicitud(cliente: string, tipo: string, asunto: string, descripcion: string, estado: EstadoSolicitud): Promise<Solicitud> {
   const res = await fetch('/api/solicitudes', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cliente, servicio, estado })
+    body: JSON.stringify({ cliente, tipo, asunto, descripcion, estado })
   });
-  if (!res.ok) throw new Error('Error al crear solicitud');
+  if (!res.ok) {
+    const errorData = await res.json();
+    console.error('Error de API:', errorData);
+    throw new Error(errorData.details || 'Error al crear solicitud');
+  }
   return res.json();
 }
 

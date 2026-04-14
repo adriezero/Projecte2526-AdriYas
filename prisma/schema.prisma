@@ -115,8 +115,13 @@ model informes {
 model reservas {
   ID                Int                 @id @default(autoincrement())
   Fecha             DateTime            @db.Date
+  Hora              String              @default("00:00") @db.VarChar(10)
+  Representante     String              @default("") @db.VarChar(100)
+  Origen            String              @default("") @db.VarChar(255)
+  Destino           String              @default("") @db.VarChar(255)
   Motivo            String              @db.VarChar(150)
   Descripci_n       String?             @map("Descripción") @db.VarChar(255)
+  createdAt         DateTime            @default(now())
   solicitud_reserva solicitud_reserva[]
 }
 
@@ -185,12 +190,14 @@ model reportes {
 }
 
 model Solicitud {
-  id        Int                @id @default(autoincrement())
-  cliente   String             @db.VarChar(100)
-  servicio  String             @db.VarChar(255)
-  fecha     DateTime           @default(now())
-  estado    Solicitud_Estado   @default(Pendiente)
-  createdAt DateTime           @default(now())
+  id          Int                @id @default(autoincrement())
+  cliente     String             @db.VarChar(100)
+  tipo        String             @db.VarChar(100)
+  asunto      String             @db.VarChar(255)
+  descripcion String?            @db.Text
+  fecha       DateTime           @default(now())
+  estado      Solicitud_Estado   @default(Pendiente)
+  createdAt   DateTime           @default(now())
 }
 
 enum rutas_Estado {

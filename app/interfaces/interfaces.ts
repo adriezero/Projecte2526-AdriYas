@@ -38,7 +38,26 @@ export type FiltroSolicitud = 'todas' | 'pendientes' | 'en-proceso' | 'aceptadas
 export interface Solicitud {
   id: number;
   cliente: string;
-  servicio: string;
+  tipo: string;
+  asunto: string;
+  descripcion?: string | null;
   fecha: Date | string;
   estado: EstadoSolicitud;
+}
+
+export interface Cliente {
+  ID: number;
+  Nombre: string;
+  NombreEmpresa: string;
+}
+
+export interface Reserva {
+  ID: number;
+  Fecha: Date | string;
+  Hora: string;
+  Representante: string;
+  Origen: string;
+  Destino: string;
+  Motivo: string;
+  Descripci_n?: string | null;
 }
