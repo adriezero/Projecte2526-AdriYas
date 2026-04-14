@@ -168,6 +168,7 @@ model turnos {
 model reportes {
   ID             Int             @id @default(autoincrement())
   Tipo           reportes_Tipo
+  Descripcion    String?
   FechaHora      DateTime        @default(now())
   Estado         reportes_Estado @default(Pendiente)
   idReportante   Int

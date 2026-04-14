@@ -5,10 +5,12 @@ import { useEffect, useRef, useState } from 'react'
 type Reporte = {
   ID: number
   Tipo: string
+  Descripcion: string | null
   FechaHora: string
   Estado: string
   idReportante: number
   rolReportante: string
+  nombreReportante: string | null
 }
 
 const TIPOS = ['Problema Técnico', 'Incidencia', 'Sugerencia']
@@ -42,6 +44,8 @@ export default function ReportesPage() {
   const [orden, setOrden] = useState<'asc' | 'desc'>('desc')
   const [pagina, setPagina] = useState(1)
   const [seleccionados, setSeleccionados] = useState<number[]>([])
+  const [reporteVer, setReporteVer] = useState<Reporte | null>(null)
+  const [filtroEstado, setFiltroEstado] = useState('')
   const [tipoOpen, setTipoOpen] = useState(false)
   const [calOpen, setCalOpen] = useState(false)
   const [calMes, setCalMes] = useState(() => new Date())
@@ -70,12 +74,13 @@ export default function ReportesPage() {
       pagina: String(pagina),
       limite: String(PAGE_SIZE),
       ...(fechaFiltro ? { fecha: fechaFiltro } : {}),
+      ...(filtroEstado ? { estado: filtroEstado } : {}),
     })
     fetch(`/api/reportes?${params}`)
       .then(r => r.json())
       .then(data => { setReportes(data.reportes ?? []); setTotal(data.total ?? 0) })
       .finally(() => setLoading(false))
-  }, [busqueda, filtroTipo, orden, pagina, fechaFiltro])
+  }, [busqueda, filtroTipo, orden, pagina, fechaFiltro, filtroEstado])
 
   async function cambiarEstado(id: number, estado: string) {
     await fetch(`/api/reportes/${id}`, {
@@ -159,18 +164,21 @@ export default function ReportesPage() {
       {/* Tarjetas de estadísticas */}
       <div className="grid grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Total', value: total, color: 'bg-blue-600', icon: '📋', light: 'bg-blue-50 text-blue-700' },
-          { label: 'Pendientes', value: pendientes, color: 'bg-orange-500', icon: '⏳', light: 'bg-orange-50 text-orange-700' },
-          { label: 'En revisión', value: enRevision, color: 'bg-blue-500', icon: '🔍', light: 'bg-blue-50 text-blue-700' },
-          { label: 'Resueltos', value: resueltos, color: 'bg-emerald-500', icon: '✅', light: 'bg-emerald-50 text-emerald-700' },
-        ].map(({ label, value, icon, light }) => (
-          <div key={label} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex items-center gap-4">
+          { label: 'Total', value: total, icon: '📋', light: 'bg-blue-50 text-blue-700', filtro: '', ring: 'ring-blue-400' },
+          { label: 'Pendientes', value: pendientes, icon: '⏳', light: 'bg-orange-50 text-orange-700', filtro: 'Pendiente', ring: 'ring-orange-400' },
+          { label: 'En revisión', value: enRevision, icon: '🔍', light: 'bg-blue-50 text-blue-700', filtro: 'En revisión', ring: 'ring-blue-400' },
+          { label: 'Resueltos', value: resueltos, icon: '✅', light: 'bg-emerald-50 text-emerald-700', filtro: 'Resuelto', ring: 'ring-emerald-400' },
+        ].map(({ label, value, icon, light, filtro, ring }) => (
+          <button key={label} onClick={() => { setFiltroEstado(prev => prev === filtro ? '' : filtro); setPagina(1) }}
+            className={`bg-white rounded-2xl shadow-sm border p-5 flex items-center gap-4 w-full text-left transition-all hover:shadow-md ${
+              filtroEstado === filtro && filtro !== '' ? `border-transparent ring-2 ${ring}` : 'border-gray-100 hover:border-gray-200'
+            }`}>
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl ${light}`}>{icon}</div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{value}</p>
               <p className="text-sm text-gray-500">{label}</p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -337,17 +345,21 @@ export default function ReportesPage() {
                   </td>
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-1">
-                      <button className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                      <button onClick={() => setReporteVer(r)} className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
                         Ver
                       </button>
-                      <button onClick={() => cambiarEstado(r.ID, 'Resuelto')}
-                        className="px-3 py-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors">
-                        ✓ Resolver
-                      </button>
-                      <button onClick={() => cambiarEstado(r.ID, 'Cerrado')}
-                        className="px-3 py-1.5 text-xs font-medium text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        ✕ Cerrar
-                      </button>
+                      {r.Estado !== 'Cerrado' && (
+                        <button onClick={() => cambiarEstado(r.ID, 'Resuelto')}
+                          className="px-3 py-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors">
+                          ✓ Resolver
+                        </button>
+                      )}
+                      {r.Estado !== 'Cerrado' && (
+                        <button onClick={() => cambiarEstado(r.ID, 'Cerrado')}
+                          className="px-3 py-1.5 text-xs font-medium text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                          ✕ Cerrar
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -394,6 +406,54 @@ export default function ReportesPage() {
           </div>
         )}
       </div>
+      {/* Modal Ver reporte */}
+      {reporteVer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setReporteVer(null)}>
+          <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl mx-4" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-xl">
+                  {iconoTipo[reporteVer.Tipo] ?? '📄'}
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Detalle del reporte</h2>
+                  <p className="text-sm text-gray-400 font-mono">{formatId(reporteVer.ID)}</p>
+                </div>
+              </div>
+              <button onClick={() => setReporteVer(null)} className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors text-xl">×</button>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mb-5">
+              <div className="bg-gray-50 rounded-xl p-4">
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Tipo</p>
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-medium ${badgeTipo[reporteVer.Tipo] ?? 'bg-gray-100 text-gray-600'}`}>
+                  {iconoTipo[reporteVer.Tipo] ?? '📄'} {reporteVer.Tipo}
+                </span>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Estado</p>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-semibold ${badgeEstado[reporteVer.Estado] ?? 'bg-gray-100 text-gray-500'}`}>
+                  {reporteVer.Estado}
+                </span>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Usuario</p>
+                <p className="text-sm font-medium text-gray-700">{reporteVer.nombreReportante ?? '—'}</p>
+                <p className="text-xs text-gray-400">{reporteVer.rolReportante}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4">
+                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Fecha y hora</p>
+                <p className="text-sm font-medium text-gray-700">{new Date(reporteVer.FechaHora).toLocaleString('es-ES', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Descripción</p>
+              <p className="bg-gray-50 rounded-xl p-4 text-gray-700 leading-relaxed min-h-[120px] text-sm">
+                {reporteVer.Descripcion ?? <span className="text-gray-400 italic">Sin descripción</span>}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
