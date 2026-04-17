@@ -25,13 +25,13 @@ model camionero {
   ID                Int                 @id @default(autoincrement())
   Nombre            String              @db.VarChar(50)
   Email             String?             @db.VarChar(50)
-  Contrase_a        String              @default("temp_password") @map("Contraseña") @db.VarChar(60)
   Licencia          camionero_Licencia
   Telf              String              @db.VarChar(10)
   Disponible        Boolean             @default(true)
   idTurno           Int
   FechaInicio       DateTime            @db.Date
   FechaFinal        DateTime            @db.Date
+  Contrase_a        String              @default("temp_password") @map("Contraseña") @db.VarChar(60)
   resetToken        String?             @unique
   resetTokenExpiry  DateTime?
   turnos            turnos              @relation(fields: [idTurno], references: [ID], onDelete: Cascade)
@@ -88,14 +88,24 @@ model dispatcher {
 }
 
 model documentos {
-  ID          Int        @id @default(autoincrement())
-  Nombre      String     @db.VarChar(50)
-  Descripci_n String     @map("Descripción") @db.VarChar(150)
-  FechaSubida DateTime   @db.Date
-  Dispatcher  Int
-  dispatcher  dispatcher @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
+  ID           Int                   @id @default(autoincrement())
+  Nombre       String                @db.VarChar(255)
+  Tipo         documentos_Tipo
+  FechaSubida  DateTime              @default(now())
+  AsociadoA    String?               @db.VarChar(255)
+  Tamano       String?               @db.VarChar(20)
+  RutaArchivo  String                @db.VarChar(500)
+  Descripcion  String?               @db.VarChar(500)
+  SubidoPor    Int?
+  RolSubidor   documentos_RolSubidor?
+  Dispatcher   Int?
+  dispatcher   dispatcher?           @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
 
   @@index([Dispatcher])
+  @@index([Tipo])
+  @@index([FechaSubida])
 }
 
 model informes {
@@ -115,8 +125,13 @@ model informes {
 model reservas {
   ID                Int                 @id @default(autoincrement())
   Fecha             DateTime            @db.Date
+  Hora              String              @default("00:00") @db.VarChar(10)
+  Representante     String              @default("") @db.VarChar(100)
+  Origen            String              @default("") @db.VarChar(255)
+  Destino           String              @default("") @db.VarChar(255)
   Motivo            String              @db.VarChar(150)
   Descripci_n       String?             @map("Descripción") @db.VarChar(255)
+  createdAt         DateTime            @default(now())
   solicitud_reserva solicitud_reserva[]
 }
 
@@ -133,8 +148,8 @@ model rol {
 model rutas {
   ID           Int           @id @default(autoincrement())
   Estado       rutas_Estado?
-  Reservas     String        @db.Text
-  Cargas       String        @db.Text
+  Reservas     String
+  Cargas       String
   EnTiempoReal Boolean       @default(false)
   Camionero    Int
   Origen       String        @db.VarChar(255)
@@ -165,34 +180,34 @@ model turnos {
   camionero   camionero[]
 }
 
+model Tarea {
+  id         Int      @id @default(autoincrement())
+  nombre     String   @db.VarChar(255)
+  prioridad  String   @db.VarChar(10)
+  fecha      String   @db.VarChar(100)
+  usuario    String   @db.VarChar(50)
+  completada Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
 model reportes {
-  ID             Int             @id @default(autoincrement())
-  Tipo           reportes_Tipo
-  Descripcion    String?
-  FechaHora      DateTime        @default(now())
-  Estado         reportes_Estado @default(Pendiente)
-  idReportante   Int
-  rolReportante  reportes_Rol
+  ID            Int             @id @default(autoincrement())
+  Tipo          reportes_Tipo
+  FechaHora     DateTime        @default(now())
+  Estado        reportes_Estado @default(Pendiente)
+  idReportante  Int
+  rolReportante reportes_Rol
 }
 
-enum reportes_Rol {
-  Administrador
-  Camionero
-  Cliente
-  Dispatcher
-}
-
-enum reportes_Tipo {
-  Problema_Tecnico @map("Problema Técnico")
-  Incidencia
-  Sugerencia
-}
-
-enum reportes_Estado {
-  Pendiente
-  En_revision  @map("En revisión")
-  Resuelto
-  Cerrado
+model Solicitud {
+  id          Int                @id @default(autoincrement())
+  cliente     String             @db.VarChar(100)
+  tipo        String             @db.VarChar(100)
+  asunto      String             @db.VarChar(255)
+  descripcion String?            @db.Text
+  fecha       DateTime           @default(now())
+  estado      Solicitud_Estado   @default(Pendiente)
+  createdAt   DateTime           @default(now())
 }
 
 enum rutas_Estado {
@@ -233,4 +248,48 @@ enum cliente_EstadoCuenta {
   No_molestar @map("No molestar")
   Ausente
   D_a_libre   @map("Día libre")
+}
+
+enum reportes_Estado {
+  Pendiente
+  En_revisi_n @map("En revisión")
+  Resuelto
+  Cerrado
+}
+
+enum reportes_Rol {
+  Administrador
+  Camionero
+  Cliente
+  Dispatcher
+}
+
+enum reportes_Tipo {
+  Problema_T_cnico @map("Problema Técnico")
+  Incidencia
+  Sugerencia
+}
+
+enum Solicitud_Estado {
+  Pendiente
+  En_Proceso  @map("En Proceso")
+  Aceptada
+  Rechazada
+}
+
+enum documentos_Tipo {
+  Factura
+  Contrato
+  Permiso
+  Seguro
+  Licencia
+  Certificado
+  Otro
+}
+
+enum documentos_RolSubidor {
+  Administrador
+  Dispatcher
+  Camionero
+  Cliente
 }
