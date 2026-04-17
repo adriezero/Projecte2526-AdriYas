@@ -2,8 +2,8 @@ import { Reserva } from '@interfaces/interfaces';
 
 export type { Reserva };
 
-export async function obtenerReservas(mes?: number, anio?: number): Promise<Reserva[]> {
-  const params = mes && anio ? `?mes=${mes}&anio=${anio}` : '';
+export async function obtenerReservas(mes?: number, year?: number): Promise<Reserva[]> {
+  const params = mes && year ? `?mes=${mes}&year=${year}` : '';
   const res = await fetch(`/api/reservas${params}`);
   if (!res.ok) throw new Error('Error al obtener reservas');
   return res.json();
@@ -39,12 +39,12 @@ export function formatearFecha(fecha: Date | string): string {
   });
 }
 
-export function obtenerDiasDelMes(mes: number, anio: number): Date[] {
+export function obtenerDiasDelMes(mes: number, year: number): Date[] {
   const dias: Date[] = [];
-  const ultimoDia = new Date(anio, mes + 1, 0);
+  const ultimoDia = new Date(year, mes + 1, 0);
   
   for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
-    dias.push(new Date(anio, mes, dia));
+    dias.push(new Date(year, mes, dia));
   }
   
   return dias;

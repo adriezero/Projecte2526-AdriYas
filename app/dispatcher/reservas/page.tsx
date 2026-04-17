@@ -23,7 +23,7 @@ export default function Reservas() {
   const [modalAbierto, setModalAbierto] = useState(false);
   
   const [mesActual, setMesActual] = useState(new Date().getMonth());
-  const [anioActual, setAnioActual] = useState(new Date().getFullYear());
+  const [yearActual, setYearActual] = useState(new Date().getFullYear());
   
   const [nuevaFecha, setNuevaFecha] = useState('');
   const [nuevaHora, setNuevaHora] = useState('');
@@ -36,7 +36,7 @@ export default function Reservas() {
   useEffect(() => {
     cargarReservas();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mesActual, anioActual]);
+  }, [mesActual, yearActual]);
 
   useEffect(() => {
     filtrarReservas();
@@ -46,7 +46,7 @@ export default function Reservas() {
   async function cargarReservas() {
     setCargando(true);
     try {
-      const data = await obtenerReservas(mesActual + 1, anioActual);
+      const data = await obtenerReservas(mesActual + 1, yearActual);
       setReservas(data);
     } catch (error) {
       console.error('Error al cargar reservas:', error);
@@ -104,18 +104,18 @@ export default function Reservas() {
 
   function cambiarMes(direccion: number) {
     let nuevoMes = mesActual + direccion;
-    let nuevoAnio = anioActual;
+    let nuevoYear = yearActual;
     
     if (nuevoMes > 11) {
       nuevoMes = 0;
-      nuevoAnio++;
+      nuevoYear++;
     } else if (nuevoMes < 0) {
       nuevoMes = 11;
-      nuevoAnio--;
+      nuevoYear--;
     }
     
     setMesActual(nuevoMes);
-    setAnioActual(nuevoAnio);
+    setYearActual(nuevoYear);
   }
 
   function obtenerReservasDelDia(dia: Date): Reserva[] {
@@ -128,8 +128,8 @@ export default function Reservas() {
   }
 
   const diasSemana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-  const diasDelMes = obtenerDiasDelMes(mesActual, anioActual);
-  const primerDiaSemana = (new Date(anioActual, mesActual, 1).getDay() + 6) % 7;
+  const diasDelMes = obtenerDiasDelMes(mesActual, yearActual);
+  const primerDiaSemana = (new Date(yearActual, mesActual, 1).getDay() + 6) % 7;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -256,7 +256,7 @@ export default function Reservas() {
                 {/* Header del Calendario */}
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-slate-800">
-                    {obtenerNombreMes(mesActual)} {anioActual}
+                    {obtenerNombreMes(mesActual)} {yearActual}
                   </h2>
                   <div className="flex gap-2">
                     <button
@@ -268,7 +268,7 @@ export default function Reservas() {
                     <button
                       onClick={() => {
                         setMesActual(new Date().getMonth());
-                        setAnioActual(new Date().getFullYear());
+                        setYearActual(new Date().getFullYear());
                       }}
                       className="px-3 py-2 hover:bg-slate-100 rounded-lg text-sm font-semibold text-slate-600"
                     >
