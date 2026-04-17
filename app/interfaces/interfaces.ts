@@ -61,3 +61,12 @@ export interface Reserva {
   Motivo: string;
   Descripci_n?: string | null;
 }
+
+export interface Documento {
+  id: number;
+  nombre: string;
+  tipo: string;
+  fechaSubida: Date | string;
+  asociadoA: string;
+  tamano: string;
+}

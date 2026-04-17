@@ -7,13 +7,13 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const mes = searchParams.get('mes');
-    const anio = searchParams.get('anio');
+    const year = searchParams.get('year');
 
     let whereClause = {};
     
-    if (mes && anio) {
-      const startDate = new Date(parseInt(anio), parseInt(mes) - 1, 1);
-      const endDate = new Date(parseInt(anio), parseInt(mes), 0);
+    if (mes && year) {
+      const startDate = new Date(parseInt(year), parseInt(mes) - 1, 1);
+      const endDate = new Date(parseInt(year), parseInt(mes), 0);
       whereClause = {
         Fecha: {
           gte: startDate,

@@ -88,14 +88,24 @@ model dispatcher {
 }
 
 model documentos {
-  ID          Int        @id @default(autoincrement())
-  Nombre      String     @db.VarChar(50)
-  Descripci_n String     @map("Descripción") @db.VarChar(150)
-  FechaSubida DateTime   @db.Date
-  Dispatcher  Int
-  dispatcher  dispatcher @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
+  ID           Int                   @id @default(autoincrement())
+  Nombre       String                @db.VarChar(255)
+  Tipo         documentos_Tipo
+  FechaSubida  DateTime              @default(now())
+  AsociadoA    String?               @db.VarChar(255)
+  Tamano       String?               @db.VarChar(20)
+  RutaArchivo  String                @db.VarChar(500)
+  Descripcion  String?               @db.VarChar(500)
+  SubidoPor    Int?
+  RolSubidor   documentos_RolSubidor?
+  Dispatcher   Int?
+  dispatcher   dispatcher?           @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
 
   @@index([Dispatcher])
+  @@index([Tipo])
+  @@index([FechaSubida])
 }
 
 model informes {
@@ -265,4 +275,21 @@ enum Solicitud_Estado {
   En_Proceso  @map("En Proceso")
   Aceptada
   Rechazada
+}
+
+enum documentos_Tipo {
+  Factura
+  Contrato
+  Permiso
+  Seguro
+  Licencia
+  Certificado
+  Otro
+}
+
+enum documentos_RolSubidor {
+  Administrador
+  Dispatcher
+  Camionero
+  Cliente
 }
