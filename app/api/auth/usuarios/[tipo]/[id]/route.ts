@@ -14,7 +14,7 @@ export async function GET(_request: Request, { params }: Params) {
         usuario = await prisma.administrador.findUnique({ where: { ID: userId } });
         break;
       case 'camionero':
-        usuario = await prisma.camionero.findUnique({ where: { ID: userId }, include: { turnos: true } });
+        usuario = await prisma.camionero.findUnique({ where: { ID: userId } });
         break;
       case 'cliente':
         usuario = await prisma.cliente.findUnique({ where: { ID: userId } });

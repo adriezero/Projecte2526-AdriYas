@@ -6,11 +6,5 @@ export const metadata: Metadata = {
 }
 
 export default function rutasLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <div className="ml-64">
-        {children}
-      </div>
-    </>
-  )
+  return <>{children}</>
 }
