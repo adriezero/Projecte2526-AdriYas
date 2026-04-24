@@ -24,38 +24,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Crear directorio de uploads si no existe
+    const tiposValidos = ['Factura', 'Contrato', 'Permiso', 'Seguro', 'Licencia', 'Certificado', 'Otro'];
+    const tipoFinal = tiposValidos.includes(tipo) ? tipo : 'Otro';
+
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'documentos');
+    
     if (!existsSync(uploadsDir)) {
       await mkdir(uploadsDir, { recursive: true });
     }
 
-    // Generar nombre único para el archivo
     const timestamp = Date.now();
     const fileName = `${timestamp}_${file.name}`;
     const filePath = path.join(uploadsDir, fileName);
 
-    // Guardar archivo
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     await writeFile(filePath, buffer);
 
-    // Calcular tamaño del archivo
     const tamanoMB = (buffer.length / (1024 * 1024)).toFixed(2);
     const tamano = `${tamanoMB} MB`;
 
-    // Guardar en base de datos
     const rutaArchivo = `/uploads/documentos/${fileName}`;
+    
     const nuevoDocumento = await prisma.documentos.create({
       data: {
         Nombre: file.name,
-        Tipo: tipo || 'Otro',
+        Tipo: tipoFinal as any,
         AsociadoA: asociadoA || 'General',
         Tamano: tamano,
         RutaArchivo: rutaArchivo,
         Descripcion: descripcion,
         SubidoPor: subidoPor ? parseInt(subidoPor) : null,
-        RolSubidor: rolSubidor || null,
+        RolSubidor: rolSubidor as any || null,
         Dispatcher: dispatcher ? parseInt(dispatcher) : null,
       },
     });
@@ -72,9 +72,11 @@ export async function POST(request: NextRequest) {
       message: 'Archivo subido correctamente',
     }, { status: 201 });
   } catch (error) {
-    console.error('Error al subir archivo:', error);
     return NextResponse.json(
-      { error: 'Error al subir archivo', details: error },
+      { 
+        error: 'Error al subir archivo', 
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }
