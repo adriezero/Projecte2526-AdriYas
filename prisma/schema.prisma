@@ -88,14 +88,27 @@ model dispatcher {
 }
 
 model documentos {
-  ID          Int        @id @default(autoincrement())
-  Nombre      String     @db.VarChar(50)
-  Descripci_n String     @map("Descripción") @db.VarChar(150)
-  FechaSubida DateTime   @db.Date
-  Dispatcher  Int
-  dispatcher  dispatcher @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
+  ID          Int                    @id @default(autoincrement())
+  Nombre      String                 @db.VarChar(255)
+  FechaSubida DateTime               @default(now())
+  Dispatcher  Int?
+  Tipo        documentos_Tipo
+  AsociadoA   String?                @db.VarChar(255)
+  Tamano      String?                @db.VarChar(20)
+  RutaArchivo String                 @db.VarChar(500)
+  Descripcion String?                @db.VarChar(500)
+  SubidoPor   Int?
+  RolSubidor  documentos_RolSubidor?
+  createdAt   DateTime?              @default(now())
+  updatedAt   DateTime               @default(now()) @updatedAt
+  idRuta      Int?
+  dispatcher  dispatcher?            @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
+  rutas       rutas?                 @relation(fields: [idRuta], references: [ID], onDelete: Cascade)
 
   @@index([Dispatcher])
+  @@index([FechaSubida])
+  @@index([Tipo])
+  @@index([idRuta])
 }
 
 model informes {
@@ -139,7 +152,9 @@ model rutas {
   Camionero    Int
   Origen       String        @db.VarChar(255)
   Destino      String        @db.VarChar(255)
+  FechaInicio  DateTime      @default(now()) @db.Date
   comentarios  comentarios[]
+  documentos   documentos[]
   camionero    camionero     @relation(fields: [Camionero], references: [ID], onDelete: Cascade)
 
   @@index([Camionero])
@@ -233,4 +248,21 @@ enum reportes_Tipo {
   Problema_T_cnico @map("Problema Técnico")
   Incidencia
   Sugerencia
+}
+
+enum documentos_RolSubidor {
+  Administrador
+  Dispatcher
+  Camionero
+  Cliente
+}
+
+enum documentos_Tipo {
+  Factura
+  Contrato
+  Permiso
+  Seguro
+  Licencia
+  Certificado
+  Otro
 }

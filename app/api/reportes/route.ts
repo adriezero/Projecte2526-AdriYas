@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@lib/auth'
 import { prisma } from '@lib/prisma'
 
 export async function GET(req: NextRequest) {
@@ -71,4 +73,45 @@ export async function GET(req: NextRequest) {
   }))
 
   return NextResponse.json({ reportes, total })
+}
+
+export async function POST(req: NextRequest) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user?.id) return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+
+  const { Tipo, Descripcion } = await req.json()
+  if (!Tipo) return NextResponse.json({ error: 'Tipo requerido' }, { status: 400 })
+
+  const tiposValidos: Record<string, string> = {
+    'Problema T\u00e9cnico': 'Problema_T_cnico',
+    'Incidencia': 'Incidencia',
+    'Sugerencia': 'Sugerencia',
+  }
+  const rolesValidos: Record<string, string> = {
+    camionero: 'Camionero',
+    dispatcher: 'Dispatcher',
+    administrador: 'Administrador',
+    cliente: 'Cliente',
+  }
+
+  const tipoEnum = tiposValidos[Tipo]
+  if (!tipoEnum) return NextResponse.json({ error: `Tipo inválido: ${Tipo}` }, { status: 400 })
+
+  const rol = rolesValidos[session.user.role]
+  if (!rol) return NextResponse.json({ error: `Rol inválido: ${session.user.role}` }, { status: 400 })
+
+  try {
+    const reporte = await prisma.reportes.create({
+      data: {
+        Tipo: tipoEnum as any,
+        Descripcion: Descripcion ?? null,
+        idReportante: parseInt(session.user.id),
+        rolReportante: rol as any,
+      },
+    })
+    return NextResponse.json(reporte, { status: 201 })
+  } catch (e: any) {
+    console.error('Error creando reporte:', e)
+    return NextResponse.json({ error: e.message }, { status: 500 })
+  }
 }
