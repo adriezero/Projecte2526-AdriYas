@@ -51,9 +51,6 @@ export default function NavBar() {
               <li>
                 <NavLink href="/home/cliente/solicitar" className="hover:text-blue-600">Solicitar</NavLink>
               </li>
-              <li>
-                <NavLink href="/home/cliente/valoraciones" className="hover:text-blue-600">Valoraciones</NavLink>
-              </li>
             </>
           ) : (
             // Navbar para usuarios no clientes
