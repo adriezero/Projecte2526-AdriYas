@@ -10,6 +10,7 @@ import { ROLE_ROUTES } from '@lib/roles'
 export default function NavBar() {
   const { data: session, status } = useSession()
   const isLoading = status === 'loading'
+  const isCliente = session?.user?.role === 'cliente'
 
   const userRoute = session?.user?.role ? ROLE_ROUTES[session.user.role as string] : '/auth/login'
 
@@ -28,32 +29,69 @@ export default function NavBar() {
         </div>
 
         {/* CENTRO */}
-        <ul className="flex gap-6 text-black">
-          <li>
-            <NavLink href="/home" className="hover:text-blue-600">Home</NavLink>
-          </li>
-          <li>
-            <NavLink href="/contacto" className="hover:text-blue-600">Contacto</NavLink>
-          </li>
-          <li>
-            <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
-          </li>
-          {!isLoading && !session && (
-            <li>
-              <NavLink href="/auth/login" className="hover:text-blue-600">Iniciar sesión</NavLink>
-            </li>
+        <ul className="flex gap-6 text-black items-center">
+          {isCliente ? (
+            // Navbar para clientes
+            <>
+              <li>
+                <NavLink href="/home" className="hover:text-blue-600">Home</NavLink>
+              </li>
+              <li>
+                <NavLink href="/contacto" className="hover:text-blue-600">Contacto</NavLink>
+              </li>
+              <li>
+                <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
+              </li>
+              <li className="text-gray-300">|</li>
+              <li>
+                <NavLink href="/home/cliente/ruta" className="hover:text-blue-600">Ruta</NavLink>
+              </li>
+              <li>
+                <NavLink href="/home/cliente/solicitar" className="hover:text-blue-600">Solicitar</NavLink>
+              </li>
+              <li>
+                <NavLink href="/home/cliente/valoraciones" className="hover:text-blue-600">Valoraciones</NavLink>
+              </li>
+            </>
+          ) : (
+            // Navbar para usuarios no clientes
+            <>
+              <li>
+                <NavLink href="/home" className="hover:text-blue-600">Home</NavLink>
+              </li>
+              <li>
+                <NavLink href="/contacto" className="hover:text-blue-600">Contacto</NavLink>
+              </li>
+              <li>
+                <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
+              </li>
+              {!isLoading && !session && (
+                <>
+                  <li className="text-gray-300">|</li>
+                  <li>
+                    <NavLink href="/auth/login" className="hover:text-blue-600">Iniciar sesión</NavLink>
+                  </li>
+                </>
+              )}
+            </>
           )}
         </ul>
 
         {/* DERECHA */}
         <div className="flex gap-5 text-black items-center">
-          <Link href="/contacto" className="bg-gray-200 border px-4 py-2 rounded">Solicitar Servicio</Link>
+          {!isCliente && (
+            <Link href="/contacto" className="bg-gray-200 border px-4 py-2 rounded">Solicitar Servicio</Link>
+          )}
           
           {isLoading ? (
             <div className="px-4 py-2 text-gray-400">Cargando...</div>
           ) : session ? (
             <>
-              <Link href={userRoute} className="px-4 py-2 hover:text-blue-600">Mi Área</Link>
+              {isCliente ? (
+                <span className="text-sm">Hola, {session?.user?.name}</span>
+              ) : (
+                <Link href={userRoute} className="px-4 py-2 hover:text-blue-600">Mi Área</Link>
+              )}
               <button onClick={() => signOut({ callbackUrl: '/home' })} className="px-4 py-2 hover:text-red-600">Cerrar sesión</button>
             </>
           ) : (

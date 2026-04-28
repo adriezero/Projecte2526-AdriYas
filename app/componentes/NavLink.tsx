@@ -7,6 +7,7 @@ export default function NavLink({
   href,
   children,
   className,
+  exact = false,
   ...propiedades
 }: {
   href: string
@@ -15,7 +16,7 @@ export default function NavLink({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const isActive = pathname.startsWith(href)
+  const isActive = exact ? pathname === href : pathname === href || (pathname.startsWith(href + '/') && href !== '/home')
   const newClassName = isActive ? `${className} active` : className
 
   return (

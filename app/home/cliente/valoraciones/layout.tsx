@@ -1,4 +1,4 @@
-export default function ClienteLayout({
+export default function ValoracionesLayout({
   children,
 }: {
   children: React.ReactNode;
