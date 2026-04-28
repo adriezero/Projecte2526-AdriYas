@@ -69,4 +69,15 @@ export interface Documento {
   fechaSubida: Date | string;
   asociadoA: string;
   tamano: string;
+  rutaArchivo?: string;
+  descripcion?: string;
+}
+
+export type EstadoDoc = 'verificado' | 'pendiente' | 'falta';
+
+export interface DocumentoCamionero {
+  tipo: string;
+  estado: EstadoDoc;
+  archivo?: string;
+  fechaSubida?: Date;
 }
