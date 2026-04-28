@@ -49,6 +49,10 @@ export interface Cliente {
   ID: number;
   Nombre: string;
   NombreEmpresa: string;
+  RazonSocial: string | null;
+  Email: string | null;
+  Telf: string;
+  EstadoCuenta: string;
 }
 
 export interface Reserva {
@@ -80,4 +84,28 @@ export interface DocumentoCamionero {
   estado: EstadoDoc;
   archivo?: string;
   fechaSubida?: Date;
+}
+
+export interface Informe {
+  ID: number;
+  FechaSubida: string;
+  Tipo: string;
+  Formato: string | null;
+}
+
+export interface Ruta {
+  ID: number;
+  Origen: string;
+  Destino: string;
+  Estado: string | null;
+  FechaInicio: string;
+  Cargas: string;
+  Reservas: string;
+}
+
+export interface EstadisticasCliente {
+  totalEntregas: number;
+  porcentajeCumplimiento: number;
+  ingresosGenerados: number;
+  promedioTiempoEntrega: number;
 }

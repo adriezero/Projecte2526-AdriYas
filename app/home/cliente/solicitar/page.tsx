@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Cliente, Informe, getClientes, getInformesPorEmpresa, enviarSolicitud, generarCSV, generarPDF } from './logic';
+import { Cliente, Informe } from '@interfaces/interfaces';
+import { getClientes, getInformesPorEmpresa, enviarSolicitud, generarCSV, generarPDF } from './logic';
 
 export default function SolicitarPage() {
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -12,13 +13,21 @@ export default function SolicitarPage() {
   const [formato, setFormato] = useState('PDF');
 
   useEffect(() => {
-    setClientes(getClientes());
+    const fetchClientes = async () => {
+      const data = await getClientes();
+      setClientes(data);
+    };
+    fetchClientes();
   }, []);
 
   useEffect(() => {
-    if (fechaDesde && fechaHasta && empresaSeleccionada) {
-      setInformes(getInformesPorEmpresa(empresaSeleccionada));
-    }
+    const fetchInformes = async () => {
+      if (fechaDesde && fechaHasta && empresaSeleccionada) {
+        const data = await getInformesPorEmpresa(empresaSeleccionada);
+        setInformes(data);
+      }
+    };
+    fetchInformes();
   }, [fechaDesde, fechaHasta, empresaSeleccionada]);
 
   const handleSolicitud = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -50,8 +59,7 @@ export default function SolicitarPage() {
       generarCSV(informes, empresaSeleccionada, fechaDesde, fechaHasta);
     } else {
       const empresaNombre = clientes.find(c => c.ID.toString() === empresaSeleccionada)?.NombreEmpresa || 'Empresa';
-      generarPDF(informes, empresaNombre, empresaSeleccionada, fechaDesde, fechaHasta);
-      alert('PDF generado como HTML. Para convertir a PDF real, abre el archivo y usa "Imprimir > Guardar como PDF"');
+      await generarPDF(informes, empresaNombre, empresaSeleccionada, fechaDesde, fechaHasta);
     }
   };
 
@@ -221,7 +229,6 @@ export default function SolicitarPage() {
             </button>
           </form>
         </div>
-        
         </div>
       </div>
     </div>

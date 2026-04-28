@@ -9,12 +9,17 @@ export async function GET() {
       select: {
         ID: true,
         Nombre: true,
-        NombreEmpresa: true
-      },
-      orderBy: { Nombre: 'asc' }
+        NombreEmpresa: true,
+        RazonSocial: true,
+        Email: true,
+        Telf: true,
+        EstadoCuenta: true
+      }
     });
+
     return NextResponse.json(clientes);
   } catch (error) {
+    console.error('Error al obtener clientes:', error);
     return NextResponse.json({ error: 'Error al obtener clientes' }, { status: 500 });
   }
 }
