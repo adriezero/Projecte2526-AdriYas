@@ -277,15 +277,7 @@ export default function Rutas() {
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-base font-bold text-gray-800">Documentos de la Ruta</h3>
                     <div className="flex items-center gap-2">
-                      <select
-                        value={tipoDoc}
-                        onChange={e => setTipoDoc(e.target.value)}
-                        className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-gray-600 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        {["Factura","Contrato","Permiso","Seguro","Licencia","Certificado","Otro"].map(t => (
-                          <option key={t} value={t}>{t}</option>
-                        ))}
-                      </select>
+                     
                       <button
                         onClick={() => inputDoc.current?.click()}
                         disabled={subiendoDoc}
