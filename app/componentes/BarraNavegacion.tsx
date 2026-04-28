@@ -19,13 +19,15 @@ export default function NavBar() {
       <div className="h-20 flex items-center justify-between px-10 py-3 border-b">
         {/* IZQUIERDA */}
         <div className="flex items-center">
-          <Image
-            src={"/img/camionlogo.png"}
-            width={118}
-            height={0}
-            alt={"camionlogo"}
-          />
-          <span className="font-bold text-lg text-black">TRUCKWAVE</span>
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src={"/img/camionlogo.png"}
+              width={118}
+              height={0}
+              alt={"camionlogo"}
+            />
+            <span className="font-bold text-lg text-black">TRUCKWAVE</span>
+          </Link>
         </div>
 
         {/* CENTRO */}
@@ -48,9 +50,6 @@ export default function NavBar() {
               </li>
               <li>
                 <NavLink href="/home/cliente/solicitar" className="hover:text-blue-600">Solicitar</NavLink>
-              </li>
-              <li>
-                <NavLink href="/home/cliente/valoraciones" className="hover:text-blue-600">Valoraciones</NavLink>
               </li>
             </>
           ) : (

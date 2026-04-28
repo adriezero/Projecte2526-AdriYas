@@ -99,8 +99,8 @@ model documentos {
   Descripcion String?                @db.VarChar(500)
   SubidoPor   Int?
   RolSubidor  documentos_RolSubidor?
-  createdAt   DateTime?              @default(now())
-  updatedAt   DateTime               @default(now()) @updatedAt
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
   idRuta      Int?
   dispatcher  dispatcher?            @relation(fields: [Dispatcher], references: [ID], onDelete: Cascade)
   rutas       rutas?                 @relation(fields: [idRuta], references: [ID], onDelete: Cascade)
@@ -130,6 +130,11 @@ model reservas {
   Fecha             DateTime            @db.Date
   Motivo            String              @db.VarChar(150)
   Descripci_n       String?             @map("Descripción") @db.VarChar(255)
+  Destino           String              @default("") @db.VarChar(255)
+  Hora              String              @default("00:00") @db.VarChar(10)
+  Origen            String              @default("") @db.VarChar(255)
+  Representante     String              @default("") @db.VarChar(100)
+  createdAt         DateTime            @default(now())
   solicitud_reserva solicitud_reserva[]
 }
 
@@ -188,6 +193,17 @@ model reportes {
   idReportante  Int
   rolReportante reportes_Rol
   Descripcion   String?
+}
+
+model Solicitud {
+  id          Int              @id @default(autoincrement())
+  cliente     String           @db.VarChar(100)
+  tipo        String           @db.VarChar(100)
+  asunto      String           @db.VarChar(255)
+  descripcion String?
+  fecha       DateTime         @default(now())
+  estado      Solicitud_Estado @default(Pendiente)
+  createdAt   DateTime         @default(now())
 }
 
 enum rutas_Estado {
@@ -255,6 +271,13 @@ enum documentos_RolSubidor {
   Dispatcher
   Camionero
   Cliente
+}
+
+enum Solicitud_Estado {
+  Pendiente
+  En_Proceso @map("En Proceso")
+  Aceptada
+  Rechazada
 }
 
 enum documentos_Tipo {
