@@ -21,7 +21,7 @@ export default function Home() {
       <a href="#servicios" className="px-10 py-4 bg-white text-black rounded-lg font-semibold hover:bg-gray-100 transition text-lg">
         Descubre Nuestros Servicios
       </a>
-      <Link href="/auth/login?callbackUrl=/home/cliente/ruta" className="px-10 py-4 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition text-lg"> Rastrea Tu Envío</Link>
+      <Link href="/auth/login?callbackUrl=/home/cliente/ruta" className="px-10 py-4 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition text-lg"> Seguimiento de mercancía</Link>
     </div>
 
     <a href="#servicios" className="mt-16 inline-flex items-center justify-center transition group">
