@@ -3,10 +3,11 @@ import { PrismaClient } from '@generated/prisma';
 
 const prisma = new PrismaClient();
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const cliente = await prisma.cliente.findUnique({
-      where: { ID: parseInt(params.id) }
+      where: { ID: parseInt(id) }
     });
 
     if (!cliente) {

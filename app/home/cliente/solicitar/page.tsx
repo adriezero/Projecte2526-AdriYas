@@ -1,49 +1,52 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { Cliente, Informe } from '@interfaces/interfaces';
-import { getClientes, getInformesPorEmpresa, enviarSolicitud, generarCSV, generarPDF } from './logic';
+import { getClienteCompleto, getInformesPorEmpresa, enviarSolicitud, generarCSV, generarPDF } from './logic';
 
 export default function SolicitarPage() {
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const { data: session } = useSession();
+  const [cliente, setCliente] = useState<Cliente | null>(null);
   const [informes, setInformes] = useState<Informe[]>([]);
   const [fechaDesde, setFechaDesde] = useState('');
   const [fechaHasta, setFechaHasta] = useState('');
-  const [empresaSeleccionada, setEmpresaSeleccionada] = useState('');
   const [formato, setFormato] = useState('PDF');
 
   useEffect(() => {
-    const fetchClientes = async () => {
-      const data = await getClientes();
-      setClientes(data);
-    };
-    fetchClientes();
-  }, []);
+    if (session?.user?.id) {
+      getClienteCompleto(session.user.id).then(setCliente);
+    }
+  }, [session]);
 
   useEffect(() => {
-    const fetchInformes = async () => {
-      if (fechaDesde && fechaHasta && empresaSeleccionada) {
-        const data = await getInformesPorEmpresa(empresaSeleccionada);
-        setInformes(data);
-      }
-    };
-    fetchInformes();
-  }, [fechaDesde, fechaHasta, empresaSeleccionada]);
+    if (fechaDesde && fechaHasta && cliente?.ID) {
+      getInformesPorEmpresa(cliente.ID.toString()).then(setInformes);
+    }
+  }, [fechaDesde, fechaHasta, cliente]);
 
   const handleSolicitud = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    
+    if (!cliente) {
+      alert('Error: No se pudo obtener la información del cliente');
+      return;
+    }
     
     const success = await enviarSolicitud({
       servicio: formData.get('servicio') as string,
-      cliente: formData.get('cliente') as string,
-      email: formData.get('email') as string,
+      cliente: cliente.Nombre,
+      email: cliente.Email || '',
       detalles: formData.get('detalles') as string,
     });
 
     if (success) {
-      alert('Solicitud enviada correctamente');
-      e.currentTarget.reset();
+      alert('✅ Solicitud enviada correctamente. El dispatcher la revisará pronto.');
+      form.reset();
+    } else {
+      alert('❌ Error al enviar la solicitud. Por favor, inténtalo de nuevo.');
     }
   };
 
@@ -56,10 +59,9 @@ export default function SolicitarPage() {
     }
 
     if (formato === 'CSV') {
-      generarCSV(informes, empresaSeleccionada, fechaDesde, fechaHasta);
+      generarCSV(informes, cliente!.ID.toString(), fechaDesde, fechaHasta);
     } else {
-      const empresaNombre = clientes.find(c => c.ID.toString() === empresaSeleccionada)?.NombreEmpresa || 'Empresa';
-      await generarPDF(informes, empresaNombre, empresaSeleccionada, fechaDesde, fechaHasta);
+      await generarPDF(informes, cliente!.NombreEmpresa, cliente!.ID.toString(), fechaDesde, fechaHasta);
     }
   };
 
@@ -82,16 +84,16 @@ export default function SolicitarPage() {
             <input
               type="text"
               name="cliente"
-              placeholder="Nombre del cliente"
-              className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
-              required
+              value={cliente?.Nombre || ''}
+              disabled
+              className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md bg-gray-100 text-black cursor-not-allowed"
             />
             <input
               type="email"
               name="email"
-              placeholder="Email de contacto"
-              className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
-              required
+              value={cliente?.Email || ''}
+              disabled
+              className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md bg-gray-100 text-black cursor-not-allowed"
             />
             <div>
               <label className="block text-base font-medium text-black mb-2">
@@ -147,21 +149,14 @@ export default function SolicitarPage() {
 
             <div>
               <label className="block text-base font-medium text-black mb-2">
-                Seleccionar empresa
+                Empresa
               </label>
-              <select
-                value={empresaSeleccionada}
-                onChange={(e) => setEmpresaSeleccionada(e.target.value)}
-                className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
-                required
-              >
-                <option value="">Selecciona una empresa</option>
-                {clientes.map((cliente) => (
-                  <option key={cliente.ID} value={cliente.ID}>
-                    {cliente.NombreEmpresa}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="text"
+                value={cliente?.NombreEmpresa || ''}
+                disabled
+                className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md bg-gray-100 text-black cursor-not-allowed"
+              />
             </div>
 
             <div>

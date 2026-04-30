@@ -50,7 +50,12 @@ export const enviarSolicitud = async (data: {
   const response = await fetch('/api/solicitudes', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      tipo: data.servicio,
+      cliente: data.cliente,
+      asunto: data.servicio,
+      descripcion: data.detalles
+    }),
   });
   return response.ok;
 };
