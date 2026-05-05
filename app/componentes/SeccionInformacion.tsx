@@ -1,16 +1,20 @@
+"use client";
+import { useTranslations } from 'next-intl';
+
 export default function InfoSection() {
+  const t = useTranslations('about');
+  
   return (
     <section className="relative bg-[#2f2f2f] min-h-screen flex flex-col items-center justify-start pt-16 pb-32">
       
       {/* Título principal */}
       <h1 className="text-4xl text-white font-semibold text-center mb-8¡">
-        Transporte de confianza desde Mercabarna
+        {t('title')}
       </h1>
 
       {/* Subtítulo */}
       <h2 className="text-sm text-gray-300 text-center max-w-xl leading-relaxed mb-24">
-        Empresa familiar de transporte con más de 15 años moviendo el producto fresco 
-        con compromiso, puntualidad y trato cercano.
+        {t('subtitle')}
       </h2>
       <br />
       <br />
@@ -21,19 +25,15 @@ export default function InfoSection() {
         {/* Caja blanca */}
         <div className="relative h-120 bg-white p-12 w-[60%] shadow-xl">
           <h3 className="text-center font-extrabold text-2xl mb-6">
-            Una historia de esfuerzo y compromiso
+            {t('historyTitle')}
           </h3>
           <br />
           <p className="text-base text-gray-700 leading-relaxed mt-4">
-            Esta empresa nació del esfuerzo de una sola persona que decidió emprender 
-            en el sector del transporte en Mercabarna. Con dedicación, responsabilidad 
-            y muchas horas de carretera, fue creciendo paso a paso.
+            {t('historyText1')}
             <br /><br />
-            Hoy, la empresa cuenta con tres camiones y la segunda generación al frente, 
-            manteniendo los mismos valores del primer día: puntualidad, trato cercano 
-            y compromiso con cada cliente.
+            {t('historyText2')}
             <br /><br />
-            Trabajamos cada día para que tu mercancía llegue a tiempo y en perfectas condiciones.
+            {t('historyText3')}
           </p>
 
           {/* Imagen superpuesta */}

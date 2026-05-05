@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from 'next-intl';
 
 export default function Contacto() {
+  const t = useTranslations('contact');
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [asunto, setAsunto] = useState("");
@@ -20,21 +22,21 @@ export default function Contacto() {
         {/* Título */}
         <div className="text-center pb-16">
           <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
-            Contáctanos
+            {t('title')}
           </h2>
-          <p className="text-gray-600">¡Nos encantaría escuchar de ti! Envíanos un mensaje y te responderemos a la brevedad.</p>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
 
         {/* Formulario */}
         <form className="bg-white p-8 rounded-lg shadow-md space-y-5" onSubmit={manejarEnvio}>
           {/* Usuario */}
           <div className="py-2">
-            <label className="text-gray-700 text-sm">Nombre completo:</label>
+            <label className="text-gray-700 text-sm">{t('fullName')}</label>
             <input
               type="text"
               required
               className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-              placeholder="Ej: Marcos Peña"
+              placeholder={t('fullNamePlaceholder')}
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
             />
@@ -42,12 +44,12 @@ export default function Contacto() {
 
           {/* Email */}
           <div className="py-2">
-            <label className="text-gray-700 text-sm">Correo electrónico:</label>
+            <label className="text-gray-700 text-sm">{t('email')}</label>
             <input
               type="email"
               required
               className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-              placeholder="Ej: tu.correo@ejemplo.com"
+              placeholder={t('emailPlaceholder')}
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
             />
@@ -55,12 +57,12 @@ export default function Contacto() {
 
           {/* Asunto */}
           <div className="py-2">
-            <label className="text-gray-700 text-sm">Asunto:</label>
+            <label className="text-gray-700 text-sm">{t('subject')}</label>
             <input
               type="text"
               required
               className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md"
-              placeholder="Ej: Consulta sobre un producto"
+              placeholder={t('subjectPlaceholder')}
               value={asunto}
               onChange={(e) => setAsunto(e.target.value)}
             />
@@ -68,12 +70,12 @@ export default function Contacto() {
 
           {/* Mensaje */}
           <div className="py-2">
-            <label className="text-gray-700 text-sm">Tu mensaje:</label>
+            <label className="text-gray-700 text-sm">{t('message')}</label>
             <textarea
               required
               rows={5}
               className="w-full mt-1 px-3 py-2 border border-gray-300 text-black rounded-md resize-none"
-              placeholder="Escribe tu mensaje aquí..."
+              placeholder={t('messagePlaceholder')}
               value={mensaje}
               onChange={(e) => setMensaje(e.target.value)}
             />
@@ -89,7 +91,7 @@ export default function Contacto() {
               id="privacidad"
             />
             <label className="text-gray-700 text-sm" htmlFor="privacidad">
-              Acepto la política de privacidad y el tratamiento de mis datos personales
+              {t('privacy')}
             </label>
           </div>
 
@@ -103,7 +105,7 @@ export default function Contacto() {
             type="submit"
             className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer"
           >
-            Enviar mensaje
+            {t('send')}
           </button>
         </form>
       </div>

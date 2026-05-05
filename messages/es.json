@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "home": "Home",
+    "contact": "Contacto",
+    "about": "Sobre nosotros",
+    "login": "Iniciar sesión",
+    "requestService": "Solicitar Servicio",
+    "myArea": "Mi Área",
+    "clientArea": "Área Clientes",
+    "logout": "Cerrar sesión",
+    "language": "Idioma",
+    "hello": "Hola"
+  },
+  "home": {
+    "hero": {
+      "title": "Tu Mercancía, Nuestro Compromiso",
+      "subtitle": "Soluciones logísticas integrales para tus necesidades de transporte terrestre.",
+      "discoverServices": "Descubre Nuestros Servicios",
+      "trackShipment": "Seguimiento de mercancía"
+    },
+    "services": {
+      "title": "Nuestros Servicios",
+      "subtitle": "Ofrecemos una amplia gama de soluciones de transporte",
+      "groundTransport": "Transporte Terrestre",
+      "description": "Servicio de transporte confiable y eficiente para tu mercancía.",
+      "moreInfo": "Más información"
+    },
+    "whyUs": {
+      "title": "¿Por qué elegir TruckWave?",
+      "subtitle": "Experiencia, Eficiencia y Confianza en Cada Envío.",
+      "modernFleet": "Flota Moderna",
+      "modernFleetDesc": "Vehículos de última generación equipados con tecnología avanzada.",
+      "qualifiedStaff": "Personal Calificado",
+      "qualifiedStaffDesc": "Equipo altamente capacitado y con años de experiencia.",
+      "monitoring": "Monitoreo 24/7",
+      "monitoringDesc": "Seguimiento en tiempo real de tu mercancía."
+    },
+    "cta": {
+      "title": "¿Necesitas un Transporte? Solicita tu Presupuesto Ahora",
+      "subtitle": "Contáctanos y obtén una cotización personalizada para tus necesidades de transporte.",
+      "button": "Solicitar Servicio"
+    }
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "subtitle": "¡Nos encantaría escuchar de ti! Envíanos un mensaje y te responderemos a la brevedad.",
+    "fullName": "Nombre completo:",
+    "fullNamePlaceholder": "Ej: Marcos Peña",
+    "email": "Correo electrónico:",
+    "emailPlaceholder": "Ej: tu.correo@ejemplo.com",
+    "subject": "Asunto:",
+    "subjectPlaceholder": "Ej: Consulta sobre un producto",
+    "message": "Tu mensaje:",
+    "messagePlaceholder": "Escribe tu mensaje aquí...",
+    "privacy": "Acepto la política de privacidad y el tratamiento de mis datos personales",
+    "send": "Enviar mensaje"
+  },
+  "about": {
+    "title": "Transporte de confianza desde Mercabarna",
+    "subtitle": "Empresa familiar de transporte con más de 15 años moviendo el producto fresco con compromiso, puntualidad y trato cercano.",
+    "historyTitle": "Una historia de esfuerzo y compromiso",
+    "historyText1": "Esta empresa nació del esfuerzo de una sola persona que decidió emprender en el sector del transporte en Mercabarna. Con dedicación, responsabilidad y muchas horas de carretera, fue creciendo paso a paso.",
+    "historyText2": "Hoy, la empresa cuenta con tres camiones y la segunda generación al frente, manteniendo los mismos valores del primer día: puntualidad, trato cercano y compromiso con cada cliente.",
+    "historyText3": "Trabajamos cada día para que tu mercancía llegue a tiempo y en perfectas condiciones."
+  },
+  "reviews": {
+    "title": "Valoraciones y Comentarios de Usuarios",
+    "subtitle": "Descubre lo que otros usuarios piensan sobre el servicio recibido.",
+    "all": "Todas las valoraciones",
+    "recent": "Más recientes",
+    "positive": "Positivas",
+    "negative": "Negativas",
+    "search": "Buscar en valoraciones..."
+  },
+  "footer": {
+    "quickLinks": "Enlaces Rápidos",
+    "home": "Inicio",
+    "services": "Servicios",
+    "about": "Nosotros",
+    "contact": "Contacto",
+    "servicesTitle": "Servicios",
+    "nationalTransport": "Transporte Nacional",
+    "internationalTransport": "Transporte Internacional",
+    "logistics": "Logística",
+    "storage": "Almacenamiento",
+    "legalInfo": "Información Legal",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos y Condiciones",
+    "cookies": "Política de Cookies",
+    "legal": "Aviso Legal"
+  }
+}

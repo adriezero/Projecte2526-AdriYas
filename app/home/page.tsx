@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations('home');
+  
   return (
     <main className="bg-gray-100 text-gray-900">
     
@@ -10,18 +13,18 @@ export default function Home() {
      <section className="bg-gray-700 text-white h-screen flex items-center justify-center">
   <div className="text-center px-4">
     <h1 className="text-6xl font-bold mb-8 whitespace-nowrap">
-      Tu Mercancía, Nuestro Compromiso
+      {t('hero.title')}
     </h1>
 
     <p className="text-2xl opacity-90 max-w-3xl mx-auto mb-10 whitespace-nowrap">
-      Soluciones logísticas integrales para tus necesidades de transporte terrestre.
+      {t('hero.subtitle')}
     </p>
 
     <div className="flex justify-center gap-4 flex-wrap">
       <a href="#servicios" className="px-10 py-4 bg-white text-black rounded-lg font-semibold hover:bg-gray-100 transition text-lg">
-        Descubre Nuestros Servicios
+        {t('hero.discoverServices')}
       </a>
-      <Link href="/auth/login?callbackUrl=/home/cliente/ruta" className="px-10 py-4 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition text-lg"> Seguimiento de mercancía</Link>
+      <Link href="/auth/login?callbackUrl=/home/cliente/ruta" className="px-10 py-4 border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition text-lg">{t('hero.trackShipment')}</Link>
     </div>
 
     <a href="#servicios" className="mt-16 inline-flex items-center justify-center transition group">
@@ -33,9 +36,9 @@ export default function Home() {
 </section>
       {/* SERVICIOS */}
       <section id="servicios" className="bg-linear-to-b from-white to-gray-50 py-20 px-6">
-        <h2 className="text-4xl font-bold text-center mb-4">Nuestros Servicios</h2>
+        <h2 className="text-4xl font-bold text-center mb-4">{t('services.title')}</h2>
         <p className="text-center text-gray-600 text-lg mb-16">
-          Ofrecemos una amplia gama de soluciones de transporte
+          {t('services.subtitle')}
         </p>
         <br />
      <div className="flex items-center justify-center">
@@ -48,12 +51,12 @@ export default function Home() {
         <div className="w-20 h-20 mx-auto mb-6 bg-linear-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center shadow-lg">
           <i className="bi bi-truck text-3xl text-white"></i>
         </div>
-        <h3 className="font-bold text-xl mb-3 text-gray-800">Transporte Terrestre</h3>
+        <h3 className="font-bold text-xl mb-3 text-gray-800">{t('services.groundTransport')}</h3>
         <p className="text-gray-600 mb-6 leading-relaxed">
-          Servicio de transporte confiable y eficiente para tu mercancía.
+          {t('services.description')}
         </p>
         <a href="#" className="text-blue-600 hover:text-blue-700 font-semibold inline-flex items-center gap-2 group">
-          Más información 
+          {t('services.moreInfo')}
           <span className="transform group-hover:translate-x-1 transition-transform">→</span>
         </a>
       </div>
@@ -65,11 +68,11 @@ export default function Home() {
      <section className="bg-gray-450 h-140 mb-40 flex items-center justify-center px-6">
   <div className="max-w-6xl w-full text-center">
     <h2 className="text-3xl font-bold mb-4">
-      ¿Por qué elegir TruckWave?
+      {t('whyUs.title')}
     </h2>
 
     <p className="text-gray-600 mb-12">
-      Experiencia, Eficiencia y Confianza en Cada Envío.
+      {t('whyUs.subtitle')}
     </p>
 
     <div className="grid md:grid-cols-2 gap-16 items-center text-left">
@@ -80,9 +83,9 @@ export default function Home() {
               <span className="text-white text-xl font-bold">✓</span>
             </div>
             <div>
-              <strong className="text-2xl font-bold text-gray-800 block mb-2">Flota Moderna</strong>
+              <strong className="text-2xl font-bold text-gray-800 block mb-2">{t('whyUs.modernFleet')}</strong>
               <p className="text-gray-600 text-base leading-relaxed">
-                Vehículos de última generación equipados con tecnología avanzada.
+                {t('whyUs.modernFleetDesc')}
               </p>
             </div>
           </li>
@@ -92,9 +95,9 @@ export default function Home() {
               <span className="text-white text-xl font-bold">✓</span>
             </div>
             <div>
-              <strong className="text-2xl font-bold text-gray-800 block mb-2">Personal Calificado</strong>
+              <strong className="text-2xl font-bold text-gray-800 block mb-2">{t('whyUs.qualifiedStaff')}</strong>
               <p className="text-gray-600 text-base leading-relaxed">
-                Equipo altamente capacitado y con años de experiencia.
+                {t('whyUs.qualifiedStaffDesc')}
               </p>
             </div>
           </li>
@@ -104,9 +107,9 @@ export default function Home() {
               <span className="text-white text-xl font-bold">✓</span>
             </div>
             <div>
-              <strong className="text-2xl font-bold text-gray-800 block mb-2">Monitoreo 24/7</strong>
+              <strong className="text-2xl font-bold text-gray-800 block mb-2">{t('whyUs.monitoring')}</strong>
               <p className="text-gray-600 text-base leading-relaxed">
-                Seguimiento en tiempo real de tu mercancía.
+                {t('whyUs.monitoringDesc')}
               </p>
             </div>
           </li>
@@ -123,14 +126,14 @@ export default function Home() {
      <section className="bg-gray-700 text-white h-80 flex items-center justify-center ">
   <div className="text-center">
     <h2 className="text-4xl font-bold whitespace-nowrap mb-6">
-      ¿Necesitas un Transporte? Solicita tu Presupuesto Ahora
+      {t('cta.title')}
     </h2>
 
     <p className="text-xl opacity-90 mb-16 whitespace-nowrap">
-      Contáctanos y obtén una cotización personalizada para tus necesidades de transporte.
+      {t('cta.subtitle')}
     </p>
     <br />
- <Link href="/auth/login" className="px-12 py-5 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition text-xl"> Solicitar Servicio</Link>
+ <Link href="/auth/login" className="px-12 py-5 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition text-xl">{t('cta.button')}</Link>
   </div>
 </section>
 

@@ -6,13 +6,22 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import NavLink from './NavLink'
 import { useSession, signOut } from 'next-auth/react'
 import { ROLE_ROUTES } from '@lib/roles'
+import { useTranslations } from 'next-intl'
 
 export default function NavBar() {
   const { data: session, status } = useSession()
   const isLoading = status === 'loading'
   const isCliente = session?.user?.role === 'cliente'
+  const translations = useTranslations('nav')
 
   const userRoute = session?.user?.role ? ROLE_ROUTES[session.user.role as string] : '/auth/login'
+
+  const changeLocale = (newLocale: string) => {
+    const date = new Date()
+    date.setFullYear(date.getFullYear() + 1)
+    document.cookie = `NEXT_LOCALE=${newLocale}; expires=${date.toUTCString()}; path=/; SameSite=Lax`
+    window.location.reload()
+  }
 
   return (
     <nav className="w-full bg-white shadow-sm fixed z-50">
@@ -36,13 +45,13 @@ export default function NavBar() {
             // Navbar para clientes
             <>
               <li>
-                <NavLink href="/home" className="hover:text-blue-600">Home</NavLink>
+                <NavLink href="/home" className="hover:text-blue-600">{translations('home')}</NavLink>
               </li>
               <li>
-                <NavLink href="/contacto" className="hover:text-blue-600">Contacto</NavLink>
+                <NavLink href="/contacto" className="hover:text-blue-600">{translations('contact')}</NavLink>
               </li>
               <li>
-                <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
+                <NavLink href="/sobre-nosotros" className="hover:text-blue-600">{translations('about')}</NavLink>
               </li>
               <li className="text-gray-300">|</li>
               <li>
@@ -56,19 +65,19 @@ export default function NavBar() {
             // Navbar para usuarios no clientes
             <>
               <li>
-                <NavLink href="/home" className="hover:text-blue-600">Home</NavLink>
+                <NavLink href="/home" className="hover:text-blue-600">{translations('home')}</NavLink>
               </li>
               <li>
-                <NavLink href="/contacto" className="hover:text-blue-600">Contacto</NavLink>
+                <NavLink href="/contacto" className="hover:text-blue-600">{translations('contact')}</NavLink>
               </li>
               <li>
-                <NavLink href="/sobre-nosotros" className="hover:text-blue-600">Sobre nosotros</NavLink>
+                <NavLink href="/sobre-nosotros" className="hover:text-blue-600">{translations('about')}</NavLink>
               </li>
               {!isLoading && !session && (
                 <>
                   <li className="text-gray-300">|</li>
                   <li>
-                    <NavLink href="/auth/login" className="hover:text-blue-600">Iniciar sesión</NavLink>
+                    <NavLink href="/auth/login" className="hover:text-blue-600">{translations('login')}</NavLink>
                   </li>
                 </>
               )}
@@ -79,7 +88,7 @@ export default function NavBar() {
         {/* DERECHA */}
         <div className="flex gap-5 text-black items-center">
           {!isCliente && (
-            <Link href="/contacto" className="bg-gray-200 border px-4 py-2 rounded">Solicitar Servicio</Link>
+            <Link href="/contacto" className="bg-gray-200 border px-4 py-2 rounded">{translations('requestService')}</Link>
           )}
           
           {isLoading ? (
@@ -87,20 +96,20 @@ export default function NavBar() {
           ) : session ? (
             <>
               {isCliente ? (
-                <span className="text-sm">Hola, {session?.user?.name}</span>
+                <span className="text-sm">{translations('hello')}, {session?.user?.name}</span>
               ) : (
-                <Link href={userRoute} className="px-4 py-2 hover:text-blue-600">Mi Área</Link>
+                <Link href={userRoute} className="px-4 py-2 hover:text-blue-600">{translations('myArea')}</Link>
               )}
-              <button onClick={() => signOut({ callbackUrl: '/home' })} className="px-4 py-2 hover:text-red-600">Cerrar sesión</button>
+              <button onClick={() => signOut({ callbackUrl: '/home' })} className="px-4 py-2 hover:text-red-600">{translations('logout')}</button>
             </>
           ) : (
-            <Link href="/auth/login" className="px-4 py-2">Área Clientes</Link>
+            <Link href="/auth/login" className="px-4 py-2">{translations('clientArea')}</Link>
           )}
           
           {/* IDIOMA */}
           <Menu as="div" className="relative inline-block">
             <MenuButton suppressHydrationWarning className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50">
-              Idioma
+              {translations('language')}
               <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
             </MenuButton>
             <MenuItems transition
@@ -108,31 +117,31 @@ export default function NavBar() {
             >
               <div className="py-1">
                 <MenuItem>
-                  <a href="#" id="es_ES"
-                    className="block px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
+                  <button onClick={() => changeLocale('es')}
+                    className="block w-full text-left px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                     <span className="flex items-center gap-2">
                       <span className="fi fi-es" />
                       Español
                     </span>
-                  </a>
+                  </button>
                 </MenuItem>
                 <MenuItem>
-                  <a href="#" id="ca_ES"
-                    className="block px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
+                  <button onClick={() => changeLocale('ca')}
+                    className="block w-full text-left px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                     <span className="flex items-center gap-2">
                       <span className="fi fi-es-ct" />
                       Català
                     </span>
-                  </a>
+                  </button>
                 </MenuItem>
                 <MenuItem>
-                  <a href="#" id="en_US"
-                    className="block px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
+                  <button onClick={() => changeLocale('en')}
+                    className="block w-full text-left px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
                     <span className="flex items-center gap-2">
                       <span className="fi fi-gb" />
                       English
                     </span>
-                  </a>
+                  </button>
                 </MenuItem>
               </div>
             </MenuItems>

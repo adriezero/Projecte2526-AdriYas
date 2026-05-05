@@ -4,8 +4,10 @@
 import { useEffect, useState } from "react";
 import { Reseña } from "@interfaces/interfaces";
 import Reseñas from "./Reseñas";
+import { useTranslations } from 'next-intl';
 
 export default function ReviewsSection() {
+  const t = useTranslations('reviews');
   const [reseñas, setReseñas] = useState<Reseña[]>([]);
   const [paginaActual, setPaginaActual] = useState(1);
   const [filtro, setFiltro] = useState('todas');
@@ -53,8 +55,8 @@ export default function ReviewsSection() {
     <section className="bg-gray-100 py-16 px-6 flex justify-center">
       <div className="max-w-6xl w-full space-y-10">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-black mb-4">Valoraciones y Comentarios de Usuarios</h2>
-          <p className="text-gray-600 mb-6" >Descubre lo que otros usuarios piensan sobre el servicio recibido.</p>
+          <h2 className="text-3xl font-bold text-black mb-4">{t('title')}</h2>
+          <p className="text-gray-600 mb-6" >{t('subtitle')}</p>
           <p className="text-lg">
             <span className="text-green-500 font-bold">{positivas} 👍</span>
             {' / '}
@@ -68,15 +70,15 @@ export default function ReviewsSection() {
             onChange={(e) => { setFiltro(e.target.value); setPaginaActual(1); }}
             className="px-4 py-2 text-black border border-gray-300 rounded-lg bg-white"
           >
-            <option className="text-black" value="todas">Todas las valoraciones</option>
-            <option className="text-blue-500"  value="recientes">Más recientes</option>
-            <option className="text-green-400" value="positivas">Positivas</option>
-            <option className="text-red-600" value="negativas">Negativas</option>
+            <option className="text-black" value="todas">{t('all')}</option>
+            <option className="text-blue-500"  value="recientes">{t('recent')}</option>
+            <option className="text-green-400" value="positivas">{t('positive')}</option>
+            <option className="text-red-600" value="negativas">{t('negative')}</option>
           </select>
           
           <input
             type="text"
-            placeholder="Buscar en valoraciones..."
+            placeholder={t('search')}
             value={busqueda}
             onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1); }}
             className="text-gray-600 mb-6 px-4 py-2 border border-gray-300 rounded-lg w-full md:w-64"
