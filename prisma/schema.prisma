@@ -185,6 +185,18 @@ model turnos {
   camionero   camionero[]
 }
 
+model tarea {
+  id          Int      @id @default(autoincrement())
+  titulo      String   @db.VarChar(255)
+  descripcion String?
+  estado      String   @default("Pendiente") @db.VarChar(50)
+  prioridad   String?  @db.VarChar(50)
+  asignadoA   Int?
+  creadoPor   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 model reportes {
   ID            Int             @id @default(autoincrement())
   Tipo          reportes_Tipo

@@ -23,10 +23,11 @@ function mapEstadoFromEnum(estado: string): string {
   return mapping[estado] || estado;
 }
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const solicitud = await prisma.solicitud.findUnique({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     });
     if (!solicitud) {
       return NextResponse.json({ error: 'Solicitud no encontrada' }, { status: 404 });
@@ -40,7 +41,8 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     const body = await request.json();
     const updateData: any = {};
@@ -52,7 +54,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     if (body.descripcion !== undefined) updateData.descripcion = body.descripcion;
     
     const solicitud = await prisma.solicitud.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: updateData
     });
     
@@ -65,10 +67,11 @@ export async function PATCH(request: Request, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   try {
     await prisma.solicitud.delete({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     });
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import BarraLateral from "@componentes/camionero/BarraLateral";
 
 type Filtro = "todos" | "pendientes" | "completadas" | "importantes";
 type OrdenTipo = "fecha" | "texto";
@@ -16,7 +15,7 @@ interface Nota {
 
 export default function Recordatorios() {
   const [notas, setNotas] = useState<Nota[]>(() => {
-    if (typeof window === "undefined") return notasIniciales;
+    if (typeof window === "undefined") return [];
     const guardadas = localStorage.getItem("recordatorios");
     return guardadas ? JSON.parse(guardadas) : [];
   });
@@ -84,7 +83,7 @@ export default function Recordatorios() {
       {/* Área de texto */}
       <div className="bg-white rounded-xl border border-gray-200 p-4 mb-6 shadow-sm focus-within:border-black focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-1 transition-all">
         <textarea
-          className="w-full resize-none outline-none text-gray-600 text-sm min-h-[80px]"
+          className="w-full resize-none outline-none text-gray-600 text-sm min-h-20"
           placeholder="Escribe tu recordatorio o nota aquí..."
           value={texto}
           onChange={e => setTexto(e.target.value)}

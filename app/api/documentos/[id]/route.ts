@@ -6,10 +6,11 @@ const prisma = new PrismaClient();
 // GET - Obtener un documento específico
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: paramId } = await params;
+    const id = parseInt(paramId);
 
     const documento = await prisma.documentos.findUnique({
       where: { ID: id },
@@ -44,10 +45,11 @@ export async function GET(
 // PATCH - Actualizar un documento
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: paramId } = await params;
+    const id = parseInt(paramId);
     const body = await request.json();
     const { nombre, tipo, fechaSubida, asociadoA } = body;
 
@@ -83,10 +85,11 @@ export async function PATCH(
 // DELETE - Eliminar un documento
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = parseInt(params.id);
+    const { id: paramId } = await params;
+    const id = parseInt(paramId);
 
     // Aquí también deberías eliminar el archivo físico del servidor
     // const documento = await prisma.documentos.findUnique({ where: { ID: id } });

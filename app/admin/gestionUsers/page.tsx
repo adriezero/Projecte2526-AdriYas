@@ -312,7 +312,7 @@ export default function GestionUsersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {usuariosPagina.map((usuario, i) => {
+                {usuariosPagina.map((usuario) => {
                   const estado = getEstado(usuario)
                   const esActivo = (usuario.Estado === 'Disponible' || usuario.EstadoCuenta === 'Disponible' || usuario.Disponible) && usuario.Estado !== 'Bloqueado' && usuario.EstadoCuenta !== 'Bloqueado'
 
@@ -604,7 +604,7 @@ function Dropdown({
   valor, opciones, abierto, onToggle, onSelect, minWidth,
 }: {
   valor: string
-  opciones: string[]
+  opciones: readonly string[]
   abierto: boolean
   onToggle: () => void
   onSelect: (opcion: string) => void

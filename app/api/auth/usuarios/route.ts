@@ -44,19 +44,13 @@ export async function GET(req: NextRequest) {
       debeConsultar('administrador')
         ? Promise.all([
             prisma.administrador.findMany({
-              where: {
-                ...filtroBusqueda,
-                ...(estado !== 'Todos' ? { Estado: estado } : {}),
-              },
+              where: filtroBusqueda,
               select: { ID: true, Nombre: true, Email: true, Estado: true },
               skip: rol === 'administrador' ? skip : 0, // paginación solo si es el único tipo
               take:  rol === 'administrador' ? POR_PAGINA : undefined,
             }),
             prisma.administrador.count({
-              where: {
-                ...filtroBusqueda,
-                ...(estado !== 'Todos' ? { Estado: estado } : {}),
-              },
+              where: filtroBusqueda,
             }),
           ]).then(([usuarios, total]) => ({ usuarios, total }))
         : Promise.resolve({ usuarios: [], total: 0 }),
@@ -88,19 +82,13 @@ export async function GET(req: NextRequest) {
       debeConsultar('cliente')
         ? Promise.all([
             prisma.cliente.findMany({
-              where: {
-                ...filtroBusqueda,
-                ...(estado !== 'Todos' ? { EstadoCuenta: estado } : {}),
-              },
+              where: filtroBusqueda,
               select: { ID: true, Nombre: true, Email: true, EstadoCuenta: true },
               skip: rol === 'cliente' ? skip : 0,
               take: rol === 'cliente' ? POR_PAGINA : undefined,
             }),
             prisma.cliente.count({
-              where: {
-                ...filtroBusqueda,
-                ...(estado !== 'Todos' ? { EstadoCuenta: estado } : {}),
-              },
+              where: filtroBusqueda,
             }),
           ]).then(([usuarios, total]) => ({ usuarios, total }))
         : Promise.resolve({ usuarios: [], total: 0 }),
