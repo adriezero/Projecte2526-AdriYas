@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "home": "Home",
+    "contact": "Contact",
+    "about": "About us",
+    "login": "Log in",
+    "requestService": "Request Service",
+    "myArea": "My Area",
+    "clientArea": "Client Area",
+    "logout": "Log out",
+    "language": "Language",
+    "hello": "Hello"
+  },
+  "home": {
+    "hero": {
+      "title": "Your Cargo, Our Commitment",
+      "subtitle": "Comprehensive logistics solutions for your ground transportation needs.",
+      "discoverServices": "Discover Our Services",
+      "trackShipment": "Track shipment"
+    },
+    "services": {
+      "title": "Our Services",
+      "subtitle": "We offer a wide range of transportation solutions",
+      "groundTransport": "Ground Transportation",
+      "description": "Reliable and efficient transportation service for your cargo.",
+      "moreInfo": "More information"
+    },
+    "whyUs": {
+      "title": "Why choose TruckWave?",
+      "subtitle": "Experience, Efficiency and Trust in Every Shipment.",
+      "modernFleet": "Modern Fleet",
+      "modernFleetDesc": "Latest generation vehicles equipped with advanced technology.",
+      "qualifiedStaff": "Qualified Staff",
+      "qualifiedStaffDesc": "Highly trained team with years of experience.",
+      "monitoring": "24/7 Monitoring",
+      "monitoringDesc": "Real-time tracking of your cargo."
+    },
+    "cta": {
+      "title": "Need Transportation? Request Your Quote Now",
+      "subtitle": "Contact us and get a personalized quote for your transportation needs.",
+      "button": "Request Service"
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you! Send us a message and we'll get back to you shortly.",
+    "fullName": "Full name:",
+    "fullNamePlaceholder": "E.g.: John Doe",
+    "email": "Email:",
+    "emailPlaceholder": "E.g.: your.email@example.com",
+    "subject": "Subject:",
+    "subjectPlaceholder": "E.g.: Product inquiry",
+    "message": "Your message:",
+    "messagePlaceholder": "Write your message here...",
+    "privacy": "I accept the privacy policy and the processing of my personal data",
+    "send": "Send message"
+  },
+  "about": {
+    "title": "Trusted transportation from Mercabarna",
+    "subtitle": "Family-owned transportation company with over 15 years moving fresh produce with commitment, punctuality and close service.",
+    "historyTitle": "A story of effort and commitment",
+    "historyText1": "This company was born from the effort of a single person who decided to start a business in the transportation sector at Mercabarna. With dedication, responsibility and many hours on the road, it grew step by step.",
+    "historyText2": "Today, the company has three trucks and the second generation at the helm, maintaining the same values from day one: punctuality, close service and commitment to each client.",
+    "historyText3": "We work every day to ensure your cargo arrives on time and in perfect condition."
+  },
+  "reviews": {
+    "title": "User Reviews and Comments",
+    "subtitle": "Discover what other users think about the service received.",
+    "all": "All reviews",
+    "recent": "Most recent",
+    "positive": "Positive",
+    "negative": "Negative",
+    "search": "Search in reviews..."
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "servicesTitle": "Services",
+    "nationalTransport": "National Transport",
+    "internationalTransport": "International Transport",
+    "logistics": "Logistics",
+    "storage": "Storage",
+    "legalInfo": "Legal Information",
+    "privacy": "Privacy Policy",
+    "terms": "Terms and Conditions",
+    "cookies": "Cookie Policy",
+    "legal": "Legal Notice"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "home": "Inici",
+    "contact": "Contacte",
+    "about": "Sobre nosaltres",
+    "login": "Iniciar sessió",
+    "requestService": "Sol·licitar Servei",
+    "myArea": "La meva Àrea",
+    "clientArea": "Àrea Clients",
+    "logout": "Tancar sessió",
+    "language": "Idioma",
+    "hello": "Hola"
+  },
+  "home": {
+    "hero": {
+      "title": "La teva Mercaderia, el Nostre Compromís",
+      "subtitle": "Solucions logístiques integrals per a les teves necessitats de transport terrestre.",
+      "discoverServices": "Descobreix els Nostres Serveis",
+      "trackShipment": "Seguiment de mercaderia"
+    },
+    "services": {
+      "title": "Els Nostres Serveis",
+      "subtitle": "Oferim una àmplia gamma de solucions de transport",
+      "groundTransport": "Transport Terrestre",
+      "description": "Servei de transport fiable i eficient per a la teva mercaderia.",
+      "moreInfo": "Més informació"
+    },
+    "whyUs": {
+      "title": "Per què triar TruckWave?",
+      "subtitle": "Experiència, Eficiència i Confiança en Cada Enviament.",
+      "modernFleet": "Flota Moderna",
+      "modernFleetDesc": "Vehicles d'última generació equipats amb tecnologia avançada.",
+      "qualifiedStaff": "Personal Qualificat",
+      "qualifiedStaffDesc": "Equip altament capacitat i amb anys d'experiència.",
+      "monitoring": "Monitoratge 24/7",
+      "monitoringDesc": "Seguiment en temps real de la teva mercaderia."
+    },
+    "cta": {
+      "title": "Necessites un Transport? Sol·licita el teu Pressupost Ara",
+      "subtitle": "Contacta'ns i obtén un pressupost personalitzat per a les teves necessitats de transport.",
+      "button": "Sol·licitar Servei"
+    }
+  },
+  "contact": {
+    "title": "Contacta'ns",
+    "subtitle": "Ens encantaria escoltar-te! Envia'ns un missatge i et respondrem al més aviat possible.",
+    "fullName": "Nom complet:",
+    "fullNamePlaceholder": "Ex: Marc Penya",
+    "email": "Correu electrònic:",
+    "emailPlaceholder": "Ex: el.teu.correu@exemple.com",
+    "subject": "Assumpte:",
+    "subjectPlaceholder": "Ex: Consulta sobre un producte",
+    "message": "El teu missatge:",
+    "messagePlaceholder": "Escriu el teu missatge aquí...",
+    "privacy": "Accepto la política de privacitat i el tractament de les meves dades personals",
+    "send": "Enviar missatge"
+  },
+  "about": {
+    "title": "Transport de confiança des de Mercabarna",
+    "subtitle": "Empresa familiar de transport amb més de 15 anys movent el producte fresc amb compromís, puntualitat i tracte proper.",
+    "historyTitle": "Una història d'esforç i compromís",
+    "historyText1": "Aquesta empresa va néixer de l'esforç d'una sola persona que va decidir emprendre en el sector del transport a Mercabarna. Amb dedicació, responsabilitat i moltes hores de carretera, va anar creixent pas a pas.",
+    "historyText2": "Avui, l'empresa compta amb tres camions i la segona generació al capdavant, mantenint els mateixos valors del primer dia: puntualitat, tracte proper i compromís amb cada client.",
+    "historyText3": "Treballem cada dia perquè la teva mercaderia arribi a temps i en perfectes condicions."
+  },
+  "reviews": {
+    "title": "Valoracions i Comentaris d'Usuaris",
+    "subtitle": "Descobreix el que altres usuaris pensen sobre el servei rebut.",
+    "all": "Totes les valoracions",
+    "recent": "Més recents",
+    "positive": "Positives",
+    "negative": "Negatives",
+    "search": "Cercar en valoracions..."
+  },
+  "footer": {
+    "quickLinks": "Enllaços Ràpids",
+    "home": "Inici",
+    "services": "Serveis",
+    "about": "Nosaltres",
+    "contact": "Contacte",
+    "servicesTitle": "Serveis",
+    "nationalTransport": "Transport Nacional",
+    "internationalTransport": "Transport Internacional",
+    "logistics": "Logística",
+    "storage": "Emmagatzematge",
+    "legalInfo": "Informació Legal",
+    "privacy": "Política de Privacitat",
+    "terms": "Termes i Condicions",
+    "cookies": "Política de Cookies",
+    "legal": "Avís Legal"
+  }
+}
