@@ -28,12 +28,95 @@ function formatFecha(f: string | null) {
   return new Date(f).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
 }
 
+function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => void; reservaId: number; origen: string; destino: string }) {
+  const [tipo, setTipo] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [enviando, setEnviando] = useState(false);
+
+  async function enviarReporte() {
+    if (!tipo) return;
+    setEnviando(true);
+    await fetch("/api/reportes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Tipo: tipo, Descripcion: descripcion }),
+    });
+    setEnviando(false);
+    setTipo("");
+    setDescripcion("");
+    onClose();
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl relative">
+
+        {/* Header */}
+        <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center text-lg">⚠️</div>
+            <h2 className="text-lg font-bold text-gray-900">Reportar Incidencia</h2>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
+        </div>
+
+        <div className="px-8 py-6 space-y-5">
+          {/* Reserva afectada */}
+          <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Reserva Afectada</p>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400 text-lg">🚛</span>
+              <span className="text-sm font-medium text-gray-700">#{String(reservaId).padStart(6, "0")} — {origen} → {destino}</span>
+            </div>
+          </div>
+
+          {/* Tipo */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 block mb-2">Tipo de Reporte</label>
+            <select
+              value={tipo}
+              onChange={e => setTipo(e.target.value)}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            >
+              <option value="">Selecciona el tipo de reporte</option>
+              <option value="Problema Técnico">Problema Técnico</option>
+              <option value="Incidencia">Incidencia</option>
+              <option value="Sugerencia">Sugerencia</option>
+            </select>
+          </div>
+
+          {/* Descripción */}
+          <div>
+            <label className="text-sm font-semibold text-gray-700 block mb-2">Descripción</label>
+            <textarea
+              value={descripcion}
+              onChange={e => setDescripcion(e.target.value)}
+              rows={4}
+              placeholder="Describe el problema o incidencia con detalle..."
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            />
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 px-8 py-5 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+          <button onClick={onClose} className="px-5 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">Cancelar</button>
+          <button onClick={enviarReporte} disabled={!tipo || enviando} className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 shadow-sm shadow-blue-200 transition disabled:opacity-50">
+            {enviando ? "Enviando..." : "Enviar Reporte"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DetallePedidoPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [modalReporte, setModalReporte] = useState(false);
 
   useEffect(() => {
     fetch(`/api/cliente/ruta/${id}`)
@@ -62,7 +145,16 @@ export default function DetallePedidoPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
 
-      {/* Hero banner con color según estado */}
+      {modalReporte && (
+        <ModalReporte
+          onClose={() => setModalReporte(false)}
+          reservaId={data.idReserva}
+          origen={data.rutaOrigen ?? data.reservaOrigen ?? "—"}
+          destino={data.rutaDestino ?? data.reservaDestino ?? "—"}
+        />
+      )}
+
+      {/* Hero banner */}
       <div className={`w-full px-10 py-8 ${colores?.bg ?? "bg-white"} border-b ${colores?.border ?? "border-gray-200"}`}>
         <div>
           <button
@@ -79,13 +171,21 @@ export default function DetallePedidoPage() {
               </h1>
               <p className="text-sm text-gray-500 mt-1">{formatFecha(data.reservaFecha)} · {data.reservaHora}</p>
             </div>
-            {estado ? (
-              <span className={`text-sm font-semibold px-4 py-1.5 rounded-full ${colores?.badge ?? "bg-gray-100 text-gray-600"}`}>
-                {esIncidente ? "⚠️ Incidente" : enPausa ? "⏸️ En Pausa" : ESTADO_LABEL[estado]}
-              </span>
-            ) : (
-              <span className="text-sm font-medium px-4 py-1.5 rounded-full bg-gray-100 text-gray-500">Sin ruta asignada</span>
-            )}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setModalReporte(true)}
+                className="flex items-center gap-2 px-4 py-2 border border-red-300 text-red-600 bg-white rounded-lg text-sm font-semibold hover:bg-red-50 transition"
+              >
+                ⚠️ Reportar problema
+              </button>
+              {estado ? (
+                <span className={`text-sm font-semibold px-4 py-1.5 rounded-full ${colores?.badge ?? "bg-gray-100 text-gray-600"}`}>
+                  {esIncidente ? "⚠️ Incidente" : enPausa ? "⏸️ En Pausa" : ESTADO_LABEL[estado]}
+                </span>
+              ) : (
+                <span className="text-sm font-medium px-4 py-1.5 rounded-full bg-gray-100 text-gray-500">Sin ruta asignada</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -106,12 +206,10 @@ export default function DetallePedidoPage() {
 
         {/* Timeline */}
         {estado && !esIncidente && (
-          <div className="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 mb-12 shadow-sm">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-8">Estado del pedido</p>
             <div className="relative flex items-start justify-between">
-              {/* línea fondo */}
               <div className="absolute top-6 left-[6%] right-[6%] h-0.5 bg-gray-200" />
-              {/* línea progreso */}
               {idxActual > 0 && (
                 <div
                   className="absolute top-6 left-[6%] h-0.5 bg-blue-500 transition-all duration-500"
@@ -125,7 +223,7 @@ export default function DetallePedidoPage() {
                   <div key={paso.key} className="flex flex-col items-center z-10 flex-1">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl border-2 transition-all duration-300 ${
                       activo     ? "border-blue-500 bg-white shadow-lg shadow-blue-100 scale-110" :
-                      completado ? "border-blue-400 bg-blue-500"  :
+                      completado ? "border-blue-400 bg-blue-500" :
                                    "border-gray-200 bg-white"
                     }`}>
                       {completado
@@ -219,12 +317,12 @@ export default function DetallePedidoPage() {
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Detalles de la reserva</p>
             <div className="space-y-3">
               {[
-                { label: "Motivo",         value: data.reservaMotivo },
-                { label: "Fecha",          value: formatFecha(data.reservaFecha) },
-                { label: "Hora",           value: data.reservaHora },
-                { label: "Origen",         value: data.reservaOrigen },
-                { label: "Destino",        value: data.reservaDestino },
-                { label: "Representante",  value: data.reservaRepresentante },
+                { label: "Motivo",        value: data.reservaMotivo },
+                { label: "Fecha",         value: formatFecha(data.reservaFecha) },
+                { label: "Hora",          value: data.reservaHora },
+                { label: "Origen",        value: data.reservaOrigen },
+                { label: "Destino",       value: data.reservaDestino },
+                { label: "Representante", value: data.reservaRepresentante },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-start gap-4">
                   <span className="text-xs text-gray-400 shrink-0">{label}</span>
