@@ -20,3 +20,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: 'Error al obtener cliente' }, { status: 500 });
   }
 }
+
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  try {
+    const body = await request.json();
+    const { Nombre, NombreEmpresa, RazonSocial, Telf } = body;
+    const updated = await prisma.cliente.update({
+      where: { ID: parseInt(id) },
+      data: { Nombre, NombreEmpresa, RazonSocial, Telf },
+    });
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error('Error al actualizar cliente:', error);
+    return NextResponse.json({ error: 'Error al actualizar cliente' }, { status: 500 });
+  }
+}
