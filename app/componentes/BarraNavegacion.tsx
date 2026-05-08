@@ -42,7 +42,7 @@ export default function NavBar() {
               <li><NavLink href="/contacto" className="hover:text-blue-600">{translations('contact')}</NavLink></li>
               <li><NavLink href="/sobre-nosotros" className="hover:text-blue-600">{translations('about')}</NavLink></li>
               <li className="text-gray-300">|</li>
-              <li><NavLink href="/home/cliente/ruta" className="hover:text-blue-600">Ruta</NavLink></li>
+              <li><NavLink href="/home/cliente/ruta" className="hover:text-blue-600">Reservas</NavLink></li>
               <li><NavLink href="/home/cliente/solicitar" className="hover:text-blue-600">Solicitar</NavLink></li>
             </>
           ) : (
