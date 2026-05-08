@@ -64,6 +64,7 @@ export async function POST(request: Request) {
         destino: body.destino || null,
         idCliente,
         fechaServicio: body.fechaServicio ? new Date(body.fechaServicio) : null,
+        fechaFin: body.fechaFin ? new Date(body.fechaFin) : null,
         hora: body.hora || null,
         representante: body.representante || null
       }
