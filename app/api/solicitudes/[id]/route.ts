@@ -10,10 +10,10 @@ export async function PATCH(
   try {
     const id = parseInt(params.id);
     const body = await request.json();
-    const { estado, idCamionero, motivoRechazo } = body;
+    const { estado, idCamionero, motivoRechazo, cliente, tipo, asunto, descripcion } = body;
 
     // Si se acepta la solicitud, asignar camionero automáticamente
-    if (estado === 'Aceptada' || estado === 'Aceptada') {
+    if (estado === 'Aceptada') {
       if (!idCamionero) {
         return NextResponse.json(
           { error: 'Debe asignar un camionero al aceptar la solicitud' },
@@ -33,13 +33,39 @@ export async function PATCH(
         );
       }
 
+      // Obtener datos de la solicitud
+      const solicitudActual = await prisma.solicitud.findUnique({
+        where: { id }
+      });
+
+      if (!solicitudActual) {
+        return NextResponse.json(
+          { error: 'Solicitud no encontrada' },
+          { status: 404 }
+        );
+      }
+
+      // Crear reserva automáticamente con los datos de la solicitud
+      if (solicitudActual.fechaServicio && solicitudActual.hora) {
+        await prisma.reservas.create({
+          data: {
+            Fecha: solicitudActual.fechaServicio,
+            Hora: solicitudActual.hora,
+            Representante: solicitudActual.representante || solicitudActual.cliente,
+            Origen: solicitudActual.origen || '',
+            Destino: solicitudActual.destino || '',
+            Motivo: solicitudActual.tipo,
+            Descripci_n: solicitudActual.descripcion
+          }
+        });
+      }
+
       // Actualizar solicitud con camionero asignado
       const solicitud = await prisma.solicitud.update({
         where: { id },
         data: {
           estado: 'Aceptada' as any,
-          idCamionero,
-          ...body
+          idCamionero
         },
         include: {
           clienteRel: true,
@@ -69,13 +95,18 @@ export async function PATCH(
       });
     }
 
-    // Actualización normal
+    // Actualización normal (editar solicitud)
+    const updateData: any = {};
+    
+    if (cliente !== undefined) updateData.cliente = cliente;
+    if (tipo !== undefined) updateData.tipo = tipo;
+    if (asunto !== undefined) updateData.asunto = asunto;
+    if (descripcion !== undefined) updateData.descripcion = descripcion;
+    if (estado !== undefined) updateData.estado = mapEstadoToEnum(estado);
+
     const solicitud = await prisma.solicitud.update({
       where: { id },
-      data: {
-        ...body,
-        estado: mapEstadoToEnum(body.estado || estado)
-      }
+      data: updateData
     });
 
     return NextResponse.json({

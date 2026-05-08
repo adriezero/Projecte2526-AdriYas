@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import {
   Reserva,
+  Cliente,
   obtenerReservas,
   crearReserva,
   formatearFecha,
@@ -18,6 +19,7 @@ import {
 export default function Reservas() {
   const [reservas, setReservas] = useState<Reserva[]>([]);
   const [reservasFiltradas, setReservasFiltradas] = useState<Reserva[]>([]);
+  const [clientes, setClientes] = useState<Cliente[]>([]);
   const [cargando, setCargando] = useState(true);
   const [busqueda, setBusqueda] = useState('');
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -25,7 +27,8 @@ export default function Reservas() {
   const [mesActual, setMesActual] = useState(new Date().getMonth());
   const [yearActual, setYearActual] = useState(new Date().getFullYear());
   
-  const [nuevaFecha, setNuevaFecha] = useState('');
+  const [nuevaFechaInicio, setNuevaFechaInicio] = useState('');
+  const [nuevaFechaFin, setNuevaFechaFin] = useState('');
   const [nuevaHora, setNuevaHora] = useState('');
   const [nuevoRepresentante, setNuevoRepresentante] = useState('');
   const [nuevoOrigen, setNuevoOrigen] = useState('');
@@ -35,6 +38,7 @@ export default function Reservas() {
 
   useEffect(() => {
     cargarReservas();
+    cargarClientes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mesActual, yearActual]);
 
@@ -55,6 +59,17 @@ export default function Reservas() {
     }
   }
 
+  async function cargarClientes() {
+    try {
+      const res = await fetch('/api/clientes');
+      if (!res.ok) throw new Error('Error al cargar clientes');
+      const data = await res.json();
+      setClientes(data);
+    } catch (error) {
+      console.error('Error al cargar clientes:', error);
+    }
+  }
+
   function filtrarReservas() {
     if (!busqueda.trim()) {
       setReservasFiltradas(reservas);
@@ -72,11 +87,12 @@ export default function Reservas() {
   }
 
   async function handleCrearReserva() {
-    if (!nuevaFecha || !nuevaHora || !nuevoRepresentante || !nuevoOrigen || !nuevoDestino) return;
+    if (!nuevaFechaInicio || !nuevaHora || !nuevoRepresentante || !nuevoOrigen || !nuevoDestino) return;
     
     try {
       const nuevaReserva = await crearReserva(
-        nuevaFecha,
+        nuevaFechaInicio,
+        nuevaFechaFin || nuevaFechaInicio,
         nuevaHora,
         nuevoRepresentante,
         nuevoOrigen,
@@ -93,7 +109,8 @@ export default function Reservas() {
   }
 
   function limpiarFormulario() {
-    setNuevaFecha('');
+    setNuevaFechaInicio('');
+    setNuevaFechaFin('');
     setNuevaHora('');
     setNuevoRepresentante('');
     setNuevoOrigen('');
@@ -149,41 +166,55 @@ export default function Reservas() {
             <div className="space-y-4">
               <div>
                 <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <User size={14} /> Nombre Representante
+                  <User size={14} /> Cliente
                 </label>
-                <input
-                  type="text"
+                <select
                   value={nuevoRepresentante}
                   onChange={e => setNuevoRepresentante(e.target.value)}
-                  placeholder="Nombre del representante..."
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Seleccionar cliente...</option>
+                  {clientes.map(cliente => (
+                    <option key={cliente.ID} value={cliente.Nombre}>
+                      {cliente.Nombre} - {cliente.NombreEmpresa}
+                    </option>
+                  ))}
+                </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                    <CalendarIcon size={14} /> Fecha
-                  </label>
+              <div>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                  <CalendarIcon size={14} /> Rango de Fechas
+                </label>
+                <div className="grid grid-cols-2 gap-3">
                   <input
                     type="date"
-                    value={nuevaFecha}
-                    onChange={e => setNuevaFecha(e.target.value)}
+                    value={nuevaFechaInicio}
+                    onChange={e => setNuevaFechaInicio(e.target.value)}
+                    placeholder="Fecha inicio"
                     className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
-                </div>
-
-                <div>
-                  <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                    <Clock size={14} /> Hora
-                  </label>
                   <input
-                    type="time"
-                    value={nuevaHora}
-                    onChange={e => setNuevaHora(e.target.value)}
+                    type="date"
+                    value={nuevaFechaFin}
+                    onChange={e => setNuevaFechaFin(e.target.value)}
+                    placeholder="Fecha fin"
+                    min={nuevaFechaInicio}
                     className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                  <Clock size={14} /> Hora
+                </label>
+                <input
+                  type="time"
+                  value={nuevaHora}
+                  onChange={e => setNuevaHora(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
               </div>
 
               <div>
@@ -231,7 +262,7 @@ export default function Reservas() {
               </button>
               <button
                 onClick={handleCrearReserva}
-                disabled={!nuevaFecha || !nuevaHora || !nuevoRepresentante || !nuevoOrigen || !nuevoDestino}
+                disabled={!nuevaFechaInicio || !nuevaHora || !nuevoRepresentante || !nuevoOrigen || !nuevoDestino}
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Plus size={16} />

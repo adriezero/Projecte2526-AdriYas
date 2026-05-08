@@ -43,6 +43,12 @@ export interface Solicitud {
   descripcion?: string | null;
   fecha: Date | string;
   estado: EstadoSolicitud;
+  fechaServicio?: Date | string | null;
+  hora?: string | null;
+  origen?: string | null;
+  destino?: string | null;
+  representante?: string | null;
+  motivoRechazo?: string | null;
 }
 
 export interface Cliente {
