@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
       tamano: doc.Tamano || 'N/A',
       rutaArchivo: doc.RutaArchivo,
       descripcion: doc.Descripcion,
+      estado: doc.Estado,
     }));
 
     return NextResponse.json(documentosFormateados);
@@ -87,6 +88,7 @@ export async function POST(request: NextRequest) {
       tamano: nuevoDocumento.Tamano || 'N/A',
       rutaArchivo: nuevoDocumento.RutaArchivo,
       descripcion: nuevoDocumento.Descripcion,
+      estado: nuevoDocumento.Estado,
     }, { status: 201 });
   } catch (error) {
     console.error('Error al crear documento:', error);

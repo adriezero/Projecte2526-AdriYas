@@ -4,7 +4,7 @@ import BarraLateral from "@componentes/dispatcher/BarraLateral";
 import { useState, useEffect } from "react";
 import { 
   Eye, Edit, Trash2, Download, FileText, Calendar, 
-  HardDrive, Truck, ChevronLeft, ChevronRight
+  HardDrive, Truck, ChevronLeft, ChevronRight, CheckCircle, XCircle
 } from 'lucide-react';
 import { Documento } from '@interfaces/interfaces';
 import {
@@ -14,7 +14,8 @@ import {
   obtenerDocumentos,
   eliminarDocumento,
   actualizarDocumento,
-  descargarDocumento
+  descargarDocumento,
+  cambiarEstadoDocumento
 } from './logic';
 
 const ITEMS_POR_PAGINA = 10;
@@ -157,6 +158,16 @@ export default function Documentacion() {
     } catch (error) {
       console.error('Error al descargar documento:', error);
       alert('Error al descargar documento');
+    }
+  }
+
+  async function handleCambiarEstado(id: number, estado: 'Aceptado' | 'Rechazado') {
+    try {
+      await cambiarEstadoDocumento(id, estado);
+      await cargarDocumentos();
+    } catch (error) {
+      console.error('Error al cambiar estado:', error);
+      alert('Error al cambiar estado del documento');
     }
   }
 
@@ -418,6 +429,9 @@ export default function Documentacion() {
                         <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5"><HardDrive size={13} /> Tamaño</span>
                         </th>
+                        <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                          Estado
+                        </th>
                         <th className="px-5 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           Acciones
                         </th>
@@ -426,7 +440,7 @@ export default function Documentacion() {
                     <tbody className="divide-y divide-slate-100">
                       {documentosPaginados.length === 0 ? (
                         <tr>
-                          <td colSpan={7} className="px-5 py-16 text-center">
+                          <td colSpan={8} className="px-5 py-16 text-center">
                             <div className="flex flex-col items-center gap-2">
                               <FileText size={36} className="text-slate-300" />
                               <p className="text-slate-700 font-semibold">No hay documentos</p>
@@ -461,7 +475,32 @@ export default function Documentacion() {
                               <span className="text-sm text-slate-600">{doc.tamano}</span>
                             </td>
                             <td className="px-5 py-4">
+                              {doc.estado === 'Aceptado' ? (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-md text-xs font-semibold">
+                                  <CheckCircle size={12} /> Aceptado
+                                </span>
+                              ) : doc.estado === 'Rechazado' ? (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded-md text-xs font-semibold">
+                                  <XCircle size={12} /> Rechazado
+                                </span>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-md text-xs font-semibold">
+                                  Pendiente
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-5 py-4">
                               <div className="flex items-center justify-center gap-2">
+                                {doc.estado === 'Pendiente' && (
+                                  <>
+                                    <button onClick={() => handleCambiarEstado(doc.id, 'Aceptado')} className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg" title="Aceptar">
+                                      <CheckCircle size={16} />
+                                    </button>
+                                    <button onClick={() => handleCambiarEstado(doc.id, 'Rechazado')} className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg" title="Rechazar">
+                                      <XCircle size={16} />
+                                    </button>
+                                  </>
+                                )}
                                 <button onClick={() => handleVerDetalles(doc)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="Ver detalles">
                                   <Eye size={16} />
                                 </button>

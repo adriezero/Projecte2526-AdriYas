@@ -75,15 +75,17 @@ export interface Documento {
   tamano: string;
   rutaArchivo?: string;
   descripcion?: string;
+  estado?: 'Pendiente' | 'Aceptado' | 'Rechazado';
 }
 
-export type EstadoDoc = 'verificado' | 'pendiente' | 'falta';
+export type EstadoDoc = 'verificado' | 'pendiente' | 'falta' | 'rechazado';
 
 export interface DocumentoCamionero {
   tipo: string;
   estado: EstadoDoc;
   archivo?: string;
   fechaSubida?: Date;
+  id?: number;
 }
 
 export interface Informe {

@@ -3,7 +3,7 @@
 import BarraLateral from "@componentes/camionero/BarraLateral";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { FileText, Upload, Eye, CheckCircle2, Clock, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { FileText, Upload, Eye, CheckCircle2, Clock, AlertCircle, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { EstadoDoc, DocumentoCamionero, Documento } from '@interfaces/interfaces';
 
 export default function Documentos() {
@@ -41,33 +41,37 @@ export default function Documentos() {
           if (doc.tipo === 'Licencia' && docsMap['Licencia']) {
             docsMap['Licencia'] = {
               tipo: 'Licencia',
-              estado: 'pendiente',
+              estado: doc.estado === 'Aceptado' ? 'verificado' : doc.estado === 'Rechazado' ? 'rechazado' : 'pendiente',
               archivo: doc.rutaArchivo,
-              fechaSubida: new Date(doc.fechaSubida)
+              fechaSubida: new Date(doc.fechaSubida),
+              id: doc.id
             };
           } else if (doc.tipo === 'Certificado') {
             // Certificado puede ser DNI o Antecedentes, verificamos por descripción
             if (doc.descripcion?.includes('DNI') || doc.descripcion?.includes('Identificador') || doc.descripcion?.includes('identificación')) {
               docsMap['DNI'] = {
                 tipo: 'DNI',
-                estado: 'pendiente',
+                estado: doc.estado === 'Aceptado' ? 'verificado' : doc.estado === 'Rechazado' ? 'rechazado' : 'pendiente',
                 archivo: doc.rutaArchivo,
-                fechaSubida: new Date(doc.fechaSubida)
+                fechaSubida: new Date(doc.fechaSubida),
+                id: doc.id
               };
             } else if (doc.descripcion?.includes('Antecedentes')) {
               docsMap['Antecedentes'] = {
                 tipo: 'Antecedentes',
-                estado: 'pendiente',
+                estado: doc.estado === 'Aceptado' ? 'verificado' : doc.estado === 'Rechazado' ? 'rechazado' : 'pendiente',
                 archivo: doc.rutaArchivo,
-                fechaSubida: new Date(doc.fechaSubida)
+                fechaSubida: new Date(doc.fechaSubida),
+                id: doc.id
               };
             }
           } else if (doc.tipo === 'Permiso' && docsMap['Permiso']) {
             docsMap['Permiso'] = {
               tipo: 'Permiso',
-              estado: 'pendiente',
+              estado: doc.estado === 'Aceptado' ? 'verificado' : doc.estado === 'Rechazado' ? 'rechazado' : 'pendiente',
               archivo: doc.rutaArchivo,
-              fechaSubida: new Date(doc.fechaSubida)
+              fechaSubida: new Date(doc.fechaSubida),
+              id: doc.id
             };
           }
         });
@@ -122,10 +126,35 @@ export default function Documentos() {
     }
   }
 
+  async function eliminarDocumento(tipo: string, docId?: number) {
+    if (!docId) return;
+    
+    if (!confirm(`¿Estás seguro de eliminar el documento "${obtenerNombreCompleto(tipo)}"? Podrás subir uno nuevo después.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/documentos/${docId}`, {
+        method: 'DELETE'
+      });
+
+      if (res.ok) {
+        setExito(`Documento "${obtenerNombreCompleto(tipo)}" eliminado correctamente`);
+        await cargarDocumentos();
+        setTimeout(() => setExito(null), 5000);
+      } else {
+        setError('Error al eliminar el documento');
+      }
+    } catch (error) {
+      setError(`Error de conexión: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+    }
+  }
+
   function obtenerEstadoTexto(estado: EstadoDoc) {
     switch (estado) {
       case 'verificado': return 'Subido y verificado';
       case 'pendiente': return 'Pendiente de revisión';
+      case 'rechazado': return 'Rechazado';
       case 'falta': return 'Falta subir';
     }
   }
@@ -134,6 +163,7 @@ export default function Documentos() {
     switch (estado) {
       case 'verificado': return 'bg-green-100 text-green-700 border-green-200';
       case 'pendiente': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+      case 'rechazado': return 'bg-red-100 text-red-700 border-red-200';
       case 'falta': return 'bg-red-100 text-red-700 border-red-200';
     }
   }
@@ -142,6 +172,7 @@ export default function Documentos() {
     switch (estado) {
       case 'verificado': return <CheckCircle2 size={16} />;
       case 'pendiente': return <Clock size={16} />;
+      case 'rechazado': return <AlertCircle size={16} />;
       case 'falta': return <AlertCircle size={16} />;
     }
   }
@@ -158,6 +189,7 @@ export default function Documentos() {
 
   const faltantes = documentos.filter(d => d.estado === 'falta');
   const pendientes = documentos.filter(d => d.estado === 'pendiente');
+  const rechazados = documentos.filter(d => d.estado === 'rechazado');
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -222,6 +254,25 @@ export default function Documentos() {
                         onChange={(e) => e.target.files?.[0] && subirDocumento(doc.tipo, e.target.files[0])}
                       />
                     </label>
+                  ) : doc.estado === 'rechazado' ? (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => eliminarDocumento(doc.tipo, doc.id)}
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700"
+                      >
+                        <Trash2 size={16} />
+                        Eliminar
+                      </button>
+                      <a
+                        href={doc.archivo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-800 text-white rounded-lg text-sm font-semibold hover:bg-slate-700"
+                      >
+                        <Eye size={16} />
+                        Ver
+                      </a>
+                    </div>
                   ) : (
                     <a
                       href={doc.archivo}
@@ -254,7 +305,7 @@ export default function Documentos() {
                       </p>
                     ) : (
                       <p className="text-sm text-slate-600">
-                        ¡Atención! {faltantes.length > 0 && `Falta documentación importante.`} Para poder trabajar, es necesario {faltantes.length > 0 && `subir ${faltantes.map(d => `"${obtenerNombreCompleto(d.tipo)}"`).join(' y ')}`}{faltantes.length > 0 && pendientes.length > 0 && ' y '}{pendientes.length > 0 && `esperar la revisión de ${pendientes.map(d => `"${obtenerNombreCompleto(d.tipo)}"`).join(' y ')}`}.
+                        ¡Atención! {faltantes.length > 0 && `Falta documentación importante.`} Para poder trabajar, es necesario {faltantes.length > 0 && `subir ${faltantes.map(d => `"${obtenerNombreCompleto(d.tipo)}"`).join(' y ')}`}{faltantes.length > 0 && (pendientes.length > 0 || rechazados.length > 0) && ' y '}{pendientes.length > 0 && `esperar la revisión de ${pendientes.map(d => `"${obtenerNombreCompleto(d.tipo)}"`).join(' y ')}`}{rechazados.length > 0 && `. Los documentos ${rechazados.map(d => `"${obtenerNombreCompleto(d.tipo)}"`).join(' y ')} fueron rechazados, debes subirlos nuevamente`}.
                       </p>
                     )}
                   </div>

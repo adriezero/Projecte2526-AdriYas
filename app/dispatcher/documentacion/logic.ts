@@ -64,6 +64,10 @@ export async function actualizarDocumento(id: number, datos: Partial<Documento>)
   return res.json();
 }
 
+export async function cambiarEstadoDocumento(id: number, estado: 'Aceptado' | 'Rechazado'): Promise<Documento> {
+  return actualizarDocumento(id, { estado });
+}
+
 export async function descargarDocumento(id: number): Promise<void> {
   window.open(`/api/documentos/download?id=${id}`, '_blank');
 }

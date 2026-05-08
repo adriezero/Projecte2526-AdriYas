@@ -32,6 +32,7 @@ export async function GET(
       tamano: documento.Tamano || 'N/A',
       rutaArchivo: documento.RutaArchivo,
       descripcion: documento.Descripcion,
+      estado: documento.Estado,
     });
   } catch (error) {
     console.error('Error al obtener documento:', error);
@@ -51,7 +52,7 @@ export async function PATCH(
     const { id: paramId } = await params;
     const id = parseInt(paramId);
     const body = await request.json();
-    const { nombre, tipo, fechaSubida, asociadoA } = body;
+    const { nombre, tipo, fechaSubida, asociadoA, estado } = body;
 
     const documentoActualizado = await prisma.documentos.update({
       where: { ID: id },
@@ -60,6 +61,7 @@ export async function PATCH(
         ...(tipo && { Tipo: tipo }),
         ...(fechaSubida && { FechaSubida: new Date(fechaSubida) }),
         ...(asociadoA !== undefined && { AsociadoA: asociadoA }),
+        ...(estado && { Estado: estado }),
       },
     });
 
@@ -72,6 +74,7 @@ export async function PATCH(
       tamano: documentoActualizado.Tamano || 'N/A',
       rutaArchivo: documentoActualizado.RutaArchivo,
       descripcion: documentoActualizado.Descripcion,
+      estado: documentoActualizado.Estado,
     });
   } catch (error) {
     console.error('Error al actualizar documento:', error);
