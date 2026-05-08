@@ -46,7 +46,7 @@ export default function RutaListPage() {
 
   return (
     <div className="min-h-screen bg-white px-6 pt-24 pb-6">
-      <h1 className="text-xl font-bold mb-5">Mis Rutas</h1>
+      <h1 className="text-xl font-bold mb-5">Mis Reservas</h1>
 
       {/* Filtros */}
       <div className="flex gap-2 flex-wrap mb-6">
