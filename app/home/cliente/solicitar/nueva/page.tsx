@@ -6,10 +6,36 @@ import { useRouter } from 'next/navigation';
 import { Cliente } from '@interfaces/interfaces';
 import { getClienteCompleto, enviarSolicitud } from '../logic';
 
+function Modal({ ok, onClose }: { ok: boolean; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 flex flex-col items-center gap-4">
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center text-3xl ${ok ? 'bg-green-100' : 'bg-red-100'}`}>
+          {ok ? '✅' : '❌'}
+        </div>
+        <p className="text-gray-800 font-semibold text-center">
+          {ok
+            ? 'Solicitud enviada correctamente. El dispatcher la revisará pronto.'
+            : 'Error al enviar la solicitud. Por favor, inténtalo de nuevo.'}
+        </p>
+        <button
+          onClick={onClose}
+          className={`mt-2 px-6 py-2.5 rounded-xl text-white text-sm font-semibold transition ${
+            ok ? 'bg-green-600 hover:bg-green-700' : 'bg-red-500 hover:bg-red-600'
+          }`}
+        >
+          {ok ? 'Ver mis solicitudes' : 'Cerrar'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function NuevaSolicitudPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [cliente, setCliente] = useState<Cliente | null>(null);
+  const [modal, setModal] = useState<{ show: boolean; ok: boolean }>({ show: false, ok: false });
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -21,7 +47,7 @@ export default function NuevaSolicitudPage() {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
-    if (!cliente) { alert('Error: No se pudo obtener la información del cliente'); return; }
+    if (!cliente) return;
     const success = await enviarSolicitud({
       servicio: formData.get('servicio') as string,
       cliente: cliente.Nombre,
@@ -31,16 +57,21 @@ export default function NuevaSolicitudPage() {
       destino: formData.get('destino') as string,
       fechaServicio: formData.get('fechaServicio') as string,
     });
-    if (success) {
-      alert('✅ Solicitud enviada correctamente. El dispatcher la revisará pronto.');
-      router.push('/home/cliente/solicitar');
-    } else {
-      alert('❌ Error al enviar la solicitud. Por favor, inténtalo de nuevo.');
-    }
+    setModal({ show: true, ok: success });
+    if (success) form.reset();
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex items-center justify-center">
+      {modal.show && (
+        <Modal
+          ok={modal.ok}
+          onClose={() => {
+            setModal({ show: false, ok: false });
+            if (modal.ok) router.push('/home/cliente/solicitar');
+          }}
+        />
+      )}
       <div className="max-w-lg w-full">
         <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 mb-6">
           ← Volver a mis solicitudes
