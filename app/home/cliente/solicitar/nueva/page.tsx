@@ -56,6 +56,7 @@ export default function NuevaSolicitudPage() {
       origen: formData.get('origen') as string,
       destino: formData.get('destino') as string,
       fechaServicio: formData.get('fechaServicio') as string,
+      fechaFin: formData.get('fechaFin') as string,
     });
     setModal({ show: true, ok: success });
     if (success) form.reset();
@@ -117,13 +118,26 @@ export default function NuevaSolicitudPage() {
               />
             </div>
             <div>
-              <label className="block text-base font-medium text-black mb-2">Fecha del servicio:</label>
-              <input
-                type="date"
-                name="fechaServicio"
-                className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
-                required
-              />
+              <label className="block text-base font-medium text-black mb-2">Rango de fechas del servicio:</label>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-gray-600 mb-1">Fecha inicio:</label>
+                  <input
+                    type="date"
+                    name="fechaServicio"
+                    className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm text-gray-600 mb-1">Fecha fin (opcional):</label>
+                  <input
+                    type="date"
+                    name="fechaFin"
+                    className="w-full px-5 py-3 text-lg border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <label className="block text-base font-medium text-black mb-2">Detalles del servicio:</label>

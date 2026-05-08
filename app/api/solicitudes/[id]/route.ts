@@ -67,12 +67,18 @@ export async function PATCH(
         return NextResponse.json({ error: 'Solicitud no encontrada' }, { status: 404 });
       }
 
-      // Crear reserva automáticamente con los datos de la solicitud
-      if (solicitudActual.fechaServicio && solicitudActual.hora) {
-        await prisma.reservas.create({
+      // Crear reservas para cada día del rango
+      const fechaInicio = solicitudActual.fechaServicio || new Date();
+      const fechaFin = solicitudActual.fechaFin || fechaInicio;
+      
+      const reservasCreadas = [];
+      const currentDate = new Date(fechaInicio);
+      
+      while (currentDate <= fechaFin) {
+        const nuevaReserva = await prisma.reservas.create({
           data: {
-            Fecha: solicitudActual.fechaServicio,
-            Hora: solicitudActual.hora,
+            Fecha: new Date(currentDate),
+            Hora: solicitudActual.hora || '08:00',
             Representante: solicitudActual.representante || solicitudActual.cliente,
             Origen: solicitudActual.origen || '',
             Destino: solicitudActual.destino || '',
@@ -80,6 +86,21 @@ export async function PATCH(
             Descripci_n: solicitudActual.descripcion
           }
         });
+        
+        reservasCreadas.push(nuevaReserva);
+        
+        // Crear relación en solicitud_reserva si hay idCliente
+        if (solicitudActual.idCliente) {
+          await prisma.solicitud_reserva.create({
+            data: {
+              idReserva: nuevaReserva.ID,
+              idCliente: solicitudActual.idCliente,
+              idCamionero: idCamionero
+            }
+          });
+        }
+        
+        currentDate.setDate(currentDate.getDate() + 1);
       }
 
       // Actualizar solicitud con camionero asignado
@@ -113,7 +134,7 @@ export async function PATCH(
     if (estado !== undefined) updateData.estado = mapEstadoToEnum(estado);
 
     const solicitud = await prisma.solicitud.update({
-      where: { id },
+      where: { id: parseInt(id) },
       data: updateData
     });
 

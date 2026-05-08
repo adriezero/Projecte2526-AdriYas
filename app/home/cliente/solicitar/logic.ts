@@ -49,6 +49,7 @@ export const enviarSolicitud = async (data: {
   origen?: string;
   destino?: string;
   fechaServicio?: string;
+  fechaFin?: string;
 }) => {
   const response = await fetch('/api/solicitudes', {
     method: 'POST',
@@ -61,6 +62,7 @@ export const enviarSolicitud = async (data: {
       origen: data.origen || null,
       destino: data.destino || null,
       fechaServicio: data.fechaServicio || null,
+      fechaFin: data.fechaFin || null,
     }),
   });
   return response.ok;
