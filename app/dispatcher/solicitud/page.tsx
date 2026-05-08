@@ -324,9 +324,39 @@ export default function Solicitudes() {
                 </div>
               )}
               <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">Fecha</label>
+                <label className="text-xs font-semibold text-slate-500 uppercase">Fecha Solicitud</label>
                 <p className="text-slate-800 font-medium mt-1">{formatearFecha(solicitudSeleccionada.fecha)}</p>
               </div>
+              {solicitudSeleccionada.fechaServicio && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase">Fecha Servicio</label>
+                  <p className="text-slate-800 font-medium mt-1">{formatearFecha(solicitudSeleccionada.fechaServicio)}</p>
+                </div>
+              )}
+              {solicitudSeleccionada.hora && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase">Hora</label>
+                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.hora}</p>
+                </div>
+              )}
+              {solicitudSeleccionada.origen && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase">Origen</label>
+                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.origen}</p>
+                </div>
+              )}
+              {solicitudSeleccionada.destino && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase">Destino</label>
+                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.destino}</p>
+                </div>
+              )}
+              {solicitudSeleccionada.representante && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase">Representante</label>
+                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.representante}</p>
+                </div>
+              )}
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase">Estado</label>
                 <div className="mt-1">
@@ -335,6 +365,12 @@ export default function Solicitudes() {
                   </span>
                 </div>
               </div>
+              {solicitudSeleccionada.motivoRechazo && (
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase">Motivo de Rechazo</label>
+                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.motivoRechazo}</p>
+                </div>
+              )}
             </div>
 
             <div className="flex gap-3 mt-6">
@@ -541,6 +577,9 @@ export default function Solicitudes() {
                           <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha Solicitud</span>
                         </th>
                         <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                          <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha Servicio</span>
+                        </th>
+                        <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5">Estado</span>
                         </th>
                         <th className="px-5 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -551,7 +590,7 @@ export default function Solicitudes() {
                     <tbody className="divide-y divide-slate-100">
                       {solicitudesFiltradas.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="px-5 py-16 text-center">
+                          <td colSpan={8} className="px-5 py-16 text-center">
                             <div className="flex flex-col items-center gap-2">
                               <Package size={36} className="text-slate-300" />
                               <p className="text-slate-700 font-semibold">No hay solicitudes {filtro === 'todas' ? '' : filtro}</p>
@@ -587,6 +626,16 @@ export default function Solicitudes() {
                                 <Clock size={13} className="text-slate-400" />
                                 {formatearFecha(solicitud.fecha)}
                               </span>
+                            </td>
+                            <td className="px-5 py-4">
+                              {solicitud.fechaServicio ? (
+                                <span className="flex items-center gap-1.5 text-sm text-slate-600">
+                                  <Calendar size={13} className="text-slate-400" />
+                                  {formatearFecha(solicitud.fechaServicio)}
+                                </span>
+                              ) : (
+                                <span className="text-sm text-slate-400">-</span>
+                              )}
                             </td>
                             <td className="px-5 py-4">
                               <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border ${getEstadoColor(solicitud.estado)}`}>

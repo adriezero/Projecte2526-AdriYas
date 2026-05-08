@@ -1,6 +1,6 @@
-import { Reserva } from '@interfaces/interfaces';
+import { Reserva, Cliente } from '@interfaces/interfaces';
 
-export type { Reserva };
+export type { Reserva, Cliente };
 
 export async function obtenerReservas(mes?: number, year?: number): Promise<Reserva[]> {
   const params = mes && year ? `?mes=${mes}&year=${year}` : '';
@@ -10,7 +10,8 @@ export async function obtenerReservas(mes?: number, year?: number): Promise<Rese
 }
 
 export async function crearReserva(
-  fecha: string,
+  fechaInicio: string,
+  fechaFin: string,
   hora: string,
   representante: string,
   origen: string,
@@ -21,7 +22,7 @@ export async function crearReserva(
   const res = await fetch('/api/reservas', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fecha, hora, representante, origen, destino, motivo, descripcion })
+    body: JSON.stringify({ fechaInicio, fechaFin, hora, representante, origen, destino, motivo, descripcion })
   });
   if (!res.ok) {
     const errorData = await res.json();

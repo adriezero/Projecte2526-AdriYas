@@ -37,14 +37,9 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
-    // Obtener el último ID para asegurar que no haya conflictos
-    const ultimaReserva = await prisma.reservas.findFirst({
-      orderBy: { ID: 'desc' }
-    });
-    
     const reserva = await prisma.reservas.create({
       data: {
-        Fecha: new Date(body.fecha),
+        Fecha: new Date(body.fechaInicio),
         Hora: body.hora,
         Representante: body.representante,
         Origen: body.origen,
