@@ -79,6 +79,18 @@ export default function DetalleSolicitudPage() {
                 <p className="text-sm text-gray-700 bg-gray-50 rounded-lg p-4">{data.descripcion}</p>
               </div>
             )}
+            {data.estado === "Rechazada" && (
+              <div className="mt-4 rounded-xl border border-red-200 bg-gradient-to-br from-red-50 to-rose-50 overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-3 bg-red-100/60 border-b border-red-200">
+                  <span className="text-base">🚫</span>
+                  <p className="text-xs font-semibold text-red-600 uppercase tracking-widest">Solicitud rechazada</p>
+                </div>
+                <div className="px-4 py-4">
+                  <p className="text-xs text-red-400 mb-1">Motivo</p>
+                  <p className="text-sm font-medium text-red-700 leading-relaxed">{data.motivoRechazo ?? "Sin especificar"}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
