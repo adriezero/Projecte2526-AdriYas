@@ -222,6 +222,7 @@ model Solicitud {
   idCliente      Int?
   idCamionero    Int?
   fechaServicio  DateTime?        @db.Date
+  fechaFin       DateTime?        @db.Date
   hora           String?          @db.VarChar(10)
   origen         String?          @db.VarChar(255)
   destino        String?          @db.VarChar(255)
