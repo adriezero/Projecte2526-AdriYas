@@ -1,6 +1,7 @@
 "use client";
 
 import BarraLateral from "@componentes/dispatcher/BarraLateral";
+import ModalAceptarSolicitud from "@componentes/dispatcher/ModalAceptarSolicitud";
 import { useState, useEffect } from "react";
 import { 
   Eye, Edit, Trash2, Plus, Package, Calendar, User, 
@@ -39,6 +40,7 @@ export default function Solicitudes() {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [modalDetalles, setModalDetalles] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
+  const [modalProcesar, setModalProcesar] = useState(false);
   const [solicitudSeleccionada, setSolicitudSeleccionada] = useState<Solicitud | null>(null);
   const [nuevoCliente, setNuevoCliente] = useState('');
   const [nuevoTipo, setNuevoTipo] = useState('Transporte de mercancías');
@@ -66,6 +68,47 @@ export default function Solicitudes() {
     } catch (error) {
       console.error('Error al eliminar solicitud:', error);
     }
+  }
+
+  async function handleAceptarSolicitud(idCamionero: number) {
+    if (!solicitudSeleccionada) return;
+    try {
+      const res = await fetch(`/api/solicitudes/${solicitudSeleccionada.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: 'Aceptada', idCamionero })
+      });
+      if (!res.ok) throw new Error('Error al aceptar');
+      const actualizada = await res.json();
+      setSolicitudes(solicitudes.map(s => s.id === actualizada.id ? actualizada : s));
+      setModalProcesar(false);
+    } catch (error) {
+      console.error('Error al aceptar solicitud:', error);
+      alert('Error al aceptar la solicitud');
+    }
+  }
+
+  async function handleRechazarSolicitud(motivo: string) {
+    if (!solicitudSeleccionada) return;
+    try {
+      const res = await fetch(`/api/solicitudes/${solicitudSeleccionada.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ estado: 'Rechazada', motivoRechazo: motivo })
+      });
+      if (!res.ok) throw new Error('Error al rechazar');
+      const actualizada = await res.json();
+      setSolicitudes(solicitudes.map(s => s.id === actualizada.id ? actualizada : s));
+      setModalProcesar(false);
+    } catch (error) {
+      console.error('Error al rechazar solicitud:', error);
+      alert('Error al rechazar la solicitud');
+    }
+  }
+
+  function handleProcesarSolicitud(solicitud: Solicitud) {
+    setSolicitudSeleccionada(solicitud);
+    setModalProcesar(true);
   }
 
   async function handleCrearSolicitud() {
@@ -127,6 +170,16 @@ export default function Solicitudes() {
   return (
     <div className="min-h-screen bg-slate-50">
       <BarraLateral />
+
+      {/* Modal Procesar Solicitud */}
+      {modalProcesar && solicitudSeleccionada && (
+        <ModalAceptarSolicitud
+          solicitud={solicitudSeleccionada}
+          onClose={() => setModalProcesar(false)}
+          onAceptar={handleAceptarSolicitud}
+          onRechazar={handleRechazarSolicitud}
+        />
+      )}
 
       {/* Modal Nueva Solicitud */}
       {modalAbierto && (
@@ -542,6 +595,15 @@ export default function Solicitudes() {
                             </td>
                             <td className="px-5 py-4">
                               <div className="flex items-center justify-center gap-2">
+                                {solicitud.estado === 'Pendiente' && (
+                                  <button 
+                                    onClick={() => handleProcesarSolicitud(solicitud)} 
+                                    className="p-1.5 text-green-600 hover:bg-green-50 rounded-lg" 
+                                    title="Procesar solicitud"
+                                  >
+                                    <CheckCircle2 size={16} />
+                                  </button>
+                                )}
                                 <button onClick={() => handleVerDetalles(solicitud)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg" title="Ver detalles">
                                   <Eye size={16} />
                                 </button>

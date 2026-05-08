@@ -26,7 +26,11 @@ function mapEstadoFromEnum(estado: string): string {
 export async function GET() {
   try {
     const solicitudes = await prisma.solicitud.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
+      include: {
+        clienteRel: true,
+        camioneroRel: true
+      }
     });
     const mapped = solicitudes.map(s => ({
       ...s,
@@ -42,7 +46,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     console.log('Datos recibidos:', body);
-    console.log('Estado mapeado:', mapEstadoToEnum(body.estado || 'Pendiente'));
+    
+    // Buscar cliente por nombre para obtener ID
+    let idCliente = null;
+    if (body.cliente) {
+      const cliente = await prisma.cliente.findFirst({
+        where: { Nombre: body.cliente }
+      });
+      idCliente = cliente?.ID || null;
+    }
     
     const solicitud = await prisma.solicitud.create({
       data: {
@@ -51,7 +63,17 @@ export async function POST(request: Request) {
         asunto: body.asunto,
         descripcion: body.descripcion || null,
         fecha: body.fecha ? new Date(body.fecha) : new Date(),
-        estado: mapEstadoToEnum(body.estado || 'Pendiente') as any
+        estado: mapEstadoToEnum(body.estado || 'Pendiente') as any,
+        idCliente,
+        fechaServicio: body.fechaServicio ? new Date(body.fechaServicio) : null,
+        hora: body.hora || null,
+        origen: body.origen || null,
+        destino: body.destino || null,
+        representante: body.representante || null
+      },
+      include: {
+        clienteRel: true,
+        camioneroRel: true
       }
     });
     return NextResponse.json({

@@ -3,6 +3,110 @@ import { PrismaClient } from '@generated/prisma';
 
 const prisma = new PrismaClient();
 
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = parseInt(params.id);
+    const body = await request.json();
+    const { estado, idCamionero, motivoRechazo } = body;
+
+    // Si se acepta la solicitud, asignar camionero automáticamente
+    if (estado === 'Aceptada' || estado === 'Aceptada') {
+      if (!idCamionero) {
+        return NextResponse.json(
+          { error: 'Debe asignar un camionero al aceptar la solicitud' },
+          { status: 400 }
+        );
+      }
+
+      // Verificar que el camionero esté disponible
+      const camionero = await prisma.camionero.findUnique({
+        where: { ID: idCamionero }
+      });
+
+      if (!camionero || !camionero.Disponible) {
+        return NextResponse.json(
+          { error: 'El camionero no está disponible' },
+          { status: 400 }
+        );
+      }
+
+      // Actualizar solicitud con camionero asignado
+      const solicitud = await prisma.solicitud.update({
+        where: { id },
+        data: {
+          estado: 'Aceptada' as any,
+          idCamionero,
+          ...body
+        },
+        include: {
+          clienteRel: true,
+          camioneroRel: true
+        }
+      });
+
+      return NextResponse.json({
+        ...solicitud,
+        estado: 'Aceptada'
+      });
+    }
+
+    // Si se rechaza, guardar motivo
+    if (estado === 'Rechazada') {
+      const solicitud = await prisma.solicitud.update({
+        where: { id },
+        data: {
+          estado: 'Rechazada' as any,
+          motivoRechazo: motivoRechazo || 'Sin especificar'
+        }
+      });
+
+      return NextResponse.json({
+        ...solicitud,
+        estado: 'Rechazada'
+      });
+    }
+
+    // Actualización normal
+    const solicitud = await prisma.solicitud.update({
+      where: { id },
+      data: {
+        ...body,
+        estado: mapEstadoToEnum(body.estado || estado)
+      }
+    });
+
+    return NextResponse.json({
+      ...solicitud,
+      estado: mapEstadoFromEnum(solicitud.estado)
+    });
+  } catch (error: any) {
+    console.error('Error al actualizar solicitud:', error);
+    return NextResponse.json(
+      { error: 'Error al actualizar solicitud', details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = parseInt(params.id);
+    await prisma.solicitud.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: 'Error al eliminar solicitud', details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
 function mapEstadoToEnum(estado: string): string {
   const mapping: Record<string, string> = {
     'Pendiente': 'Pendiente',
@@ -21,60 +125,4 @@ function mapEstadoFromEnum(estado: string): string {
     'Rechazada': 'Rechazada'
   };
   return mapping[estado] || estado;
-}
-
-export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  try {
-    const solicitud = await prisma.solicitud.findUnique({
-      where: { id: parseInt(id) }
-    });
-    if (!solicitud) {
-      return NextResponse.json({ error: 'Solicitud no encontrada' }, { status: 404 });
-    }
-    return NextResponse.json({
-      ...solicitud,
-      estado: mapEstadoFromEnum(solicitud.estado)
-    });
-  } catch (error) {
-    return NextResponse.json({ error: 'Error al obtener solicitud' }, { status: 500 });
-  }
-}
-
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  try {
-    const body = await request.json();
-    const updateData: any = {};
-    
-    if (body.estado) updateData.estado = mapEstadoToEnum(body.estado);
-    if (body.cliente) updateData.cliente = body.cliente;
-    if (body.tipo) updateData.tipo = body.tipo;
-    if (body.asunto) updateData.asunto = body.asunto;
-    if (body.descripcion !== undefined) updateData.descripcion = body.descripcion;
-    
-    const solicitud = await prisma.solicitud.update({
-      where: { id: parseInt(id) },
-      data: updateData
-    });
-    
-    return NextResponse.json({
-      ...solicitud,
-      estado: mapEstadoFromEnum(solicitud.estado)
-    });
-  } catch (error) {
-    return NextResponse.json({ error: 'Error al actualizar solicitud' }, { status: 500 });
-  }
-}
-
-export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  try {
-    await prisma.solicitud.delete({
-      where: { id: parseInt(id) }
-    });
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ error: 'Error al eliminar solicitud' }, { status: 500 });
-  }
 }

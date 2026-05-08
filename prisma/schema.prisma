@@ -37,6 +37,7 @@ model camionero {
   turnos            turnos              @relation(fields: [idTurno], references: [ID], onDelete: Cascade)
   rutas             rutas[]
   solicitud_reserva solicitud_reserva[]
+  solicitudes       Solicitud[]
 
   @@index([idTurno])
 }
@@ -55,6 +56,7 @@ model cliente {
   comentarios       comentarios[]
   informes          informes[]
   solicitud_reserva solicitud_reserva[]
+  solicitudes       Solicitud[]
 }
 
 model comentarios {
@@ -209,14 +211,29 @@ model reportes {
 }
 
 model Solicitud {
-  id          Int              @id @default(autoincrement())
-  cliente     String           @db.VarChar(100)
-  tipo        String           @db.VarChar(100)
-  asunto      String           @db.VarChar(255)
-  descripcion String?
-  fecha       DateTime         @default(now())
-  estado      Solicitud_Estado @default(Pendiente)
-  createdAt   DateTime         @default(now())
+  id             Int              @id @default(autoincrement())
+  cliente        String           @db.VarChar(100)
+  tipo           String           @db.VarChar(100)
+  asunto         String           @db.VarChar(255)
+  descripcion    String?
+  fecha          DateTime         @default(now())
+  estado         Solicitud_Estado @default(Pendiente)
+  createdAt      DateTime         @default(now())
+  idCliente      Int?
+  idCamionero    Int?
+  fechaServicio  DateTime?        @db.Date
+  hora           String?          @db.VarChar(10)
+  origen         String?          @db.VarChar(255)
+  destino        String?          @db.VarChar(255)
+  representante  String?          @db.VarChar(100)
+  motivoRechazo  String?          @db.VarChar(255)
+  clienteRel     cliente?         @relation(fields: [idCliente], references: [ID], onDelete: SetNull)
+  camioneroRel   camionero?       @relation(fields: [idCamionero], references: [ID], onDelete: SetNull)
+
+  @@index([idCliente])
+  @@index([idCamionero])
+  @@index([estado])
+  @@index([fechaServicio])
 }
 
 enum rutas_Estado {
