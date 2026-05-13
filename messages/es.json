@@ -22,6 +22,8 @@
       "title": "Nuestros Servicios",
       "subtitle": "Ofrecemos una amplia gama de soluciones de transporte",
       "groundTransport": "Transporte Terrestre",
+      "cargoHandling": "Gestión de Carga",
+      "routeTracking": "Seguimiento de Rutas",
       "description": "Servicio de transporte confiable y eficiente para tu mercancía.",
       "moreInfo": "Más información"
     },

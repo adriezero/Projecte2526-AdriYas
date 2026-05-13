@@ -22,6 +22,8 @@
       "title": "Our Services",
       "subtitle": "We offer a wide range of transportation solutions",
       "groundTransport": "Ground Transportation",
+      "cargoHandling": "Cargo Handling",
+      "routeTracking": "Route Tracking",
       "description": "Reliable and efficient transportation service for your cargo.",
       "moreInfo": "More information"
     },

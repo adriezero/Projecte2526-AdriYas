@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { Plus } from "lucide-react";
 import { getClienteCompleto } from "./logic";
 
 const ESTADO_COLOR: Record<string, string> = {
@@ -39,13 +40,22 @@ export default function SolicitarPage() {
 
   return (
     <div className="min-h-screen bg-white px-6 pt-24 pb-6">
-      <div className="flex items-center justify-between mb-5">
-        <h1 className="text-xl font-bold text-black">Mis Solicitudes</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#2C2C2C] mb-2">
+            Mis Solicitudes
+          </h1>
+          <p className="text-[#A6A6A6]">
+            Crea y gestiona tus solicitudes de servicio
+          </p>
+        </div>
+        
         <button
           onClick={() => router.push("/home/cliente/solicitar/nueva")}
-          className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-[#F47C20] text-white text-sm font-semibold rounded-xl hover:bg-[#d66a1a] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 whitespace-nowrap"
         >
-          + Nueva solicitud
+          <Plus className="w-5 h-5" />
+          <span>Nueva solicitud</span>
         </button>
       </div>
 
