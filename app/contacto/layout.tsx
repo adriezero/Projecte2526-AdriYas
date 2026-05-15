@@ -1,3 +1,4 @@
+
 import BarraNavegacion from '@componentes/BarraNavegacion';
 import FooterGrande from '@componentes/FooterGrande'
 import { Metadata } from 'next'

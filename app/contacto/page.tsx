@@ -50,7 +50,7 @@ export default function Contacto() {
               <div>
                 <h3 className="text-2xl font-bold mb-2">Información de contacto</h3>
                 <p className="text-white/60 text-sm mb-10">Estamos aquí para ayudarte</p>
-
+<br />
                 <div className="space-y-6">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
@@ -60,6 +60,7 @@ export default function Contacto() {
                     </div>
                     <span className="text-sm text-white/80">info@truckwave.com</span>
                   </div>
+                  <br />
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -68,6 +69,7 @@ export default function Contacto() {
                     </div>
                     <span className="text-sm text-white/80">+34 900 123 456</span>
                   </div>
+                  <br />
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -139,7 +141,7 @@ export default function Contacto() {
                 />
               </div>
 
-              <div className="flex items-start gap-5">
+              <div className="flex items-start gap-4">
                 <div className="relative flex items-center justify-center mt-0.5 shrink-0">
                   <input
                     type="checkbox" id="privacidad" required
@@ -158,6 +160,7 @@ export default function Contacto() {
                 <label htmlFor="privacidad" className="text-sm text-[#6B7280] leading-relaxed cursor-pointer select-none">
                   {t("privacy")}
                 </label>
+                <br />
               </div>
 
               {error && <p className="text-sm text-red-500 text-center">{error}</p>}
