@@ -75,5 +75,28 @@ export const authOptions = {
   pages: {
     signIn: "/auth/login",
   },
+  session: {
+    strategy: "jwt" as const,
+  },
+  cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === 'production' 
+        ? '__Secure-next-auth.session-token' 
+        : 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
+};
+
+export const ROLE_ROUTES: Record<string, string> = {
+  administrador: '/admin/gestionUsers',
+  dispatcher: '/dispatcher/tareas',
+  camionero: '/camionero/horario',
+  cliente: '/home'
 };
