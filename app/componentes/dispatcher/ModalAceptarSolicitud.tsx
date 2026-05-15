@@ -1,26 +1,14 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { CheckCircle2, XCircle, Truck, User, Calendar, Clock, MapPin } from 'lucide-react';
+import { CheckCircle2, XCircle, Truck, Calendar, Clock, MapPin } from 'lucide-react';
+import { Solicitud } from '@interfaces/interfaces';
 
 interface Camionero {
   ID: number;
   Nombre: string;
   Licencia: string;
   Disponible: boolean;
-}
-
-interface Solicitud {
-  id: number;
-  cliente: string;
-  tipo: string;
-  asunto: string;
-  descripcion?: string;
-  fechaServicio?: string;
-  hora?: string;
-  origen?: string;
-  destino?: string;
-  representante?: string;
 }
 
 interface ModalAceptarSolicitudProps {

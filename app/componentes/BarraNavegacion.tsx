@@ -128,15 +128,15 @@ export default function NavBar() {
       {/* MENÚ MÓVIL */}
       {menuOpen && (
         <div className="lg:hidden bg-white border-t px-4 py-4 flex flex-col gap-3 text-sm text-gray-800 shadow-md">
-          <NavLink href="/home" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('home')}</NavLink>
-          <NavLink href="/contacto" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('contact')}</NavLink>
-          <NavLink href="/sobre-nosotros" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('about')}</NavLink>
+          <Link href="/home" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('home')}</Link>
+          <Link href="/contacto" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('contact')}</Link>
+          <Link href="/sobre-nosotros" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('about')}</Link>
 
           {isCliente && (
             <>
               <hr className="border-gray-200" />
-              <NavLink href="/home/cliente/ruta" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>Ruta</NavLink>
-              <NavLink href="/home/cliente/solicitar" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>Solicitar</NavLink>
+              <Link href="/home/cliente/ruta" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>Ruta</Link>
+              <Link href="/home/cliente/solicitar" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>Solicitar</Link>
             </>
           )}
 
