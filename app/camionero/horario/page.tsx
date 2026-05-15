@@ -144,14 +144,13 @@ export default function Horario() {
                         key={index}
                         onClick={() => setDiaSeleccionado(dia)}
                         className={`aspect-square border rounded-xl p-1 md:p-2 transition-all shadow-sm ${
-                          esSeleccionado ? 'ring-2 shadow-md' :
+                          esSeleccionado ? 'ring-2 ring-accent-orange shadow-md' :
                           esHoy ? 'shadow-md' : 
                           'hover:shadow-md'
                         }`}
                         style={{
                           borderColor: esSeleccionado || esHoy ? '#F47C20' : '#A6A6A6',
-                          backgroundColor: esSeleccionado || esHoy ? '#FFF7ED' : 'white',
-                          ringColor: esSeleccionado ? '#F47C20' : 'white'
+                          backgroundColor: esSeleccionado || esHoy ? '#FFF7ED' : 'white'
                         }}
                       >
                         <div className={`text-xs md:text-sm font-semibold mb-1`}
