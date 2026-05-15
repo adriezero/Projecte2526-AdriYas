@@ -17,7 +17,7 @@ export default function IniciarSesion() {
   } = useLogin();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[url('/img/camion.png')] bg-center bg-cover">
+    <div className="min-h-screen flex flex-col bg-[url('/img/loginBackground.png')] bg-center bg-cover">
       <div className="w-150 h-180 border grow flex items-center justify-center bg-gray-50">
         <div className="max-w-md w-full space-y-8 gap-24">
           {/* Título */}
