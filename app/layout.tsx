@@ -3,6 +3,7 @@ import { Metadata } from 'next'
 import AuthProvider from '@componentes/AuthProvider'
 import { NextIntlClientProvider } from 'next-intl'
 import { getLocale, getMessages } from 'next-intl/server'
+import { Arsenal_SC } from 'next/font/google'
 
 export const metadata: Metadata = {
   title: 'TruckWave',
@@ -18,6 +19,14 @@ export const metadata: Metadata = {
     ]
   }
 }
+
+const arsenalFont = Arsenal_SC({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-arsenal',
+  display: 'swap',
+})
+
 export default async function RootLayout({
   children,
 }: {
@@ -27,7 +36,7 @@ export default async function RootLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={arsenalFont.variable}>
       <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />

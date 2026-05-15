@@ -29,9 +29,11 @@ export default function NavBar() {
     <nav className="w-full bg-white shadow-sm fixed z-50">
       <div className="h-16 sm:h-20 flex items-center justify-between px-4 sm:px-10 py-3 border-b">
         {/* LOGO */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <Image src="/img/camionlogo.png" width={90} height={0} alt="camionlogo" className="sm:w-[118px]" />
-          <span className="font-bold text-base sm:text-lg text-black">TRUCKWAVE</span>
+        <Link href="/" className="flex items-center shrink-0">
+          <Image src="/img/camionlogo.png" width={90} height={0} alt="camionlogo" className="sm:w-29.5" />
+          <span className="font-arsenal font-bold text-2xl sm:text-3xl text-black tracking-wide">
+            TRUCK<span className="text-accent-orange">WAVE</span>
+          </span>
         </Link>
 
         {/* LINKS CENTRO — solo desktop */}
@@ -93,7 +95,7 @@ export default function NavBar() {
               {translations('language')}
               <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5 text-gray-400" />
             </MenuButton>
-            <MenuItems transition className="absolute right-0.5 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
+            <MenuItems modal={false} transition className="absolute right-0.5 z-10 mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
               <div className="py-1">
                 <MenuItem>
                   <button onClick={() => changeLocale('es')} className="block w-full text-left px-2 py-2 text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden">
