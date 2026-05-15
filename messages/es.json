@@ -63,7 +63,10 @@
     "historyTitle": "Una historia de esfuerzo y compromiso",
     "historyText1": "Esta empresa nació del esfuerzo de una sola persona que decidió emprender en el sector del transporte en Mercabarna. Con dedicación, responsabilidad y muchas horas de carretera, fue creciendo paso a paso.",
     "historyText2": "Hoy, la empresa cuenta con tres camiones y la segunda generación al frente, manteniendo los mismos valores del primer día: puntualidad, trato cercano y compromiso con cada cliente.",
-    "historyText3": "Trabajamos cada día para que tu mercancía llegue a tiempo y en perfectas condiciones."
+    "historyText3": "Trabajamos cada día para que tu mercancía llegue a tiempo y en perfectas condiciones.",
+    "statYears": "Años de experiencia",
+    "statTeam": "Profesionales en plantilla",
+    "statShipments": "Envíos realizados"
   },
   "reviews": {
     "title": "Valoraciones y Comentarios de Usuarios",
