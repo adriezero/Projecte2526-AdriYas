@@ -8,6 +8,17 @@ export default function BarraLateral() {
   const pathname = usePathname()
   const { data: session } = useSession()
   
+  const obtenerIniciales = (nombre?: string | null) => {
+    if (!nombre) return 'U';
+    const palabras = nombre.trim().split(' ');
+    if (palabras.length >= 2) {
+      return (palabras[0][0] + palabras[1][0]).toUpperCase();
+    }
+    return palabras[0].substring(0, 2).toUpperCase();
+  };
+
+  const iniciales = obtenerIniciales(session?.user?.name);
+  
   return (
     <aside className="fixed left-0 top-0 h-screen w-80 bg-[#1C2634] text-white flex flex-col justify-between p-6">
 
@@ -56,7 +67,7 @@ export default function BarraLateral() {
       <div className="mt-6">
         <div className="flex items-center gap-3 bg-[#2A3444] p-3 rounded-lg mb-3">
           <div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center font-bold">
-            JD
+            {iniciales}
           </div>
           <div className="text-sm">
             <p className="font-semibold">{session?.user?.name ?? ''}</p>

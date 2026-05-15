@@ -1,76 +1,64 @@
 "use client";
-
-import { useState, useEffect, useRef } from "react";
-import BarraLateral from "@componentes/camionero/BarraLateral";
+import { useEffect, useState } from "react";
 
 type Ruta = {
   ID: number;
   Origen: string;
   Destino: string;
   Estado: string | null;
+  FechaInicio: string;
+  EnTiempoReal: boolean;
   Cargas: string;
   Reservas: string;
-  EnTiempoReal: boolean;
-  FechaInicio: string;
 };
 
 type Documento = {
   id: number;
   nombre: string;
+  url: string;
   tipo: string;
-  tamano: string | null;
-  rutaArchivo: string;
   fechaSubida: string;
 };
 
-const filtros = ["Todos", "Hoy", "Esta Semana", "Este Mes", "Últimos 3 Meses", "Personalizado"];
-const POR_PAGINA = 7;
+const filtros = ["Hoy", "Esta Semana", "Este Mes", "Personalizado"];
+const POR_PAGINA = 10;
 
-function getRangoFechas(filtro: string): { desde: string; hasta: string } | null {
-  const hoy = new Date();
-  const fmt = (d: Date) => d.toISOString().split("T")[0];
-  const hasta = fmt(hoy);
-  if (filtro === "Hoy") return { desde: hasta, hasta };
-  if (filtro === "Esta Semana") {
-    const d = new Date(hoy); d.setDate(hoy.getDate() - 7);
-    return { desde: fmt(d), hasta };
-  }
-  if (filtro === "Este Mes") {
-    const d = new Date(hoy); d.setMonth(hoy.getMonth() - 1);
-    return { desde: fmt(d), hasta };
-  }
-  if (filtro === "Últimos 3 Meses") {
-    const d = new Date(hoy); d.setMonth(hoy.getMonth() - 3);
-    return { desde: fmt(d), hasta };
-  }
-  return null;
-}
-
-export default function Rutas() {
-  const [filtroActivo, setFiltroActivo] = useState("Todos");
+export default function RutasPage() {
+  const [rutas, setRutas] = useState<Ruta[]>([]);
+  const [rutaSeleccionada, setRutaSeleccionada] = useState<number | null>(null);
+  const [filtroActivo, setFiltroActivo] = useState("Hoy");
   const [fechaDesde, setFechaDesde] = useState("");
   const [fechaHasta, setFechaHasta] = useState("");
-  const [rutaSeleccionada, setRutaSeleccionada] = useState<number | null>(null);
-  const [pagina, setPagina] = useState(1);
-  const [rutas, setRutas] = useState<Ruta[]>([]);
   const [cargando, setCargando] = useState(true);
+  const [pagina, setPagina] = useState(1);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [tipoIncidencia, setTipoIncidencia] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [enviandoReporte, setEnviandoReporte] = useState(false);
-
   const [documentos, setDocumentos] = useState<Documento[]>([]);
+  const [tipoDoc, setTipoDoc] = useState("POD");
   const [subiendoDoc, setSubiendoDoc] = useState(false);
-  const [tipoDoc, setTipoDoc] = useState("Otro");
-  const inputDoc = useRef<HTMLInputElement>(null);
-  const [modalVerDoc, setModalVerDoc] = useState<Documento | null>(null);
 
   useEffect(() => {
     setCargando(true);
-    const rango = filtroActivo === "Todos" ? null
-      : filtroActivo === "Personalizado"
-      ? (fechaDesde && fechaHasta ? { desde: fechaDesde, hasta: fechaHasta } : null)
-      : getRangoFechas(filtroActivo);
+    let rango: { desde: string; hasta: string } | null = null;
+    const hoy = new Date();
+    if (filtroActivo === "Hoy") {
+      const str = hoy.toISOString().split("T")[0];
+      rango = { desde: str, hasta: str };
+    } else if (filtroActivo === "Esta Semana") {
+      const inicio = new Date(hoy);
+      inicio.setDate(hoy.getDate() - hoy.getDay());
+      const fin = new Date(inicio);
+      fin.setDate(inicio.getDate() + 6);
+      rango = { desde: inicio.toISOString().split("T")[0], hasta: fin.toISOString().split("T")[0] };
+    } else if (filtroActivo === "Este Mes") {
+      const inicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+      const fin = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+      rango = { desde: inicio.toISOString().split("T")[0], hasta: fin.toISOString().split("T")[0] };
+    } else if (filtroActivo === "Personalizado" && fechaDesde && fechaHasta) {
+      rango = { desde: fechaDesde, hasta: fechaHasta };
+    }
 
     const url = rango
       ? `/api/camionero/rutas?desde=${rango.desde}&hasta=${rango.hasta}`
@@ -143,111 +131,145 @@ export default function Rutas() {
   }
 
   return (
-    <div className="bg-gray-50 p-10 min-h-screen" style={{ marginLeft: "300px" }}>
-      <div className="max-w-full">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-gray-900">Mis Rutas</h1>
+    <div className="bg-bg min-h-screen p-4 md:p-8 md:ml-75" style={{ marginLeft: '256px' }}>
+      <div className="max-w-400 mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-text">Mis Rutas</h1>
         </div>
 
-        <div className="flex gap-8 flex-1">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Tabla */}
-          <div className="flex-[3] bg-white rounded-xl shadow p-6 flex flex-col">
-            <div className="flex gap-3 mb-6 flex-wrap items-center">
-              {filtros.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => setFiltroActivo(f)}
-                  className={`px-4 py-2 rounded-lg text-xs font-medium border transition ${
-                    filtroActivo === f
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                  }`}
-                >
-                  {f === "Personalizado" ? (
-                    <span className="flex items-center gap-1">{f} <i className="bi bi-calendar3" /></span>
-                  ) : f}
-                </button>
-              ))}
+          <div className="flex-3 bg-white rounded-xl shadow-sm border border-border/20 p-4 md:p-6 flex flex-col">
+            <div className="flex gap-2 mb-10 flex-wrap items-center justify-between">
+              <div className="flex gap-2 flex-wrap">
+                {filtros.map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setFiltroActivo(f)}
+                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      filtroActivo === f
+                        ? "bg-primary text-white shadow-sm"
+                        : "bg-white text-text/70 border border-border/30 hover:border-primary/40 hover:text-primary"
+                    }`}
+                  >
+                    {f === "Personalizado" ? (
+                      <span className="flex items-center gap-1.5">
+                        <i className="bi bi-calendar3" />
+                        {f}
+                      </span>
+                    ) : f}
+                  </button>
+                ))}
+              </div>
               {filtroActivo === "Personalizado" && (
-                <div className="flex items-center gap-2 ml-1">
+                <div className="flex items-center border border-border/30 rounded-lg overflow-hidden">
                   <input
                     type="date"
                     value={fechaDesde}
                     onChange={(e) => setFechaDesde(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-3 py-2 text-sm text-text focus:outline-none focus:ring-0 border-0"
                   />
-                  <span className="text-gray-400 text-xs">—</span>
+                  <div className="px-3 py-2 bg-bg border-l border-r border-border/30">
+                    <i className="bi bi-chevron-double-right text-text/40" />
+                  </div>
                   <input
                     type="date"
                     value={fechaHasta}
                     onChange={(e) => setFechaHasta(e.target.value)}
-                    className="border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-3 py-2 text-sm text-text focus:outline-none focus:ring-0 border-0"
                   />
                 </div>
               )}
             </div>
 
             {cargando ? (
-              <p className="text-gray-400 text-sm">Cargando rutas...</p>
+              <div className="flex items-center justify-center py-12">
+                <div className="flex items-center gap-3 text-text/50">
+                  <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                  <span className="text-sm">Cargando rutas...</span>
+                </div>
+              </div>
             ) : rutas.length === 0 ? (
-              <p className="text-gray-400 text-sm">No tienes rutas asignadas.</p>
+              <div className="flex flex-col items-center justify-center py-12 text-text/50">
+                <i className="bi bi-inbox text-4xl mb-3" />
+                <p className="text-sm">No tienes rutas asignadas en este período.</p>
+              </div>
             ) : (
               <>
-                <table className="w-full text-base">
-                  <thead>
-                    <tr className="text-left text-gray-500 border-b">
-                      <th className="pb-4 font-medium">ID Ruta</th>
-                      <th className="pb-4 font-medium">Origen</th>
-                      <th className="pb-4 font-medium">Destino</th>
-                      <th className="pb-4 font-medium">Estado</th>
-                      <th className="pb-4 font-medium">Fecha</th>
-                      <th className="pb-4 font-medium">En Tiempo Real</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rutasPagina.map((r) => {
-                      const activa = r.ID === rutaSeleccionada;
-                      return (
-                        <tr
-                          key={r.ID}
-                          onClick={() => setRutaSeleccionada(r.ID)}
-                          className={`border-b cursor-pointer transition ${activa ? "bg-blue-50" : "hover:bg-gray-50"}`}
-                        >
-                          <td className={`py-4 font-medium ${activa ? "text-blue-600" : "text-gray-700"}`}>R-{String(r.ID).padStart(5, "0")}</td>
-                          <td className={`py-4 ${activa ? "text-blue-600" : "text-gray-600"}`}>{r.Origen}</td>
-                          <td className={`py-4 ${activa ? "text-blue-600" : "text-gray-600"}`}>{r.Destino}</td>
-                          <td className={`py-4 ${activa ? "text-blue-600" : "text-gray-600"}`}>{r.Estado ?? "—"}</td>
-                          <td className={`py-4 ${activa ? "text-blue-600" : "text-gray-600"}`}>{new Date(r.FechaInicio).toLocaleDateString("es-ES")}</td>
-                          <td className="py-4 text-gray-600">{r.EnTiempoReal ? "Sí" : "No"}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                <div className="overflow-x-auto -mx-4 md:mx-0 pt-6">
+                  <table className="w-full text-sm min-w-175">
+                    <thead>
+                      <tr className="text-left text-text/60 border-b border-border/20">
+                        <th className="pb-3 px-2 font-semibold">ID</th>
+                        <th className="pb-3 px-2 font-semibold">Origen</th>
+                        <th className="pb-3 px-2 font-semibold">Destino</th>
+                        <th className="pb-3 px-2 font-semibold">Estado</th>
+                        <th className="pb-3 px-2 font-semibold">Fecha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rutasPagina.map((r) => {
+                        const activa = r.ID === rutaSeleccionada;
+                        return (
+                          <tr
+                            key={r.ID}
+                            onClick={() => setRutaSeleccionada(r.ID)}
+                            className={`border-b border-border/10 cursor-pointer transition-all ${
+                              activa ? "bg-primary/5" : "hover:bg-bg"
+                            }`}
+                          >
+                            <td className={`py-3.5 px-2 font-semibold ${activa ? "text-primary" : "text-text"}`}>
+                              R-{String(r.ID).padStart(5, "0")}
+                            </td>
+                            <td className={`py-3.5 px-2 ${activa ? "text-primary" : "text-text/80"}`}>{r.Origen}</td>
+                            <td className={`py-3.5 px-2 ${activa ? "text-primary" : "text-text/80"}`}>{r.Destino}</td>
+                            <td className="py-3.5 px-2">
+                              <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+                                r.Estado === "Completada" ? "bg-green-100 text-green-700" :
+                                r.Estado === "En Progreso" ? "bg-accent-orange/10 text-accent-orange" :
+                                "bg-gray-100 text-gray-600"
+                              }`}>
+                                {r.Estado ?? "Pendiente"}
+                              </span>
+                            </td>
+                            <td className={`py-3.5 px-2 ${activa ? "text-primary" : "text-text/70"}`}>
+                              {new Date(r.FechaInicio).toLocaleDateString("es-ES")}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
 
                 {totalPaginas > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-6">
+                  <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
                     <button
                       onClick={() => setPagina((p) => Math.max(1, p - 1))}
                       disabled={pagina === 1}
-                      className="px-3 py-1 rounded border text-sm text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+                      className="px-3 py-1.5 rounded-lg border border-border/30 text-sm text-text/70 hover:bg-bg hover:border-primary/40 disabled:opacity-40 disabled:hover:bg-white transition-all"
                     >
-                      Anterior
+                      <i className="bi bi-chevron-left" />
                     </button>
                     {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((n) => (
                       <button
                         key={n}
                         onClick={() => setPagina(n)}
-                        className={`px-3 py-1 rounded border text-sm transition ${pagina === n ? "bg-blue-600 text-white border-blue-600" : "text-gray-600 hover:bg-gray-100"}`}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                          pagina === n
+                            ? "bg-primary text-white shadow-sm"
+                            : "text-text/70 hover:bg-bg border border-transparent hover:border-border/30"
+                        }`}
                       >
                         {n}
                       </button>
                     ))}
                     <button
                       onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
-                      className="px-3 py-1 rounded border text-sm text-gray-600 hover:bg-gray-100"
+                      disabled={pagina === totalPaginas}
+                      className="px-3 py-1.5 rounded-lg border border-border/30 text-sm text-text/70 hover:bg-bg hover:border-primary/40 disabled:opacity-40 disabled:hover:bg-white transition-all"
                     >
-                      Siguiente
+                      <i className="bi bi-chevron-right" />
                     </button>
                   </div>
                 )}
@@ -256,173 +278,194 @@ export default function Rutas() {
           </div>
 
           {/* Panel de detalles */}
-          <div className="flex-[2] bg-white rounded-xl shadow p-8 flex flex-col gap-6 self-stretch">
-            <h2 className="text-xl font-bold text-gray-800">
-              Detalles de Ruta: {detalle ? `R-${String(detalle.ID).padStart(5, "0")}` : "—"}
-            </h2>
+          <div className="flex-2 bg-white rounded-xl shadow-sm border border-border/20 p-6 flex flex-col gap-6">
+            <div className="flex items-center justify-between border-b border-border/20 pb-4">
+              <h2 className="text-lg font-bold text-text">
+                {detalle ? `Ruta R-${String(detalle.ID).padStart(5, "0")}` : "Selecciona una ruta"}
+              </h2>
+              {detalle && (
+                <button
+                  onClick={() => setModalAbierto(true)}
+                  className="px-3 py-1.5 bg-accent-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange/90 transition-all shadow-sm"
+                >
+                  <i className="bi bi-exclamation-triangle mr-1.5" />
+                  Reportar
+                </button>
+              )}
+            </div>
 
             {detalle ? (
               <>
-                <div className="text-lg text-gray-700 space-y-5">
-                  <p><span className="font-medium">Origen:</span> {detalle.Origen}</p>
-                  <p><span className="font-medium">Destino:</span> {detalle.Destino}</p>
-                  <p><span className="font-medium">Estado:</span> {detalle.Estado ?? "—"}</p>
-                  <p><span className="font-medium">Carga:</span> {detalle.Cargas}</p>
-                  <p><span className="font-medium">Reservas:</span> {detalle.Reservas}</p>
-                  <p><span className="font-medium">En Tiempo Real:</span> {detalle.EnTiempoReal ? "Sí" : "No"}</p>
-                </div>
-
-                {/* Documentos de la Ruta */}
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-base font-bold text-gray-800">Documentos de la Ruta</h3>
-                    <div className="flex items-center gap-2">
-                     
-                      <button
-                        onClick={() => inputDoc.current?.click()}
-                        disabled={subiendoDoc}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition disabled:opacity-60"
-                      >
-                        {subiendoDoc ? "Subiendo..." : "⬆ Subir archivo"}
-                      </button>
-                      <input
-                        ref={inputDoc}
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                        className="hidden"
-                        onChange={e => { const f = e.target.files?.[0]; if (f) subirDocumento(f); e.target.value = ""; }}
-                      />
+                <div className="space-y-4 text-sm">
+                  <div className="flex items-start gap-3">
+                    <i className="bi bi-geo-alt-fill text-primary text-lg mt-0.5" />
+                    <div>
+                      <p className="text-text/60 text-xs mb-0.5">Origen</p>
+                      <p className="text-text font-medium">{detalle.Origen}</p>
                     </div>
                   </div>
-
-                  {documentos.length === 0 ? (
-                    <p className="text-xs text-gray-400 text-center py-4 border border-dashed border-gray-200 rounded-xl">No hay documentos subidos para esta ruta.</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {documentos.map(doc => (
-                        <div key={doc.id} className="flex items-center gap-3 px-3 py-2.5 bg-gray-50 rounded-xl border border-gray-100">
-                          <span className="text-xl">{iconoDoc(doc.nombre)}</span>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-700 truncate">{doc.nombre}</p>
-                            <p className="text-xs text-gray-400">{doc.tipo} · {doc.tamano ?? ""}</p>
-                          </div>
-                          <button
-                            onClick={() => setModalVerDoc(doc)}
-                            className="px-2.5 py-1 text-xs border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-100 transition"
-                          >
-                            Ver
-                          </button>
-                          <a
-                            href={doc.rutaArchivo}
-                            download={doc.nombre}
-                            className="px-2.5 py-1 text-xs bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                          >
-                            Descargar
-                          </a>
-                          <button
-                            onClick={() => eliminarDocumento(doc.id)}
-                            className="px-2.5 py-1 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-                          >
-                            🗑
-                          </button>
-                        </div>
-                      ))}
+                  <div className="flex items-start gap-3">
+                    <i className="bi bi-geo-fill text-accent-orange text-lg mt-0.5" />
+                    <div>
+                      <p className="text-text/60 text-xs mb-0.5">Destino</p>
+                      <p className="text-text font-medium">{detalle.Destino}</p>
                     </div>
-                  )}
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <i className="bi bi-box-seam text-text/60 text-lg mt-0.5" />
+                    <div>
+                      <p className="text-text/60 text-xs mb-0.5">Carga</p>
+                      <p className="text-text font-medium">{detalle.Cargas}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <i className="bi bi-calendar-check text-text/60 text-lg mt-0.5" />
+                    <div>
+                      <p className="text-text/60 text-xs mb-0.5">Reservas</p>
+                      <p className="text-text font-medium">{detalle.Reservas}</p>
+                    </div>
+                  </div>
                 </div>
 
-                <button onClick={() => setModalAbierto(true)} className="mt-2 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700 transition">
-                  Reportar Incidencia
-                </button>
+                <div className="border-t border-border/20 pt-5">
+                  <h3 className="text-sm font-bold text-text mb-4 flex items-center gap-2">
+                    <i className="bi bi-file-earmark-text" />
+                    Documentos
+                  </h3>
+                  
+                  <div className="flex gap-2 mb-4 flex-wrap">
+                    <select
+                      value={tipoDoc}
+                      onChange={(e) => setTipoDoc(e.target.value)}
+                      className="flex-1 min-w-30 border border-border/30 rounded-lg px-3 py-2 text-sm text-text focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    >
+                      <option value="POD">POD</option>
+                      <option value="Factura">Factura</option>
+                      <option value="Otro">Otro</option>
+                    </select>
+                    <label className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-all cursor-pointer shadow-sm">
+                      <i className="bi bi-upload mr-1.5" />
+                      Subir
+                      <input
+                        type="file"
+                        className="hidden"
+                        onChange={(e) => e.target.files?.[0] && subirDocumento(e.target.files[0])}
+                        disabled={subiendoDoc}
+                      />
+                    </label>
+                  </div>
+
+                  {subiendoDoc && (
+                    <div className="flex items-center gap-2 text-primary text-sm mb-3">
+                      <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                      Subiendo...
+                    </div>
+                  )}
+
+                  <div className="space-y-2 max-h-75 overflow-y-auto">
+                    {documentos.length === 0 ? (
+                      <p className="text-text/50 text-xs text-center py-4">No hay documentos</p>
+                    ) : (
+                      documentos.map((doc) => (
+                        <div
+                          key={doc.id}
+                          className="flex items-center justify-between p-3 bg-bg rounded-lg border border-border/20 hover:border-primary/30 transition-all"
+                        >
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <span className="text-xl">{iconoDoc(doc.nombre)}</span>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-text truncate">{doc.nombre}</p>
+                              <p className="text-xs text-text/50">{doc.tipo} • {new Date(doc.fechaSubida).toLocaleDateString("es-ES")}</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 ml-2">
+                            <a
+                              href={doc.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 text-primary hover:bg-primary/10 rounded transition-all"
+                            >
+                              <i className="bi bi-eye" />
+                            </a>
+                            <button
+                              onClick={() => eliminarDocumento(doc.id)}
+                              className="p-1.5 text-red-500 hover:bg-red-50 rounded transition-all"
+                            >
+                              <i className="bi bi-trash" />
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
               </>
             ) : (
-              <p className="text-sm text-gray-400">Selecciona una ruta para ver los detalles.</p>
+              <div className="flex flex-col items-center justify-center py-12 text-text/40">
+                <i className="bi bi-arrow-left-circle text-4xl mb-3" />
+                <p className="text-sm">Selecciona una ruta para ver detalles</p>
+              </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* Modal Reportar Incidencia */}
-      {modalAbierto && detalle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl relative">
-            {/* Header */}
-            <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center text-lg">⚠️</div>
-                <h2 className="text-lg font-bold text-gray-900">Reportar Incidencia</h2>
-              </div>
-              <button onClick={() => setModalAbierto(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
+      {/* Modal de reporte */}
+      {modalAbierto && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-lg font-bold text-text">Reportar Incidencia</h3>
+              <button
+                onClick={() => setModalAbierto(false)}
+                className="text-text/40 hover:text-text transition-all"
+              >
+                <i className="bi bi-x-lg text-xl" />
+              </button>
             </div>
 
-            <div className="px-8 py-6 space-y-5">
-              {/* Ruta afectada */}
-              <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Ruta Afectada</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-400 text-lg">🚛</span>
-                  <span className="text-sm font-medium text-gray-700">R-{String(detalle.ID).padStart(5, "0")} — {detalle.Origen} → {detalle.Destino}</span>
-                </div>
-              </div>
-
-              {/* Tipo */}
+            <div className="space-y-4">
               <div>
-                <label className="text-sm font-semibold text-gray-700 block mb-2">Tipo de Reporte</label>
+                <label className="block text-sm font-medium text-text mb-2">Tipo de incidencia</label>
                 <select
                   value={tipoIncidencia}
                   onChange={(e) => setTipoIncidencia(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full border border-border/30 rounded-lg px-3 py-2.5 text-sm text-text focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 >
-                  <option value="">Selecciona el tipo de reporte</option>
-                  <option value="Problema Técnico">Problema Técnico</option>
-                  <option value="Incidencia">Incidencia</option>
-                  <option value="Sugerencia">Sugerencia</option>
+                  <option value="">Selecciona...</option>
+                  <option value="Retraso">Retraso</option>
+                  <option value="Avería">Avería</option>
+                  <option value="Accidente">Accidente</option>
+                  <option value="Otro">Otro</option>
                 </select>
               </div>
 
-              {/* Descripción */}
               <div>
-                <label className="text-sm font-semibold text-gray-700 block mb-2">Descripción</label>
+                <label className="block text-sm font-medium text-text mb-2">Descripción</label>
                 <textarea
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}
                   rows={4}
-                  placeholder="Describe el problema o incidencia con detalle..."
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  placeholder="Describe la incidencia..."
+                  className="w-full border border-border/30 rounded-lg px-3 py-2.5 text-sm text-text focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
                 />
               </div>
-            </div>
 
-            {/* Footer */}
-            <div className="flex justify-end gap-3 px-8 py-5 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-              <button onClick={() => setModalAbierto(false)} className="px-5 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">Cancelar</button>
-              <button onClick={enviarReporte} disabled={!tipoIncidencia || enviandoReporte} className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 shadow-sm shadow-blue-200 transition disabled:opacity-50">
-                {enviandoReporte ? 'Enviando...' : 'Enviar Reporte'}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* Modal Ver Documento */}
-      {modalVerDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setModalVerDoc(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full mx-4 overflow-hidden" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-              <p className="text-sm font-semibold text-gray-800 truncate">{modalVerDoc.nombre}</p>
-              <button onClick={() => setModalVerDoc(null)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none">&times;</button>
-            </div>
-            <div className="p-4 flex items-center justify-center bg-gray-50 min-h-[400px]">
-              {["jpg","jpeg","png","gif","webp"].includes(modalVerDoc.nombre.split(".").pop()?.toLowerCase() ?? "") ? (
-                <img src={modalVerDoc.rutaArchivo} alt={modalVerDoc.nombre} className="max-h-[500px] max-w-full rounded-lg object-contain" />
-              ) : modalVerDoc.nombre.endsWith(".pdf") ? (
-                <iframe src={modalVerDoc.rutaArchivo} className="w-full h-[500px] rounded-lg" />
-              ) : (
-                <div className="text-center">
-                  <p className="text-4xl mb-3">📎</p>
-                  <p className="text-sm text-gray-500">Vista previa no disponible para este tipo de archivo.</p>
-                  <a href={modalVerDoc.rutaArchivo} download={modalVerDoc.nombre} className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition">Descargar</a>
-                </div>
-              )}
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={() => setModalAbierto(false)}
+                  className="flex-1 px-4 py-2.5 border border-border/30 text-text/70 rounded-lg text-sm font-medium hover:bg-bg transition-all"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={enviarReporte}
+                  disabled={!tipoIncidencia || enviandoReporte}
+                  className="flex-1 px-4 py-2.5 bg-accent-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
+                >
+                  {enviandoReporte ? "Enviando..." : "Enviar Reporte"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
