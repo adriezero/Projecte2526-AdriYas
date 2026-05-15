@@ -1,459 +1,715 @@
-'use client'
-import '@css/globals.css'
-import { useEffect, useRef, useState } from 'react'
-
-type Reporte = {
-  ID: number
-  Tipo: string
-  Descripcion: string | null
-  FechaHora: string
-  Estado: string
-  idReportante: number
-  rolReportante: string
-  nombreReportante: string | null
-}
-
-const TIPOS = ['Problema Técnico', 'Incidencia', 'Sugerencia']
-const PAGE_SIZE = 10
-
-const badgeTipo: Record<string, string> = {
-  'Problema Técnico': 'bg-red-100 text-red-700 ring-1 ring-red-200',
-  'Incidencia': 'bg-amber-100 text-amber-700 ring-1 ring-amber-200',
-  'Sugerencia': 'bg-violet-100 text-violet-700 ring-1 ring-violet-200',
-}
-
-const badgeEstado: Record<string, string> = {
-  'Pendiente': 'bg-orange-100 text-orange-700 ring-1 ring-orange-200',
-  'En revisión': 'bg-blue-100 text-blue-700 ring-1 ring-blue-200',
-  'Resuelto': 'bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200',
-  'Cerrado': 'bg-gray-100 text-gray-500 ring-1 ring-gray-200',
-}
-
-const iconoTipo: Record<string, string> = {
-  'Problema Técnico': '🔧',
-  'Incidencia': '⚠️',
-  'Sugerencia': '💡',
-}
+"use client";
+import "@css/globals.css";
+import { useEffect, useRef, useState } from "react";
+import {
+  Reporte,
+  TIPOS,
+  PAGE_SIZE,
+  badgeTipo,
+  badgeEstado,
+  iconoTipo,
+  meses,
+  fetchReportes,
+  cambiarEstado as cambiarEstadoAPI,
+  eliminarReportes,
+  formatId,
+  diasEnMes,
+  primerDia,
+  calcularEstadisticas,
+} from "./logic";
 
 export default function ReportesPage() {
-  const [reportes, setReportes] = useState<Reporte[]>([])
-  const [total, setTotal] = useState(0)
-  const [loading, setLoading] = useState(true)
-  const [busqueda, setBusqueda] = useState('')
-  const [filtroTipo, setFiltroTipo] = useState('')
-  const [orden, setOrden] = useState<'asc' | 'desc'>('desc')
-  const [pagina, setPagina] = useState(1)
-  const [seleccionados, setSeleccionados] = useState<number[]>([])
-  const [reporteVer, setReporteVer] = useState<Reporte | null>(null)
-  const [filtroEstado, setFiltroEstado] = useState('')
-  const [tipoOpen, setTipoOpen] = useState(false)
-  const [calOpen, setCalOpen] = useState(false)
-  const [calMes, setCalMes] = useState(() => new Date())
-  const [fechaFiltro, setFechaFiltro] = useState<string>('')
-  const tipoRef = useRef<HTMLDivElement>(null)
-  const calRef = useRef<HTMLDivElement>(null)
+  const [reportes, setReportes] = useState<Reporte[]>([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [busqueda, setBusqueda] = useState("");
+  const [filtroTipo, setFiltroTipo] = useState("");
+  const [orden, setOrden] = useState<"asc" | "desc">("desc");
+  const [pagina, setPagina] = useState(1);
+  const [seleccionados, setSeleccionados] = useState<number[]>([]);
+  const [reporteVer, setReporteVer] = useState<Reporte | null>(null);
+  const [filtroEstado, setFiltroEstado] = useState("");
+  const [tipoOpen, setTipoOpen] = useState(false);
+  const [calOpen, setCalOpen] = useState(false);
+  const [calMes, setCalMes] = useState(() => new Date());
+  const [fechaFiltro, setFechaFiltro] = useState<string>("");
+  const tipoRef = useRef<HTMLDivElement>(null);
+  const calRef = useRef<HTMLDivElement>(null);
 
-  const totalPaginas = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const totalPaginas = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (tipoRef.current && !tipoRef.current.contains(e.target as Node)) setTipoOpen(false)
-      if (calRef.current && !calRef.current.contains(e.target as Node)) setCalOpen(false)
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [])
+      if (tipoRef.current && !tipoRef.current.contains(e.target as Node))
+        setTipoOpen(false);
+      if (calRef.current && !calRef.current.contains(e.target as Node))
+        setCalOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   useEffect(() => {
-    setLoading(true)
-    setSeleccionados([])
-    const params = new URLSearchParams({
+    setLoading(true);
+    setSeleccionados([]);
+    fetchReportes({
       busqueda,
       tipo: filtroTipo,
       orden,
-      pagina: String(pagina),
-      limite: String(PAGE_SIZE),
-      ...(fechaFiltro ? { fecha: fechaFiltro } : {}),
-      ...(filtroEstado ? { estado: filtroEstado } : {}),
+      pagina,
+      fecha: fechaFiltro,
+      estado: filtroEstado,
     })
-    fetch(`/api/reportes?${params}`)
-      .then(r => r.json())
-      .then(data => { setReportes(data.reportes ?? []); setTotal(data.total ?? 0) })
-      .finally(() => setLoading(false))
-  }, [busqueda, filtroTipo, orden, pagina, fechaFiltro, filtroEstado])
+      .then((data) => {
+        setReportes(data.reportes ?? []);
+        setTotal(data.total ?? 0);
+      })
+      .finally(() => setLoading(false));
+  }, [busqueda, filtroTipo, orden, pagina, fechaFiltro, filtroEstado]);
 
   async function cambiarEstado(id: number, estado: string) {
-    await fetch(`/api/reportes/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ Estado: estado }),
-    })
-    setReportes(prev => prev.map(r => r.ID === id ? { ...r, Estado: estado } : r))
+    await cambiarEstadoAPI(id, estado);
+    setReportes((prev) =>
+      prev.map((r) => (r.ID === id ? { ...r, Estado: estado } : r)),
+    );
   }
 
   async function eliminarSeleccionados() {
-    await Promise.all(seleccionados.map(id =>
-      fetch(`/api/reportes/${id}`, { method: 'DELETE' })
-    ))
-    setReportes(prev => prev.filter(r => !seleccionados.includes(r.ID)))
-    setTotal(prev => prev - seleccionados.length)
-    setSeleccionados([])
+    await eliminarReportes(seleccionados);
+    setReportes((prev) => prev.filter((r) => !seleccionados.includes(r.ID)));
+    setTotal((prev) => prev - seleccionados.length);
+    setSeleccionados([]);
   }
 
   async function marcarMasivo(estado: string) {
-    await Promise.all(seleccionados.map(id =>
-      fetch(`/api/reportes/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ Estado: estado }),
-      })
-    ))
-    setReportes(prev => prev.map(r => seleccionados.includes(r.ID) ? { ...r, Estado: estado } : r))
-    setSeleccionados([])
+    await Promise.all(seleccionados.map((id) => cambiarEstadoAPI(id, estado)));
+    setReportes((prev) =>
+      prev.map((r) =>
+        seleccionados.includes(r.ID) ? { ...r, Estado: estado } : r,
+      ),
+    );
+    setSeleccionados([]);
   }
 
   function toggleSeleccion(id: number) {
-    setSeleccionados(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+    setSeleccionados((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
   }
 
   function toggleTodos() {
-    setSeleccionados(prev => prev.length === reportes.length ? [] : reportes.map(r => r.ID))
+    setSeleccionados((prev) =>
+      prev.length === reportes.length ? [] : reportes.map((r) => r.ID),
+    );
   }
-
-  const diasEnMes = (y: number, m: number) => new Date(y, m + 1, 0).getDate()
-  const primerDia = (y: number, m: number) => new Date(y, m, 1).getDay()
-  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
   function seleccionarDia(dia: number) {
-    const y = calMes.getFullYear()
-    const m = String(calMes.getMonth() + 1).padStart(2, '0')
-    const d = String(dia).padStart(2, '0')
-    const fecha = `${y}-${m}-${d}`
-    setFechaFiltro(prev => prev === fecha ? '' : fecha)
-    setCalOpen(false)
-    setPagina(1)
+    const y = calMes.getFullYear();
+    const m = String(calMes.getMonth() + 1).padStart(2, "0");
+    const d = String(dia).padStart(2, "0");
+    const fecha = `${y}-${m}-${d}`;
+    setFechaFiltro((prev) => (prev === fecha ? "" : fecha));
+    setCalOpen(false);
+    setPagina(1);
   }
 
-  function formatId(id: number) {
-    const hoy = new Date()
-    return `#RP-${hoy.getFullYear()}${String(hoy.getMonth()+1).padStart(2,'0')}${String(hoy.getDate()).padStart(2,'0')}-${String(id).padStart(3,'0')}`
-  }
-
-  const pendientes = reportes.filter(r => r.Estado === 'Pendiente').length
-  const enRevision = reportes.filter(r => r.Estado === 'En revisión').length
-  const resueltos = reportes.filter(r => r.Estado === 'Resuelto').length
+  const { pendientes, enRevision, resueltos } = calcularEstadisticas(reportes);
 
   return (
-    <div className="bg-gray-50 min-h-screen p-8" style={{ marginLeft: '320px' }}>
-
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center shadow">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-            </svg>
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 leading-tight">Gestión de Reportes</h1>
-            <p className="text-gray-500 text-sm">Revisa y gestiona los reportes que requieren tu atención.</p>
-          </div>
-        </div>
+    <div className="bg-bg min-h-screen p-10" style={{ marginLeft: "320px" }}>
+      <div className="mb-10 border-l-4 border-primary pl-6">
+        <h1 className="text-4xl font-bold text-primary tracking-tight">
+          Centro de Reportes
+        </h1>
+        <p className="text-text/70 mt-2 text-base font-medium">
+          Supervisión y gestión centralizada de incidencias
+        </p>
       </div>
 
-      {/* Tarjetas de estadísticas */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-4 gap-5 mb-8">
         {[
-          { label: 'Total', value: total, icon: '📋', light: 'bg-blue-50 text-blue-700', filtro: '', ring: 'ring-blue-400' },
-          { label: 'Pendientes', value: pendientes, icon: '⏳', light: 'bg-orange-50 text-orange-700', filtro: 'Pendiente', ring: 'ring-orange-400' },
-          { label: 'En revisión', value: enRevision, icon: '🔍', light: 'bg-blue-50 text-blue-700', filtro: 'En revisión', ring: 'ring-blue-400' },
-          { label: 'Resueltos', value: resueltos, icon: '✅', light: 'bg-emerald-50 text-emerald-700', filtro: 'Resuelto', ring: 'ring-emerald-400' },
-        ].map(({ label, value, icon, light, filtro, ring }) => (
-          <button key={label} onClick={() => { setFiltroEstado(prev => prev === filtro ? '' : filtro); setPagina(1) }}
-            className={`bg-white rounded-2xl shadow-sm border p-5 flex items-center gap-4 w-full text-left transition-all hover:shadow-md ${
-              filtroEstado === filtro && filtro !== '' ? `border-transparent ring-2 ${ring}` : 'border-gray-100 hover:border-gray-200'
-            }`}>
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl ${light}`}>{icon}</div>
-            <div>
-              <p className="text-2xl font-bold text-gray-900">{value}</p>
-              <p className="text-sm text-gray-500">{label}</p>
+          {
+            label: "Total Reportes",
+            value: total,
+            icon: "bi-clipboard-data-fill",
+            bg: "bg-primary",
+            filtro: "",
+          },
+          {
+            label: "Pendientes",
+            value: pendientes,
+            icon: "bi-hourglass-split",
+            bg: "bg-accent-orange",
+            filtro: "Pendiente",
+          },
+          {
+            label: "En Revisión",
+            value: enRevision,
+            icon: "bi-search",
+            bg: "bg-primary",
+            filtro: "En revisión",
+          },
+          {
+            label: "Resueltos",
+            value: resueltos,
+            icon: "bi-check-circle-fill",
+            bg: "bg-green-600",
+            filtro: "Resuelto",
+          },
+        ].map(({ label, value, icon, bg, filtro }) => (
+          <button
+            key={label}
+            onClick={() => {
+              setFiltroEstado((prev) => (prev === filtro ? "" : filtro));
+              setPagina(1);
+            }}
+            className={`bg-white rounded-2xl shadow-lg border-2 p-6 text-left transition-all hover:shadow-xl hover:-translate-y-0.5 ${
+              filtroEstado === filtro && filtro !== ""
+                ? "border-primary ring-4 ring-primary/20"
+                : "border-border/20 hover:border-primary/30"
+            }`}
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div
+                className={`w-14 h-14 rounded-xl ${bg} flex items-center justify-center shadow-md`}
+              >
+                <i className={`${icon} text-white text-2xl`} />
+              </div>
+              {filtroEstado === filtro && filtro !== "" && (
+                <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+              )}
             </div>
+            <p className="text-3xl font-black text-text mb-1">{value}</p>
+            <p className="text-xs font-bold text-text/60 uppercase tracking-widest">
+              {label}
+            </p>
           </button>
         ))}
       </div>
 
-      {/* Barra de filtros */}
-      <div className="flex flex-wrap gap-3 mb-5 items-center">
-        <div className="flex items-center border border-gray-200 rounded-xl bg-white px-3 py-2.5 flex-1 min-w-[260px] shadow-sm">
-          <svg className="w-4 h-4 text-gray-400 mr-2 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Buscar por ID, usuario o palabra clave..."
-            value={busqueda}
-            onChange={e => { setBusqueda(e.target.value); setPagina(1) }}
-            className="outline-none text-sm w-full bg-transparent text-gray-700 placeholder-gray-400"
-          />
-        </div>
+      <div className="bg-white rounded-2xl shadow-lg border border-border/20 p-6 mb-8">
+        <div className="flex gap-4 items-end flex-wrap">
+          <div className="flex-1 min-w-75">
+            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+              Búsqueda Global
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-border">
+                <i className="bi bi-search text-lg" />
+              </span>
+              <input
+                type="text"
+                placeholder="ID, usuario o palabra clave..."
+                value={busqueda}
+                onChange={(e) => {
+                  setBusqueda(e.target.value);
+                  setPagina(1);
+                }}
+                className="pl-12 pr-4 py-3 border-2 border-border/30 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 w-full text-sm font-medium transition-all"
+              />
+            </div>
+          </div>
 
-        {/* Filtro Tipo */}
-        <div className="relative" ref={tipoRef}>
-          <button
-            onClick={() => setTipoOpen(o => !o)}
-            className="flex items-center gap-2 border border-gray-200 rounded-xl bg-white px-4 py-2.5 text-sm text-gray-700 min-w-[140px] justify-between shadow-sm hover:border-blue-400 transition-colors"
-          >
-            <span>{filtroTipo || 'Tipo de reporte'}</span>
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          {tipoOpen && (
-            <div className="absolute z-20 mt-1 bg-white border border-gray-100 rounded-xl shadow-xl w-52 overflow-hidden">
-              <button onClick={() => { setFiltroTipo(''); setTipoOpen(false); setPagina(1) }}
-                className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 text-gray-600">
-                Todos los tipos
+          <div ref={tipoRef}>
+            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+              Tipo
+            </label>
+            <div className="relative">
+              <button
+                onClick={() => setTipoOpen((o) => !o)}
+                className="flex items-center gap-3 border-2 border-border/30 rounded-xl bg-white px-4 py-3 text-sm font-bold min-w-45 justify-between hover:border-primary/50 transition-all"
+              >
+                <span>{filtroTipo || "Todos los tipos"}</span>
+                <i className="bi bi-chevron-down text-xs" />
               </button>
-              {TIPOS.map(t => (
-                <button key={t} onClick={() => { setFiltroTipo(t); setTipoOpen(false); setPagina(1) }}
-                  className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center gap-2">
-                  <span>{iconoTipo[t]}</span>{t}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Filtro fecha */}
-        <div className="relative" ref={calRef}>
-          <button
-            onClick={() => setCalOpen(o => !o)}
-            className={`flex items-center gap-2 border rounded-xl bg-white px-4 py-2.5 text-sm min-w-[160px] justify-between shadow-sm transition-colors ${fechaFiltro ? 'border-blue-400 text-blue-600' : 'border-gray-200 text-gray-700 hover:border-blue-400'}`}
-          >
-            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>{fechaFiltro || 'Filtrar por fecha'}</span>
-            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          {calOpen && (
-            <div className="absolute z-20 right-0 mt-1 bg-white border border-gray-100 rounded-2xl shadow-xl p-4 w-72">
-              <div className="flex items-center justify-between mb-3">
-                <button onClick={() => setCalMes(d => new Date(d.getFullYear(), d.getMonth()-1, 1))} className="p-1.5 hover:bg-gray-100 rounded-lg">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7"/></svg>
-                </button>
-                <span className="font-semibold text-sm text-gray-800">{meses[calMes.getMonth()]} {calMes.getFullYear()}</span>
-                <button onClick={() => setCalMes(d => new Date(d.getFullYear(), d.getMonth()+1, 1))} className="p-1.5 hover:bg-gray-100 rounded-lg">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
-                </button>
-              </div>
-              <div className="grid grid-cols-7 text-center text-xs text-gray-400 mb-2 font-medium">
-                {['Do','Lu','Ma','Mi','Ju','Vi','Sa'].map(d => <span key={d}>{d}</span>)}
-              </div>
-              <div className="grid grid-cols-7 text-center text-sm gap-y-1">
-                {Array.from({ length: primerDia(calMes.getFullYear(), calMes.getMonth()) }).map((_, i) => (
-                  <span key={`e${i}`} />
-                ))}
-                {Array.from({ length: diasEnMes(calMes.getFullYear(), calMes.getMonth()) }, (_, i) => i + 1).map(dia => {
-                  const y = calMes.getFullYear()
-                  const m = String(calMes.getMonth() + 1).padStart(2, '0')
-                  const d = String(dia).padStart(2, '0')
-                  const isSelected = fechaFiltro === `${y}-${m}-${d}`
-                  return (
-                    <button key={dia} onClick={() => seleccionarDia(dia)}
-                      className={`rounded-full w-7 h-7 mx-auto flex items-center justify-center text-xs transition-colors hover:bg-blue-100 ${isSelected ? 'bg-blue-600 text-white hover:bg-blue-600' : 'text-gray-700'}`}>
-                      {dia}
+              {tipoOpen && (
+                <div className="absolute z-20 mt-2 bg-white border-2 border-border/30 rounded-xl shadow-2xl w-full overflow-hidden">
+                  <button
+                    onClick={() => {
+                      setFiltroTipo("");
+                      setTipoOpen(false);
+                      setPagina(1);
+                    }}
+                    className="w-full text-left px-5 py-3 text-sm font-bold hover:bg-primary/10 hover:text-primary transition-colors border-b border-border/10"
+                  >
+                    Todos los tipos
+                  </button>
+                  {TIPOS.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        setFiltroTipo(t);
+                        setTipoOpen(false);
+                        setPagina(1);
+                      }}
+                      className="w-full text-left px-5 py-3 text-sm font-bold hover:bg-primary/10 hover:text-primary flex items-center gap-3 transition-colors border-b border-border/10 last:border-b-0"
+                    >
+                      <i className={`${iconoTipo[t]} text-base`} /> {t}
                     </button>
-                  )
-                })}
-              </div>
-              {fechaFiltro && (
-                <button onClick={() => { setFechaFiltro(''); setPagina(1) }} className="mt-3 w-full text-xs text-blue-600 hover:underline">
-                  Limpiar fecha
-                </button>
+                  ))}
+                </div>
               )}
-              <div className="mt-3 flex gap-2">
-                <button onClick={() => { setOrden('asc'); setCalOpen(false) }} className={`flex-1 text-xs py-1.5 rounded-lg border font-medium transition-colors ${orden==='asc' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>↑ Más antiguo</button>
-                <button onClick={() => { setOrden('desc'); setCalOpen(false) }} className={`flex-1 text-xs py-1.5 rounded-lg border font-medium transition-colors ${orden==='desc' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>↓ Más reciente</button>
-              </div>
             </div>
-          )}
+          </div>
+
+          <div ref={calRef}>
+            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+              Fecha
+            </label>
+            <div className="relative">
+              <button
+                onClick={() => setCalOpen((o) => !o)}
+                className={`flex items-center gap-3 border-2 rounded-xl bg-white px-4 py-3 text-sm font-bold min-w-45 justify-between transition-all ${fechaFiltro ? "border-primary text-primary ring-2 ring-primary/20" : "border-border/30 hover:border-primary/50"}`}
+              >
+                <i className="bi bi-calendar3 text-base" />
+                <span className="text-xs">{fechaFiltro || "Seleccionar"}</span>
+                <i className="bi bi-chevron-down text-xs" />
+              </button>
+              {calOpen && (
+                <div className="absolute z-20 right-0 mt-2 bg-white border-2 border-border/30 rounded-2xl shadow-2xl p-5 w-80">
+                  <div className="flex items-center justify-between mb-4">
+                    <button
+                      onClick={() =>
+                        setCalMes(
+                          (d) => new Date(d.getFullYear(), d.getMonth() - 1, 1),
+                        )
+                      }
+                      className="p-2 hover:bg-primary/10 rounded-lg transition-colors"
+                    >
+                      <i className="bi bi-chevron-left text-primary" />
+                    </button>
+                    <span className="font-black text-sm text-primary uppercase tracking-wide">
+                      {meses[calMes.getMonth()]} {calMes.getFullYear()}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setCalMes(
+                          (d) => new Date(d.getFullYear(), d.getMonth() + 1, 1),
+                        )
+                      }
+                      className="p-2 hover:bg-primary/10 rounded-lg transition-colors"
+                    >
+                      <i className="bi bi-chevron-right text-primary" />
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-7 text-center text-xs text-text/60 mb-3 font-black uppercase">
+                    {["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"].map((d) => (
+                      <span key={d}>{d}</span>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 text-center text-sm gap-1">
+                    {Array.from({
+                      length: primerDia(
+                        calMes.getFullYear(),
+                        calMes.getMonth(),
+                      ),
+                    }).map((_, i) => (
+                      <span key={`e${i}`} />
+                    ))}
+                    {Array.from(
+                      {
+                        length: diasEnMes(
+                          calMes.getFullYear(),
+                          calMes.getMonth(),
+                        ),
+                      },
+                      (_, i) => i + 1,
+                    ).map((dia) => {
+                      const y = calMes.getFullYear();
+                      const m = String(calMes.getMonth() + 1).padStart(2, "0");
+                      const d = String(dia).padStart(2, "0");
+                      const isSelected = fechaFiltro === `${y}-${m}-${d}`;
+                      return (
+                        <button
+                          key={dia}
+                          onClick={() => seleccionarDia(dia)}
+                          className={`rounded-lg w-9 h-9 mx-auto flex items-center justify-center text-xs font-bold transition-all ${isSelected ? "bg-primary text-white shadow-md scale-110" : "text-text hover:bg-primary/10 hover:text-primary"}`}
+                        >
+                          {dia}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  {fechaFiltro && (
+                    <button
+                      onClick={() => {
+                        setFechaFiltro("");
+                        setPagina(1);
+                      }}
+                      className="mt-4 w-full text-xs font-bold text-accent-orange hover:underline uppercase tracking-wide"
+                    >
+                      Limpiar fecha
+                    </button>
+                  )}
+                  <div className="mt-4 flex gap-2 pt-4 border-t-2 border-border/20">
+                    <button
+                      onClick={() => {
+                        setOrden("asc");
+                        setCalOpen(false);
+                      }}
+                      className={`flex-1 text-xs py-2.5 rounded-xl font-bold transition-all uppercase tracking-wide ${orden === "asc" ? "bg-primary text-white shadow-md" : "bg-border/20 text-text hover:bg-border/30"}`}
+                    >
+                      <i className="bi bi-sort-up mr-1" /> Antiguo
+                    </button>
+                    <button
+                      onClick={() => {
+                        setOrden("desc");
+                        setCalOpen(false);
+                      }}
+                      className={`flex-1 text-xs py-2.5 rounded-xl font-bold transition-all uppercase tracking-wide ${orden === "desc" ? "bg-primary text-white shadow-md" : "bg-border/20 text-text hover:bg-border/30"}`}
+                    >
+                      <i className="bi bi-sort-down mr-1" /> Reciente
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Tabla */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl shadow-xl border border-border/20 overflow-hidden">
+        <div className="bg-primary px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <i className="bi bi-file-earmark-text-fill text-white text-2xl" />
+            <h2 className="text-white font-bold text-lg tracking-wide">
+              Registro de Reportes
+            </h2>
+          </div>
+          <div className="bg-white/20 px-4 py-2 rounded-lg">
+            <span className="text-white font-bold text-sm">
+              {total} reportes
+            </span>
+          </div>
+        </div>
+
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <div className="animate-spin rounded-full h-10 w-10 border-2 border-gray-200 border-t-blue-600" />
-            <p className="text-sm text-gray-400">Cargando reportes...</p>
+          <div className="flex flex-col items-center justify-center py-24 gap-4">
+            <div className="animate-spin rounded-full h-14 w-14 border-4 border-primary border-t-transparent" />
+            <p className="text-sm font-bold text-text/60 uppercase tracking-wide">
+              Cargando reportes...
+            </p>
           </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-5 py-3.5 w-10">
-                  <input type="checkbox" checked={seleccionados.length === reportes.length && reportes.length > 0} onChange={toggleTodos}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                </th>
-                {['ID de Reporte', 'Usuario', 'Tipo', 'Fecha y Hora', 'Estado', 'Acciones'].map(col => (
-                  <th key={col} className="px-4 py-3.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{col}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {reportes.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="px-4 py-16 text-center">
-                    <div className="flex flex-col items-center gap-2">
-                      <span className="text-4xl">📭</span>
-                      <p className="text-gray-400 text-sm">No hay reportes que mostrar</p>
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-primary/5 border-b-2 border-primary/20">
+                  <th className="px-6 py-4 w-12">
+                    <input
+                      type="checkbox"
+                      checked={
+                        seleccionados.length === reportes.length &&
+                        reportes.length > 0
+                      }
+                      onChange={toggleTodos}
+                      className="w-5 h-5 rounded accent-primary"
+                    />
+                  </th>
+                  {[
+                    "ID Reporte",
+                    "Usuario",
+                    "Tipo",
+                    "Fecha y Hora",
+                    "Estado",
+                    "Control",
+                  ].map((col) => (
+                    <th
+                      key={col}
+                      className="px-6 py-4 text-left text-xs font-black text-primary uppercase tracking-widest"
+                    >
+                      {col}
+                    </th>
+                  ))}
                 </tr>
-              ) : reportes.map(r => (
-                <tr key={r.ID} className={`hover:bg-blue-50/30 transition-colors ${seleccionados.includes(r.ID) ? 'bg-blue-50/50' : ''}`}>
-                  <td className="px-5 py-4">
-                    <input type="checkbox" checked={seleccionados.includes(r.ID)} onChange={() => toggleSeleccion(r.ID)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className="text-sm font-mono font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-lg">{formatId(r.ID)}</span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
-                        {r.rolReportante?.[0]?.toUpperCase() ?? '?'}
+              </thead>
+              <tbody className="divide-y divide-border/20">
+                {reportes.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="px-6 py-20 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-20 h-20 bg-border/10 rounded-full flex items-center justify-center">
+                          <i className="bi bi-inbox text-4xl text-border" />
+                        </div>
+                        <p className="text-text/40 text-sm font-bold uppercase tracking-wide">
+                          No hay reportes disponibles
+                        </p>
                       </div>
-                      <span className="text-sm text-gray-700 font-medium">{r.rolReportante}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium ${badgeTipo[r.Tipo] ?? 'bg-gray-100 text-gray-600'}`}>
-                      {iconoTipo[r.Tipo] ?? '📄'} {r.Tipo}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4 text-sm text-gray-500">
-                    {new Date(r.FechaHora).toLocaleString('es-ES', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}
-                  </td>
-                  <td className="px-4 py-4">
-                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${badgeEstado[r.Estado] ?? 'bg-gray-100 text-gray-500'}`}>
-                      {r.Estado}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => setReporteVer(r)} className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
-                        Ver
-                      </button>
-                      {r.Estado !== 'Cerrado' && (
-                        <button onClick={() => cambiarEstado(r.ID, 'Resuelto')}
-                          className="px-3 py-1.5 text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors">
-                          ✓ Resolver
-                        </button>
-                      )}
-                      {r.Estado !== 'Cerrado' && (
-                        <button onClick={() => cambiarEstado(r.ID, 'Cerrado')}
-                          className="px-3 py-1.5 text-xs font-medium text-red-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                          ✕ Cerrar
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ) : (
+                  reportes.map((r) => (
+                    <tr
+                      key={r.ID}
+                      className={`hover:bg-accent-yellow/5 transition-colors ${seleccionados.includes(r.ID) ? "bg-primary/5" : ""}`}
+                    >
+                      <td className="px-6 py-4">
+                        <input
+                          type="checkbox"
+                          checked={seleccionados.includes(r.ID)}
+                          onChange={() => toggleSeleccion(r.ID)}
+                          className="w-5 h-5 rounded accent-primary"
+                        />
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className="text-xs font-black font-mono text-primary bg-primary/10 px-3 py-1.5 rounded-lg border border-primary/20">
+                          {formatId(r.ID)}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                            <span className="text-xs font-black text-primary uppercase">
+                              {r.rolReportante?.[0] ?? "?"}
+                            </span>
+                          </div>
+                          <span className="text-sm font-bold text-text">
+                            {r.rolReportante}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span
+                          className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide border-2 ${badgeTipo[r.Tipo] ?? "bg-border/20 text-text border-border/30"}`}
+                        >
+                          <i
+                            className={`${iconoTipo[r.Tipo] ?? "bi-file-text"} text-sm`}
+                          />{" "}
+                          {r.Tipo}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm font-medium text-text/70">
+                        {new Date(r.FechaHora).toLocaleString("es-ES", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span
+                          className={`inline-flex items-center px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide border-2 ${badgeEstado[r.Estado] ?? "bg-border/20 text-text/50 border-border/30"}`}
+                        >
+                          {r.Estado}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setReporteVer(r)}
+                            className="px-3 py-2 text-xs font-bold text-primary hover:bg-primary hover:text-white rounded-lg transition-all border border-primary/20 hover:border-primary uppercase tracking-wide"
+                          >
+                            Ver
+                          </button>
+                          {r.Estado !== "Cerrado" && (
+                            <>
+                              <button
+                                onClick={() => cambiarEstado(r.ID, "Resuelto")}
+                                className="px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-600 hover:text-white rounded-lg transition-all border border-green-200 hover:border-green-600 uppercase tracking-wide"
+                              >
+                                <i className="bi bi-check-lg" />
+                              </button>
+                              <button
+                                onClick={() => cambiarEstado(r.ID, "Cerrado")}
+                                className="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-red-200 hover:border-red-600 uppercase tracking-wide"
+                              >
+                                <i className="bi bi-x-lg" />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 
-      {/* Footer: paginación + acciones masivas */}
-      <div className="flex items-center justify-between mt-5 flex-wrap gap-4">
-        {/* Acciones masivas */}
+      <div className="flex items-center justify-between mt-8 flex-wrap gap-4">
         {seleccionados.length > 0 ? (
-          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-2 shadow-sm">
-            <span className="text-sm text-gray-500 mr-1">{seleccionados.length} seleccionados</span>
-            <button onClick={() => marcarMasivo('Resuelto')}
-              className="px-3 py-1.5 bg-emerald-600 text-white text-xs font-medium rounded-lg hover:bg-emerald-700 transition-colors">
-              ✓ Resolver
+          <div className="flex items-center gap-3 bg-white border-2 border-primary/30 rounded-xl px-5 py-3 shadow-lg">
+            <span className="text-sm font-bold text-primary mr-2 uppercase tracking-wide">
+              {seleccionados.length} seleccionados
+            </span>
+            <button
+              onClick={() => marcarMasivo("Resuelto")}
+              className="px-4 py-2 bg-green-600 text-white text-xs font-bold rounded-lg hover:bg-green-700 transition-all shadow-md uppercase tracking-wide"
+            >
+              <i className="bi bi-check-circle-fill mr-1" /> Resolver
             </button>
-            <button onClick={() => marcarMasivo('En revisión')}
-              className="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors">
-              🔍 En revisión
+            <button
+              onClick={() => marcarMasivo("En revisión")}
+              className="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary/90 transition-all shadow-md uppercase tracking-wide"
+            >
+              <i className="bi bi-eye-fill mr-1" /> Revisar
             </button>
-            <button onClick={eliminarSeleccionados}
-              className="px-3 py-1.5 bg-red-500 text-white text-xs font-medium rounded-lg hover:bg-red-600 transition-colors">
-              🗑 Eliminar
+            <button
+              onClick={eliminarSeleccionados}
+              className="px-4 py-2 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-all shadow-md uppercase tracking-wide"
+            >
+              <i className="bi bi-trash3-fill mr-1" /> Eliminar
             </button>
           </div>
-        ) : <div />}
+        ) : (
+          <p className="text-sm font-bold text-text/60 uppercase tracking-wide">
+            <i className="bi bi-database mr-2" />
+            Total: {total} registros
+          </p>
+        )}
 
-        {/* Paginación */}
         {totalPaginas > 1 && (
-          <div className="flex items-center gap-1">
-            <button onClick={() => setPagina(1)} disabled={pagina === 1}
-              className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded-lg text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-40 transition-colors">«</button>
-            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(p => (
-              <button key={p} onClick={() => setPagina(p)}
-                className={`w-8 h-8 flex items-center justify-center border rounded-lg text-sm font-medium transition-colors ${p === pagina ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPagina(1)}
+              disabled={pagina === 1}
+              className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
+            >
+              <i className="bi bi-chevron-bar-left" />
+            </button>
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => setPagina(p)}
+                className={`px-4 py-2.5 border-2 rounded-xl text-sm font-bold transition-all ${p === pagina ? "bg-primary text-white border-primary shadow-md" : "border-border/30 hover:bg-primary/10 hover:border-primary/50"}`}
+              >
                 {p}
               </button>
             ))}
-            <button onClick={() => setPagina(totalPaginas)} disabled={pagina === totalPaginas}
-              className="w-8 h-8 flex items-center justify-center border border-gray-200 rounded-lg text-sm text-gray-500 hover:bg-gray-50 disabled:opacity-40 transition-colors">»</button>
+            <button
+              onClick={() => setPagina(totalPaginas)}
+              disabled={pagina === totalPaginas}
+              className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
+            >
+              <i className="bi bi-chevron-bar-right" />
+            </button>
           </div>
         )}
       </div>
-      {/* Modal Ver reporte */}
+
       {reporteVer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setReporteVer(null)}>
-          <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-2xl mx-4" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-xl">
-                  {iconoTipo[reporteVer.Tipo] ?? '📄'}
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setReporteVer(null)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-3xl mx-4 border-2 border-primary/20"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-6 pb-5 border-b-2 border-primary/20">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                  <i
+                    className={`${iconoTipo[reporteVer.Tipo] ?? "bi-file-text"} text-primary text-2xl`}
+                  />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900">Detalle del reporte</h2>
-                  <p className="text-sm text-gray-400 font-mono">{formatId(reporteVer.ID)}</p>
+                  <h2 className="text-2xl font-bold text-primary">
+                    Detalle del Reporte
+                  </h2>
+                  <p className="text-sm font-black font-mono text-text/60 uppercase tracking-wider">
+                    {formatId(reporteVer.ID)}
+                  </p>
                 </div>
               </div>
-              <button onClick={() => setReporteVer(null)} className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors text-xl">×</button>
+              <button
+                onClick={() => setReporteVer(null)}
+                className="w-10 h-10 flex items-center justify-center rounded-xl text-text/40 hover:text-text hover:bg-border/10 transition-all"
+              >
+                <i className="bi bi-x-lg text-2xl" />
+              </button>
             </div>
-            <div className="grid grid-cols-2 gap-4 mb-5">
-              <div className="bg-gray-50 rounded-xl p-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Tipo</p>
-                <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-sm font-medium ${badgeTipo[reporteVer.Tipo] ?? 'bg-gray-100 text-gray-600'}`}>
-                  {iconoTipo[reporteVer.Tipo] ?? '📄'} {reporteVer.Tipo}
+            <div className="grid grid-cols-2 gap-5 mb-6">
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
+                  Tipo de Reporte
+                </p>
+                <span
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide border-2 ${badgeTipo[reporteVer.Tipo] ?? "bg-border/20 text-text border-border/30"}`}
+                >
+                  <i
+                    className={`${iconoTipo[reporteVer.Tipo] ?? "bi-file-text"}`}
+                  />{" "}
+                  {reporteVer.Tipo}
                 </span>
               </div>
-              <div className="bg-gray-50 rounded-xl p-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Estado</p>
-                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-semibold ${badgeEstado[reporteVer.Estado] ?? 'bg-gray-100 text-gray-500'}`}>
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
+                  Estado Actual
+                </p>
+                <span
+                  className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide border-2 ${badgeEstado[reporteVer.Estado] ?? "bg-border/20 text-text/50 border-border/30"}`}
+                >
                   {reporteVer.Estado}
                 </span>
               </div>
-              <div className="bg-gray-50 rounded-xl p-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Usuario</p>
-                <p className="text-sm font-medium text-gray-700">{reporteVer.nombreReportante ?? '—'}</p>
-                <p className="text-xs text-gray-400">{reporteVer.rolReportante}</p>
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
+                  Reportado Por
+                </p>
+                <p className="text-sm font-bold text-text">
+                  {reporteVer.nombreReportante ?? "—"}
+                </p>
+                <p className="text-xs font-medium text-text/60 uppercase tracking-wide mt-1">
+                  {reporteVer.rolReportante}
+                </p>
               </div>
-              <div className="bg-gray-50 rounded-xl p-4">
-                <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Fecha y hora</p>
-                <p className="text-sm font-medium text-gray-700">{new Date(reporteVer.FechaHora).toLocaleString('es-ES', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}</p>
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
+                  Fecha y Hora
+                </p>
+                <p className="text-sm font-bold text-text">
+                  {new Date(reporteVer.FechaHora).toLocaleString("es-ES", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
               </div>
             </div>
             <div>
-              <p className="text-xs text-gray-400 uppercase tracking-wider mb-2">Descripción</p>
-              <p className="bg-gray-50 rounded-xl p-4 text-gray-700 leading-relaxed min-h-[120px] text-sm">
-                {reporteVer.Descripcion ?? <span className="text-gray-400 italic">Sin descripción</span>}
+              <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-3">
+                Descripción del Reporte
               </p>
+              <div className="bg-primary/5 rounded-xl p-5 border border-primary/20 min-h-35">
+                <p className="text-text leading-relaxed text-sm font-medium">
+                  {reporteVer.Descripcion ?? (
+                    <span className="text-text/40 italic">
+                      Sin descripción proporcionada
+                    </span>
+                  )}
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3 justify-end mt-8 pt-6 border-t-2 border-border/20">
+              <button
+                onClick={() => setReporteVer(null)}
+                className="px-6 py-3 bg-border/20 text-text rounded-xl hover:bg-border/30 font-bold uppercase tracking-wide transition-all"
+              >
+                Cerrar
+              </button>
+              {reporteVer.Estado !== "Resuelto" &&
+                reporteVer.Estado !== "Cerrado" && (
+                  <button
+                    onClick={() => {
+                      cambiarEstado(reporteVer.ID, "Resuelto");
+                      setReporteVer(null);
+                    }}
+                    className="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 font-bold uppercase tracking-wide shadow-md hover:shadow-lg transition-all"
+                  >
+                    <i className="bi bi-check-circle-fill mr-2" />
+                    Marcar Resuelto
+                  </button>
+                )}
             </div>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
