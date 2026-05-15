@@ -10,7 +10,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/home', request.url))
   }
 
-  const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })
+  const token = await getToken({ 
+    req: request, 
+    secret: process.env.NEXTAUTH_SECRET,
+    secureCookie: process.env.NODE_ENV === 'production'
+  })
   const role = token?.role as string | undefined
 
   // Rutas protegidas por rol - usando configuración centralizada
