@@ -80,3 +80,10 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+export const ROLE_ROUTES: Record<string, string> = {
+  administrador: '/admin/gestionUsers',
+  dispatcher: '/dispatcher/tareas',
+  camionero: '/camionero/horario',
+  cliente: '/home'
+};

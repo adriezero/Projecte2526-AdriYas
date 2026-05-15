@@ -1,5 +1,5 @@
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ROLE_ROUTES } from "@lib/roles";
 
@@ -15,6 +15,7 @@ export function useAuth() {
   const [error, setError] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { data: session, status } = useSession();
 
   const login = async (correo: string, clave: string) => {
     setError("");
@@ -22,17 +23,15 @@ export function useAuth() {
     
     if (resultado?.error) {
       setError("Correo o contraseña incorrectos.");
-    } else if (resultado?.ok) {
-      const callbackUrl = searchParams.get("callbackUrl");
-      if (callbackUrl) {
-        router.push(callbackUrl);
-        return;
-      }
-      const res = await fetch('/api/auth/session');
-      const session = await res.json();
-      router.push(ROLE_ROUTES[session?.user?.role] || "/home");
     }
   };
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.role) {
+      const callbackUrl = searchParams.get("callbackUrl");
+      router.push(callbackUrl || ROLE_ROUTES[session.user.role] || "/home");
+    }
+  }, [status, session, router, searchParams]);
 
   return { error, login };
 }
