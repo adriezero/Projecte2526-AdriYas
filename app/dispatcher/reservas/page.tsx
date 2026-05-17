@@ -2,9 +2,10 @@
 
 import BarraLateral from "@componentes/dispatcher/BarraLateral";
 import { useState, useEffect } from "react";
+import { Spinner, EmptyState } from "@componentes/ui";
 import { 
   Plus, Search, ChevronLeft, ChevronRight, Calendar as CalendarIcon,
-  Clock, MapPin, User, XCircle, Truck
+  Clock, MapPin, User, XCircle
 } from 'lucide-react';
 import {
   Reserva,
@@ -395,14 +396,15 @@ export default function Reservas() {
                   </h3>
                   <div className="space-y-2 max-h-96 overflow-y-auto">
                     {cargando ? (
-                      <div className="flex flex-col items-center justify-center py-8">
-                        <Truck size={32} className="text-slate-400 animate-pulse" />
-                        <p className="text-sm text-slate-500 mt-2">Cargando...</p>
+                      <div className="flex items-center justify-center py-8">
+                        <Spinner size="md" text="Cargando..." />
                       </div>
                     ) : reservasFiltradas.length === 0 ? (
-                      <div className="text-center py-8">
-                        <CalendarIcon size={32} className="text-slate-300 mx-auto mb-2" />
-                        <p className="text-sm text-slate-500">No hay reservas</p>
+                      <div className="py-8">
+                        <EmptyState 
+                          icon="bi-calendar3" 
+                          title="No hay reservas" 
+                        />
                       </div>
                     ) : (
                       reservasFiltradas.map(reserva => (

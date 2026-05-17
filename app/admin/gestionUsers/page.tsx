@@ -1,7 +1,10 @@
 "use client";
-import "@css/globals.css";
 import { useEffect, useState } from "react";
 import { ROLES_FILTRO } from "@lib/roles";
+import { 
+  Spinner, PageHeader, SearchInput, Dropdown, Button, 
+  FormField, IconButton, Pagination 
+} from "@componentes/ui";
 import {
   type Usuario,
   type ColOrdenable,
@@ -186,55 +189,32 @@ export default function GestionUsersPage() {
         className="bg-bg min-h-screen flex items-center justify-center"
         style={{ marginLeft: "320px" }}
       >
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-14 w-14 border-4 border-primary border-t-transparent" />
-          <p className="mt-5 text-text font-medium text-lg">
-            Cargando sistema de usuarios...
-          </p>
-        </div>
+        <Spinner size="lg" text="Cargando sistema de usuarios..." />
       </div>
     );
 
   return (
     <div className="bg-bg min-h-screen p-10" style={{ marginLeft: "320px" }}>
       <div className="max-w-full">
-        <div className="mb-10 border-l-4 border-primary pl-6">
-          <h1 className="text-4xl font-bold text-primary tracking-tight">
-            Control de Usuarios
-          </h1>
-          <p className="text-text/70 mt-2 text-base font-medium">
-            Administración total del sistema
-          </p>
-        </div>
+        <PageHeader 
+          title="Control de Usuarios" 
+          subtitle="Administración total del sistema" 
+        />
 
         <div className="bg-white rounded-2xl shadow-lg border border-border/20 p-6 mb-8">
           <div className="flex gap-4 items-end flex-wrap">
-            <div className="flex-1 min-w-70">
-              <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
-                Búsqueda
-              </label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-border">
-                  <i className="bi bi-search text-lg" />
-                </span>
-                <input
-                  type="text"
-                  value={busqueda}
-                  onChange={(e) => setBusqueda(e.target.value)}
-                  placeholder="Nombre, email o rol..."
-                  className="pl-12 pr-4 py-3 border-2 border-border/30 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 w-full text-sm font-medium transition-all"
-                />
-              </div>
-            </div>
+            <SearchInput
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              placeholder="Nombre, email o rol..."
+              label="Búsqueda"
+            />
 
             <div>
-              <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
-                Rol
-              </label>
               <Dropdown
-                valor={filtroRol}
-                opciones={ROLES}
-                abierto={dropRol}
+                value={filtroRol}
+                options={ROLES}
+                isOpen={dropRol}
                 onToggle={() => {
                   setDropRol(!dropRol);
                   setDropEstado(false);
@@ -244,17 +224,15 @@ export default function GestionUsersPage() {
                   setDropRol(false);
                 }}
                 minWidth="140px"
+                label="Rol"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
-                Estado
-              </label>
               <Dropdown
-                valor={filtroEstado}
-                opciones={ESTADOS}
-                abierto={dropEstado}
+                value={filtroEstado}
+                options={ESTADOS}
+                isOpen={dropEstado}
                 onToggle={() => {
                   setDropEstado(!dropEstado);
                   setDropRol(false);
@@ -264,24 +242,19 @@ export default function GestionUsersPage() {
                   setDropEstado(false);
                 }}
                 minWidth="150px"
+                label="Estado"
               />
             </div>
 
             <div className="flex gap-3 ml-auto">
-              <button
-                onClick={aplicarFiltros}
-                className="px-6 py-3 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 shadow-md hover:shadow-lg transition-all uppercase tracking-wide"
-              >
+              <Button onClick={aplicarFiltros} variant="primary" className="px-6 py-3 text-sm">
                 <i className="bi bi-funnel-fill mr-2" />
                 Aplicar
-              </button>
-              <button
-                onClick={limpiarFiltros}
-                className="px-6 py-3 bg-border/20 text-text rounded-xl text-sm font-bold hover:bg-border/30 transition-all uppercase tracking-wide"
-              >
+              </Button>
+              <Button onClick={limpiarFiltros} variant="outline" className="px-6 py-3 text-sm">
                 <i className="bi bi-x-circle mr-2" />
                 Limpiar
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -375,15 +348,15 @@ export default function GestionUsersPage() {
 
                       <td className="px-6 py-4 text-sm">
                         <div className="flex gap-2 items-center justify-center">
-                          <button
-                            className="p-2.5 text-primary hover:bg-primary hover:text-white rounded-lg transition-all border border-primary/20 hover:border-primary"
+                          <IconButton
+                            icon="bi-pencil-fill"
+                            variant="primary"
                             title="Editar"
                             onClick={() => abrirEditar(usuario)}
-                          >
-                            <i className="bi bi-pencil-fill text-base" />
-                          </button>
-                          <button
-                            className="p-2.5 text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-red-200 hover:border-red-600"
+                          />
+                          <IconButton
+                            icon="bi-trash3-fill"
+                            variant="danger"
                             title="Eliminar"
                             onClick={() =>
                               setModalBorrar({
@@ -392,9 +365,7 @@ export default function GestionUsersPage() {
                                 nombre: usuario.Nombre,
                               })
                             }
-                          >
-                            <i className="bi bi-trash3-fill text-base" />
-                          </button>
+                          />
                           <div className="relative">
                             <button
                               className="p-2.5 text-text hover:bg-text hover:text-white rounded-lg transition-all border border-border/30 hover:border-text"
@@ -455,37 +426,11 @@ export default function GestionUsersPage() {
             Total: {totalUsuarios} registros
           </p>
 
-          <div className="flex gap-2">
-            <button
-              onClick={() => setPagina(pagina - 1)}
-              disabled={pagina === 1}
-              className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
-            >
-              <i className="bi bi-chevron-left" />
-            </button>
-
-            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => setPagina(p)}
-                className={`px-4 py-2.5 border-2 rounded-xl text-sm font-bold transition-all ${
-                  pagina === p
-                    ? "bg-primary text-white border-primary shadow-md"
-                    : "border-border/30 hover:bg-primary/10 hover:border-primary/50"
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-
-            <button
-              onClick={() => setPagina(pagina + 1)}
-              disabled={pagina === totalPaginas}
-              className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
-            >
-              <i className="bi bi-chevron-right" />
-            </button>
-          </div>
+          <Pagination
+            currentPage={pagina}
+            totalPages={totalPaginas}
+            onPageChange={setPagina}
+          />
         </div>
       </div>
 
@@ -500,12 +445,12 @@ export default function GestionUsersPage() {
             </div>
 
             <div className="space-y-4">
-              <Campo
+              <FormField
                 label="Nombre"
                 value={modalEditar.Nombre}
                 onChange={(v) => setModalEditar({ ...modalEditar, Nombre: v })}
               />
-              <Campo
+              <FormField
                 label="Email"
                 value={modalEditar.Email ?? ""}
                 onChange={(v) => setModalEditar({ ...modalEditar, Email: v })}
@@ -513,7 +458,7 @@ export default function GestionUsersPage() {
 
               {(modalEditar.tipo === "cliente" ||
                 modalEditar.tipo === "camionero") && (
-                <Campo
+                <FormField
                   label="Teléfono"
                   value={
                     ((modalEditar as Record<string, unknown>).Telf as string) ??
@@ -529,7 +474,7 @@ export default function GestionUsersPage() {
               )}
               {modalEditar.tipo === "cliente" && (
                 <>
-                  <Campo
+                  <FormField
                     label="Empresa"
                     value={
                       ((modalEditar as Record<string, unknown>)
@@ -573,7 +518,7 @@ export default function GestionUsersPage() {
                 </>
               )}
               {modalEditar.tipo === "dispatcher" && (
-                <Campo
+                <FormField
                   label="Centro de Operación"
                   value={
                     ((modalEditar as Record<string, unknown>)
@@ -645,19 +590,19 @@ export default function GestionUsersPage() {
             </div>
 
             <div className="flex gap-3 justify-end mt-8 pt-6 border-t-2 border-border/20">
-              <button
+              <Button
                 onClick={() => setModalEditar(null)}
-                className="px-6 py-3 bg-border/20 text-text rounded-xl hover:bg-border/30 font-bold uppercase tracking-wide transition-all"
+                variant="outline"
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={guardarEdicion}
                 disabled={guardando}
-                className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary/90 font-bold uppercase tracking-wide disabled:opacity-50 shadow-md hover:shadow-lg transition-all"
+                variant="primary"
               >
                 {guardando ? "Guardando..." : "Guardar"}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -680,18 +625,18 @@ export default function GestionUsersPage() {
               ?
             </p>
             <div className="flex gap-3 justify-center">
-              <button
+              <Button
                 onClick={() => setModalBloquear(null)}
-                className="px-6 py-3 bg-border/20 text-text rounded-xl hover:bg-border/30 font-bold uppercase tracking-wide transition-all"
+                variant="outline"
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={confirmarBloqueo}
-                className="px-6 py-3 bg-accent-orange text-white rounded-xl hover:bg-accent-orange/90 font-bold uppercase tracking-wide shadow-md hover:shadow-lg transition-all"
+                variant="secondary"
               >
                 Bloquear
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -714,18 +659,18 @@ export default function GestionUsersPage() {
               Acción irreversible
             </p>
             <div className="flex gap-3 justify-center">
-              <button
+              <Button
                 onClick={() => setModalBorrar(null)}
-                className="px-6 py-3 bg-border/20 text-text rounded-xl hover:bg-border/30 font-bold uppercase tracking-wide transition-all"
+                variant="outline"
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={confirmarBorrado}
-                className="px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 font-bold uppercase tracking-wide shadow-md hover:shadow-lg transition-all"
+                variant="danger"
               >
                 Eliminar
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -734,67 +679,3 @@ export default function GestionUsersPage() {
   );
 }
 
-function Campo({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div>
-      <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
-        {label}
-      </label>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full border-2 border-border/30 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-      />
-    </div>
-  );
-}
-
-function Dropdown({
-  valor,
-  opciones,
-  abierto,
-  onToggle,
-  onSelect,
-  minWidth,
-}: {
-  valor: string;
-  opciones: readonly string[];
-  abierto: boolean;
-  onToggle: () => void;
-  onSelect: (opcion: string) => void;
-  minWidth: string;
-}) {
-  return (
-    <div className="relative">
-      <button
-        onClick={onToggle}
-        className="flex items-center gap-3 px-4 py-3 border-2 border-border/30 rounded-xl bg-white text-sm font-bold justify-between hover:border-primary/50 transition-all"
-        style={{ minWidth }}
-      >
-        {valor} <i className="bi bi-chevron-down text-xs" />
-      </button>
-      {abierto && (
-        <div className="absolute z-10 mt-2 bg-white border-2 border-border/30 rounded-xl shadow-2xl w-full overflow-hidden">
-          {opciones.map((op) => (
-            <div
-              key={op}
-              onClick={() => onSelect(op)}
-              className="px-4 py-3 text-sm font-bold hover:bg-primary/10 hover:text-primary cursor-pointer text-center transition-colors border-b border-border/10 last:border-b-0"
-            >
-              {op}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}

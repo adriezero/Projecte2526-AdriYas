@@ -3,9 +3,10 @@
 import BarraLateral from "@componentes/dispatcher/BarraLateral";
 import ModalAceptarSolicitud from "@componentes/dispatcher/ModalAceptarSolicitud";
 import { useState, useEffect } from "react";
+import { Spinner, EmptyState } from "@componentes/ui";
 import { 
   Eye, Edit, Trash2, Plus, Package, Calendar, User, 
-  Clock, CheckCircle2, XCircle, Hourglass, List, Truck
+  Clock, CheckCircle2, XCircle, Hourglass, List
 } from 'lucide-react';
 import {
   Solicitud,
@@ -512,17 +513,8 @@ export default function Solicitudes() {
           </div>
 
           {cargando ? (
-            <div className="flex flex-col items-center justify-center py-24">
-              <div className="animate-[slide_1.5s_ease-in-out_infinite]">
-                <Truck size={48} className="text-slate-600" />
-              </div>
-              <p className="text-slate-600 font-medium mt-4">Cargando solicitudes...</p>
-              <style jsx>{`
-                @keyframes slide {
-                  0%, 100% { transform: translateX(-20px); }
-                  50% { transform: translateX(20px); }
-                }
-              `}</style>
+            <div className="flex items-center justify-center py-24">
+              <Spinner size="lg" text="Cargando solicitudes..." />
             </div>
           ) : (
             <>
@@ -590,12 +582,12 @@ export default function Solicitudes() {
                     <tbody className="divide-y divide-slate-100">
                       {solicitudesFiltradas.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="px-5 py-16 text-center">
-                            <div className="flex flex-col items-center gap-2">
-                              <Package size={36} className="text-slate-300" />
-                              <p className="text-slate-700 font-semibold">No hay solicitudes {filtro === 'todas' ? '' : filtro}</p>
-                              <p className="text-sm text-slate-400">Las solicitudes aparecerán aquí</p>
-                            </div>
+                          <td colSpan={8} className="px-5 py-16">
+                            <EmptyState 
+                              icon="bi-inbox" 
+                              title={`No hay solicitudes ${filtro === 'todas' ? '' : filtro}`}
+                              subtitle="Las solicitudes aparecerán aquí"
+                            />
                           </td>
                         </tr>
                       ) : (

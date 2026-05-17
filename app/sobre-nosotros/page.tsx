@@ -62,7 +62,7 @@ export default function SobreNosotros() {
       {/* ══════════════════════════════════════
           SECCIÓN 1 — INFORMACIÓN / HISTORIA
       ══════════════════════════════════════ */}
-      <section className="bg-[#1F4E79] py-28 px-4 sm:px-8 flex flex-col items-center">
+      <section className="bg-primary py-28 px-4 sm:px-8 flex flex-col items-center">
 
         {/* Encabezado centrado */}
         <div className="text-center w-full max-w-2xl mx-auto mb-16 space-y-6">
@@ -72,7 +72,7 @@ export default function SobreNosotros() {
           <p className="text-sm sm:text-base text-white/60 leading-relaxed">
             {t("subtitle")}
           </p>
-          <div className="mx-auto w-10 h-[3px] bg-[#F47C20] rounded-full" />
+          <div className="mx-auto w-10 h-0.75 bg-accent-orange rounded-full" />
         </div>
 
         {/* Historia + imagen */}
@@ -80,11 +80,11 @@ export default function SobreNosotros() {
 
           {/* Panel texto */}
           <div className="bg-white px-12 py-16 flex flex-col justify-center">
-            <h3 className="text-xl font-semibold text-[#1F4E79] mb-3">
+            <h3 className="text-xl font-semibold text-primary mb-3">
               {t("historyTitle")}
             </h3>
-            <div className="w-8 h-[3px] bg-[#F47C20] rounded-full mb-8" />
-            <div className="space-y-5 text-sm text-[#2C2C2C]/80 leading-relaxed">
+            <div className="w-8 h-0.75 bg-accent-orange rounded-full mb-8" />
+            <div className="space-y-5 text-sm text-text/80 leading-relaxed">
               <p>{t("historyText1")}</p>
               <p>{t("historyText2")}</p>
               <p>{t("historyText3")}</p>
@@ -93,11 +93,11 @@ export default function SobreNosotros() {
 
           {/* Panel imagen */}
           <div
-            className="relative min-h-[320px] md:min-h-0
+            className="relative min-h-80 md:min-h-0
                        bg-[url('/img/camionFamilia.jpg')] bg-cover bg-center"
           >
             <div className="absolute inset-x-0 bottom-0 h-24
-                            bg-gradient-to-t from-[#1F4E79]/70 to-transparent" />
+                            bg-linear-to-t from-primary/70 to-transparent" />
           </div>
         </div>
 
@@ -110,10 +110,10 @@ export default function SobreNosotros() {
           ].map(({ num, label }) => (
             <div
               key={label}
-              className="bg-white/[0.08] border border-white/[0.14] rounded-xl
+              className="bg-white/8 border border-white/[0.14] rounded-xl
                          py-7 px-4 text-center"
             >
-              <span className="block text-3xl font-semibold text-[#FFC757]">{num}</span>
+              <span className="block text-3xl font-semibold text-accent-yellow">{num}</span>
               <span className="block text-xs text-white/55 mt-2">{label}</span>
             </div>
           ))}
@@ -123,29 +123,29 @@ export default function SobreNosotros() {
       {/* ══════════════════════════════════════
           SECCIÓN 2 — RESEÑAS
       ══════════════════════════════════════ */}
-      <section className="bg-[#F2F2F2] py-24 px-4 sm:px-8 w-full flex flex-col items-center">
+      <section className="bg-bg py-24 px-4 sm:px-8 w-full flex flex-col items-center">
         <div className="w-full max-w-5xl mx-auto space-y-16">
 
           {/* Encabezado centrado */}
           <div className="flex flex-col items-center text-center space-y-6">
-            <h2 className="text-3xl sm:text-4xl font-semibold text-[#1F4E79] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-primary tracking-tight">
               {tr("title")}
             </h2>
-            <p className="text-[#2C2C2C]/65 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            <p className="text-text/65 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
               {tr("subtitle")}
             </p>
 
             {/* Pills de puntuación */}
             <div className="flex items-center justify-center gap-3 pt-2">
-              <span className="inline-flex items-center gap-2 bg-white border border-[#A6A6A6]
-                               text-[#2C2C2C] text-sm font-medium px-4 py-2 rounded-full shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
+              <span className="inline-flex items-center gap-2 bg-white border border-border
+                               text-text text-sm font-medium px-4 py-2 rounded-full shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-green-500 shrink-0" />
                 {positivas} {tr("positive")}
               </span>
-              <span className="text-[#A6A6A6]">·</span>
-              <span className="inline-flex items-center gap-2 bg-white border border-[#A6A6A6]
-                               text-[#2C2C2C] text-sm font-medium px-4 py-2 rounded-full shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
+              <span className="text-border">·</span>
+              <span className="inline-flex items-center gap-2 bg-white border border-border
+                               text-text text-sm font-medium px-4 py-2 rounded-full shadow-sm">
+                <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
                 {totales - positivas} {tr("negative")}
               </span>
             </div>
@@ -161,8 +161,8 @@ export default function SobreNosotros() {
                   className={`
                     px-5 py-2.5 text-sm font-medium rounded-xl border transition duration-150
                     ${filtro === f.valor
-                      ? "bg-[#1F4E79] text-white border-[#1F4E79] shadow-sm"
-                      : "bg-white text-[#2C2C2C] border-[#A6A6A6] hover:border-[#F47C20] hover:text-[#F47C20]"
+                      ? "bg-primary text-white border-primary shadow-sm"
+                      : "bg-white text-text border-border hover:border-accent-orange hover:text-accent-orange"
                     }
                   `}
                 >
@@ -173,7 +173,7 @@ export default function SobreNosotros() {
 
             <div className="relative w-full sm:w-64">
               <span className="absolute left-3 top-1/2 -translate-y-1/2
-                               text-[#A6A6A6] text-sm pointer-events-none select-none">
+                               text-border text-sm pointer-events-none select-none">
                 🔍
               </span>
               <input
@@ -181,11 +181,11 @@ export default function SobreNosotros() {
                 placeholder={tr("search")}
                 value={busqueda}
                 onChange={(e) => { setBusqueda(e.target.value); setPaginaActual(1); }}
-                className="w-full pl-9 pr-4 py-2.5 text-sm text-[#2C2C2C]
-                           bg-white border border-[#A6A6A6] rounded-xl shadow-sm
-                           placeholder-[#A6A6A6] transition duration-150
-                           hover:border-[#1F4E79]
-                           focus:outline-none focus:ring-2 focus:ring-[#1F4E79]/20 focus:border-[#1F4E79]"
+                className="w-full pl-9 pr-4 py-2.5 text-sm text-text
+                           bg-white border border-border rounded-xl shadow-sm
+                           placeholder-border transition duration-150
+                           hover:border-primary
+                           focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               />
             </div>
           </div>
@@ -195,13 +195,13 @@ export default function SobreNosotros() {
             {reseñasPaginadas.map((r) => (
               <div
                 key={r.id}
-                className="bg-white border border-[#A6A6A6] rounded-2xl p-8
+                className="bg-white border border-border rounded-2xl p-8
                            transition duration-200
                            hover:-translate-y-1 hover:shadow-[0_6px_20px_rgba(31,78,121,0.10)]"
               >
                 {/* Barra de acento */}
                 <div
-                  className={`h-[3px] w-8 rounded-full mb-6
+                  className={`h-0.75 w-8 rounded-full mb-6
                     ${r.isPositive ? "bg-green-500" : "bg-red-400"}`}
                 />
 
@@ -209,7 +209,7 @@ export default function SobreNosotros() {
                 <div className="flex items-center gap-4 mb-5">
                   <div
                     className={`w-11 h-11 rounded-full flex items-center justify-center
-                                text-sm font-semibold flex-shrink-0
+                                text-sm font-semibold shrink-0
                                 ${r.isPositive
                                   ? "bg-[#E1F5EE] text-[#0F6E56]"
                                   : "bg-[#FCEBEB] text-[#A32D2D]"}`}
@@ -218,14 +218,14 @@ export default function SobreNosotros() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-[#2C2C2C] truncate">{r.name}</p>
+                    <p className="text-sm font-semibold text-text truncate">{r.name}</p>
                     {r.route && (
-                      <p className="text-xs text-[#A6A6A6] truncate mt-1">{r.route}</p>
+                      <p className="text-xs text-border truncate mt-1">{r.route}</p>
                     )}
                   </div>
 
                   <span
-                    className={`flex-shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full
+                    className={`shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full
                       ${r.isPositive
                         ? "bg-[#E1F5EE] text-[#0F6E56]"
                         : "bg-[#FCEBEB] text-[#A32D2D]"}`}
@@ -234,10 +234,10 @@ export default function SobreNosotros() {
                   </span>
                 </div>
 
-                <p className="text-sm text-[#2C2C2C]/80 leading-relaxed">
-                  "{r.comment}"
+                <p className="text-sm text-text/80 leading-relaxed">
+                  &ldquo;{r.comment}&rdquo;
                 </p>
-                <p className="text-xs text-[#A6A6A6] mt-5">
+                <p className="text-xs text-border mt-5">
                   {new Date(r.date).toLocaleDateString("es-ES", {
                     day: "numeric", month: "short", year: "numeric",
                   })}
@@ -255,8 +255,8 @@ export default function SobreNosotros() {
                   onClick={() => setPaginaActual(num)}
                   className={`w-10 h-10 rounded-xl text-sm font-medium border transition duration-150
                     ${paginaActual === num
-                      ? "bg-[#1F4E79] text-white border-[#1F4E79] shadow-sm"
-                      : "bg-white text-[#2C2C2C] border-[#A6A6A6] hover:border-[#F47C20] hover:text-[#F47C20]"
+                      ? "bg-primary text-white border-primary shadow-sm"
+                      : "bg-white text-text border-border hover:border-accent-orange hover:text-accent-orange"
                     }`}
                 >
                   {num}

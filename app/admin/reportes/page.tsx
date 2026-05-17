@@ -1,6 +1,9 @@
 "use client";
-import "@css/globals.css";
 import { useEffect, useRef, useState } from "react";
+import { 
+  PageHeader, SearchInput, Spinner, EmptyState, 
+  Pagination, StatCard, Button 
+} from "@componentes/ui";
 import {
   Reporte,
   TIPOS,
@@ -117,14 +120,10 @@ export default function ReportesPage() {
 
   return (
     <div className="bg-bg min-h-screen p-10" style={{ marginLeft: "320px" }}>
-      <div className="mb-10 border-l-4 border-primary pl-6">
-        <h1 className="text-4xl font-bold text-primary tracking-tight">
-          Centro de Reportes
-        </h1>
-        <p className="text-text/70 mt-2 text-base font-medium">
-          Supervisión y gestión centralizada de incidencias
-        </p>
-      </div>
+      <PageHeader 
+        title="Centro de Reportes" 
+        subtitle="Supervisión y gestión centralizada de incidencias" 
+      />
 
       <div className="grid grid-cols-4 gap-5 mb-8">
         {[
@@ -132,82 +131,58 @@ export default function ReportesPage() {
             label: "Total Reportes",
             value: total,
             icon: "bi-clipboard-data-fill",
-            bg: "bg-primary",
+            bgColor: "bg-primary",
             filtro: "",
           },
           {
             label: "Pendientes",
             value: pendientes,
             icon: "bi-hourglass-split",
-            bg: "bg-accent-orange",
+            bgColor: "bg-accent-orange",
             filtro: "Pendiente",
           },
           {
             label: "En Revisión",
             value: enRevision,
             icon: "bi-search",
-            bg: "bg-primary",
+            bgColor: "bg-primary",
             filtro: "En revisión",
           },
           {
             label: "Resueltos",
             value: resueltos,
             icon: "bi-check-circle-fill",
-            bg: "bg-green-600",
+            bgColor: "bg-green-600",
             filtro: "Resuelto",
           },
-        ].map(({ label, value, icon, bg, filtro }) => (
-          <button
+        ].map(({ label, value, icon, bgColor, filtro }) => (
+          <StatCard
             key={label}
+            label={label}
+            value={value}
+            icon={icon}
+            bgColor={bgColor}
+            isActive={filtroEstado === filtro && filtro !== ""}
             onClick={() => {
               setFiltroEstado((prev) => (prev === filtro ? "" : filtro));
               setPagina(1);
             }}
-            className={`bg-white rounded-2xl shadow-lg border-2 p-6 text-left transition-all hover:shadow-xl hover:-translate-y-0.5 ${
-              filtroEstado === filtro && filtro !== ""
-                ? "border-primary ring-4 ring-primary/20"
-                : "border-border/20 hover:border-primary/30"
-            }`}
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div
-                className={`w-14 h-14 rounded-xl ${bg} flex items-center justify-center shadow-md`}
-              >
-                <i className={`${icon} text-white text-2xl`} />
-              </div>
-              {filtroEstado === filtro && filtro !== "" && (
-                <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
-              )}
-            </div>
-            <p className="text-3xl font-black text-text mb-1">{value}</p>
-            <p className="text-xs font-bold text-text/60 uppercase tracking-widest">
-              {label}
-            </p>
-          </button>
+          />
         ))}
       </div>
 
       <div className="bg-white rounded-2xl shadow-lg border border-border/20 p-6 mb-8">
         <div className="flex gap-4 items-end flex-wrap">
           <div className="flex-1 min-w-75">
-            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
-              Búsqueda Global
-            </label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-border">
-                <i className="bi bi-search text-lg" />
-              </span>
-              <input
-                type="text"
-                placeholder="ID, usuario o palabra clave..."
-                value={busqueda}
-                onChange={(e) => {
-                  setBusqueda(e.target.value);
-                  setPagina(1);
-                }}
-                className="pl-12 pr-4 py-3 border-2 border-border/30 rounded-xl focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 w-full text-sm font-medium transition-all"
-              />
-            </div>
+            <SearchInput
+              value={busqueda}
+              onChange={(e) => {
+                setBusqueda(e.target.value);
+                setPagina(1);
+              }}
+              placeholder="ID, usuario o palabra clave..."
+              label="Búsqueda Global"
+            />
           </div>
 
           <div ref={tipoRef}>
@@ -384,11 +359,8 @@ export default function ReportesPage() {
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-4">
-            <div className="animate-spin rounded-full h-14 w-14 border-4 border-primary border-t-transparent" />
-            <p className="text-sm font-bold text-text/60 uppercase tracking-wide">
-              Cargando reportes...
-            </p>
+          <div className="flex items-center justify-center py-24">
+            <Spinner size="lg" text="Cargando reportes..." />
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -426,15 +398,11 @@ export default function ReportesPage() {
               <tbody className="divide-y divide-border/20">
                 {reportes.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="px-6 py-20 text-center">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="w-20 h-20 bg-border/10 rounded-full flex items-center justify-center">
-                          <i className="bi bi-inbox text-4xl text-border" />
-                        </div>
-                        <p className="text-text/40 text-sm font-bold uppercase tracking-wide">
-                          No hay reportes disponibles
-                        </p>
-                      </div>
+                    <td colSpan={7} className="px-6 py-20">
+                      <EmptyState 
+                        icon="bi-inbox" 
+                        title="No hay reportes disponibles" 
+                      />
                     </td>
                   </tr>
                 ) : (
@@ -562,31 +530,11 @@ export default function ReportesPage() {
         )}
 
         {totalPaginas > 1 && (
-          <div className="flex gap-2">
-            <button
-              onClick={() => setPagina(1)}
-              disabled={pagina === 1}
-              className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
-            >
-              <i className="bi bi-chevron-bar-left" />
-            </button>
-            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => setPagina(p)}
-                className={`px-4 py-2.5 border-2 rounded-xl text-sm font-bold transition-all ${p === pagina ? "bg-primary text-white border-primary shadow-md" : "border-border/30 hover:bg-primary/10 hover:border-primary/50"}`}
-              >
-                {p}
-              </button>
-            ))}
-            <button
-              onClick={() => setPagina(totalPaginas)}
-              disabled={pagina === totalPaginas}
-              className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
-            >
-              <i className="bi bi-chevron-bar-right" />
-            </button>
-          </div>
+          <Pagination
+            currentPage={pagina}
+            totalPages={totalPaginas}
+            onPageChange={setPagina}
+          />
         )}
       </div>
 
@@ -687,24 +635,21 @@ export default function ReportesPage() {
               </div>
             </div>
             <div className="flex gap-3 justify-end mt-8 pt-6 border-t-2 border-border/20">
-              <button
-                onClick={() => setReporteVer(null)}
-                className="px-6 py-3 bg-border/20 text-text rounded-xl hover:bg-border/30 font-bold uppercase tracking-wide transition-all"
-              >
+              <Button onClick={() => setReporteVer(null)} variant="outline">
                 Cerrar
-              </button>
+              </Button>
               {reporteVer.Estado !== "Resuelto" &&
                 reporteVer.Estado !== "Cerrado" && (
-                  <button
+                  <Button
                     onClick={() => {
                       cambiarEstado(reporteVer.ID, "Resuelto");
                       setReporteVer(null);
                     }}
-                    className="px-6 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 font-bold uppercase tracking-wide shadow-md hover:shadow-lg transition-all"
+                    variant="success"
                   >
                     <i className="bi bi-check-circle-fill mr-2" />
                     Marcar Resuelto
-                  </button>
+                  </Button>
                 )}
             </div>
           </div>
