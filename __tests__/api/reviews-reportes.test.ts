@@ -158,7 +158,7 @@ describe('GET /api/reportes', () => {
     (db.reportes.count as jest.Mock).mockResolvedValue(1);
     (db.cliente.findUnique as jest.Mock).mockResolvedValue({ Nombre: 'Juan' });
 
-    const req = { nextUrl: { searchParams: new URLSearchParams() } } as any;
+    const req = { nextUrl: { searchParams: new URLSearchParams() } } as unknown as Request & { nextUrl: { searchParams: URLSearchParams } };
     const res = await getReportes(req);
     const data = await res.json();
 
@@ -171,7 +171,7 @@ describe('GET /api/reportes', () => {
     (db.reportes.findMany as jest.Mock).mockResolvedValue([]);
     (db.reportes.count as jest.Mock).mockResolvedValue(0);
 
-    const req = { nextUrl: { searchParams: new URLSearchParams('tipo=Incidencia') } } as any;
+    const req = { nextUrl: { searchParams: new URLSearchParams('tipo=Incidencia') } } as unknown as Request & { nextUrl: { searchParams: URLSearchParams } };
     await getReportes(req);
 
     expect(db.reportes.findMany).toHaveBeenCalledWith(
@@ -183,7 +183,7 @@ describe('GET /api/reportes', () => {
     (db.reportes.findMany as jest.Mock).mockResolvedValue([]);
     (db.reportes.count as jest.Mock).mockResolvedValue(0);
 
-    const req = { nextUrl: { searchParams: new URLSearchParams() } } as any;
+    const req = { nextUrl: { searchParams: new URLSearchParams() } } as unknown as Request & { nextUrl: { searchParams: URLSearchParams } };
     await getReportes(req);
 
     expect(db.reportes.findMany).toHaveBeenCalledWith(
@@ -200,7 +200,7 @@ describe('POST /api/reportes', () => {
     const req = {
       nextUrl: { searchParams: new URLSearchParams() },
       json: jest.fn().mockResolvedValue({ Tipo: 'Incidencia', Descripcion: 'Accidente leve' }),
-    } as any;
+    } as unknown as Request & { nextUrl: { searchParams: URLSearchParams }; json: jest.Mock };
     const res = await postReporte(req);
 
     expect(res.status).toBe(201);
@@ -209,7 +209,7 @@ describe('POST /api/reportes', () => {
   it('rechaza sin sesión', async () => {
     mockSession.mockResolvedValue(null);
 
-    const req = { json: jest.fn().mockResolvedValue({ Tipo: 'Incidencia' }) } as any;
+    const req = { json: jest.fn().mockResolvedValue({ Tipo: 'Incidencia' }) } as unknown as Request & { json: jest.Mock };
     const res = await postReporte(req);
 
     expect(res.status).toBe(401);
@@ -218,7 +218,7 @@ describe('POST /api/reportes', () => {
   it('rechaza si falta Tipo', async () => {
     mockSession.mockResolvedValue({ user: { id: '1', role: 'camionero' } });
 
-    const req = { json: jest.fn().mockResolvedValue({}) } as any;
+    const req = { json: jest.fn().mockResolvedValue({}) } as unknown as Request & { json: jest.Mock };
     const res = await postReporte(req);
 
     expect(res.status).toBe(400);
@@ -227,7 +227,7 @@ describe('POST /api/reportes', () => {
   it('rechaza tipo inválido', async () => {
     mockSession.mockResolvedValue({ user: { id: '1', role: 'camionero' } });
 
-    const req = { json: jest.fn().mockResolvedValue({ Tipo: 'TipoInexistente' }) } as any;
+    const req = { json: jest.fn().mockResolvedValue({ Tipo: 'TipoInexistente' }) } as unknown as Request & { json: jest.Mock };
     const res = await postReporte(req);
 
     expect(res.status).toBe(400);

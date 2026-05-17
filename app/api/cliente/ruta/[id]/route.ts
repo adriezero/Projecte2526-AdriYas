@@ -13,7 +13,26 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
   const clienteId = parseInt(session.user.id);
   const idReserva = parseInt(id);
 
-  const rows = await prisma.$queryRaw<any[]>`
+  const rows = await prisma.$queryRaw<Array<{
+    idReserva: number;
+    idCamionero: number;
+    reservaFecha: Date;
+    reservaMotivo: string;
+    reservaDescripcion: string | null;
+    reservaOrigen: string | null;
+    reservaDestino: string | null;
+    reservaHora: string | null;
+    reservaRepresentante: string | null;
+    rutaId: number | null;
+    rutaEstado: string | null;
+    rutaOrigen: string | null;
+    rutaDestino: string | null;
+    rutaFechaInicio: Date | null;
+    rutaCargas: string | null;
+    conductorNombre: string;
+    conductorTelf: string;
+    conductorLicencia: string;
+  }>>`
     SELECT
       sr."idReserva",
       sr."idCamionero",

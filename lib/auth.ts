@@ -13,7 +13,7 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials?.correo || !credentials?.clave) return null;
 
-        let usuario: any = await prisma.cliente.findFirst({
+        let usuario: { ID: number; Email: string; Nombre: string; Contrase_a: string } | null = await prisma.cliente.findFirst({
           where: { Email: credentials.correo },
         });
         let tipo = 'cliente';
@@ -57,14 +57,14 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }: { token: { role?: string; id?: string }; user?: { role: string; id: string } }) {
       if (user) {
         token.role = user.role;
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }: any) {
+    async session({ session, token }: { session: { user?: { role?: string; id?: string } }; token: { role?: string; id?: string } }) {
       if (session?.user) {
         session.user.role = token.role;
         session.user.id = token.id;

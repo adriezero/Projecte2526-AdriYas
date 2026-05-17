@@ -8,7 +8,12 @@ jest.mock('@generated/prisma', () => {
 import { GET, POST } from '@/app/api/reservas/route';
 import { PrismaClient } from '@generated/prisma';
 
-const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as any;
+const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as unknown as {
+  reservas: {
+    findMany: jest.Mock;
+    create: jest.Mock;
+  };
+};
 
 const reservaBase = {
   ID: 1, Fecha: new Date('2026-06-15'), Hora: '09:00',

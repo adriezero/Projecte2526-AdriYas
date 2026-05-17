@@ -23,7 +23,19 @@ import { GET, POST } from '@/app/api/solicitudes/route';
 import { GET as GET_ID, PATCH, DELETE } from '@/app/api/solicitudes/[id]/route';
 import { PrismaClient } from '@generated/prisma';
 
-const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as any;
+const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as unknown as {
+  solicitud: {
+    findMany: jest.Mock;
+    findUnique: jest.Mock;
+    create: jest.Mock;
+    update: jest.Mock;
+    delete: jest.Mock;
+  };
+  cliente: { findFirst: jest.Mock };
+  camionero: { findUnique: jest.Mock };
+  reservas: { create: jest.Mock };
+  solicitud_reserva: { create: jest.Mock };
+};
 
 const solicitudBase = {
   id: 1, cliente: 'Juan', tipo: 'Transporte', asunto: 'Envío urgente',

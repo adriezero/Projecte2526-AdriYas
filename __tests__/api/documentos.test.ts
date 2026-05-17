@@ -8,7 +8,12 @@ jest.mock('@generated/prisma', () => {
 import { GET, POST } from '@/app/api/documentos/route';
 import { PrismaClient } from '@generated/prisma';
 
-const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as any;
+const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as unknown as {
+  documentos: {
+    findMany: jest.Mock;
+    create: jest.Mock;
+  };
+};
 
 const docBase = {
   ID: 1, Nombre: 'contrato.pdf', Tipo: 'Contrato',
@@ -24,7 +29,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockResolvedValue([docBase]);
 
     const req = new Request('http://localhost/api/documentos');
-    const res = await GET(req as any);
+    const res = await GET(req);
     const data = await res.json();
 
     expect(res.status).toBe(200);
@@ -36,7 +41,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockResolvedValue([docBase]);
 
     const req = new Request('http://localhost/api/documentos?tipo=Contrato');
-    await GET(req as any);
+    await GET(req);
 
     expect(db.documentos.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: expect.objectContaining({ Tipo: 'Contrato' }) })
@@ -47,7 +52,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockResolvedValue([]);
 
     const req = new Request('http://localhost/api/documentos?tipo=Todos');
-    await GET(req as any);
+    await GET(req);
 
     const call = db.documentos.findMany.mock.calls[0][0];
     expect(call.where.Tipo).toBeUndefined();
@@ -57,7 +62,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockResolvedValue([]);
 
     const req = new Request('http://localhost/api/documentos?desde=2026-01-01&hasta=2026-12-31');
-    await GET(req as any);
+    await GET(req);
 
     const call = db.documentos.findMany.mock.calls[0][0];
     expect(call.where.FechaSubida).toBeDefined();
@@ -69,7 +74,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockResolvedValue([{ ...docBase, AsociadoA: null }]);
 
     const req = new Request('http://localhost/api/documentos');
-    const res = await GET(req as any);
+    const res = await GET(req);
     const data = await res.json();
 
     expect(data[0].asociadoA).toBe('General');
@@ -79,7 +84,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockResolvedValue([{ ...docBase, Tamano: null }]);
 
     const req = new Request('http://localhost/api/documentos');
-    const res = await GET(req as any);
+    const res = await GET(req);
     const data = await res.json();
 
     expect(data[0].tamano).toBe('N/A');
@@ -89,7 +94,7 @@ describe('GET /api/documentos', () => {
     db.documentos.findMany.mockRejectedValue(new Error('DB error'));
 
     const req = new Request('http://localhost/api/documentos');
-    const res = await GET(req as any);
+    const res = await GET(req);
 
     expect(res.status).toBe(500);
   });
@@ -104,7 +109,7 @@ describe('POST /api/documentos', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre: 'contrato.pdf', tipo: 'Contrato', rutaArchivo: '/uploads/contrato.pdf' }),
     });
-    const res = await POST(req as any);
+    const res = await POST(req);
 
     expect(res.status).toBe(201);
   });
@@ -115,7 +120,7 @@ describe('POST /api/documentos', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tipo: 'Contrato', rutaArchivo: '/uploads/x.pdf' }),
     });
-    const res = await POST(req as any);
+    const res = await POST(req);
 
     expect(res.status).toBe(400);
     const data = await res.json();
@@ -128,7 +133,7 @@ describe('POST /api/documentos', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre: 'x.pdf', rutaArchivo: '/uploads/x.pdf' }),
     });
-    const res = await POST(req as any);
+    const res = await POST(req);
 
     expect(res.status).toBe(400);
   });
@@ -139,7 +144,7 @@ describe('POST /api/documentos', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre: 'x.pdf', tipo: 'Contrato' }),
     });
-    const res = await POST(req as any);
+    const res = await POST(req);
 
     expect(res.status).toBe(400);
   });
@@ -152,7 +157,7 @@ describe('POST /api/documentos', () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nombre: 'x.pdf', tipo: 'Contrato', rutaArchivo: '/uploads/x.pdf' }),
     });
-    const res = await POST(req as any);
+    const res = await POST(req);
 
     expect(res.status).toBe(500);
   });

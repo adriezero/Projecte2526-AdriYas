@@ -33,7 +33,7 @@ export function useRegister() {
       } else {
         setError("Error al registrarse. Inténtelo de nuevo.");
       }
-    } catch (err) {
+    } catch {
       setError("Error de conexión.");
     }
   };

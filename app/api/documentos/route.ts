@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const desde = searchParams.get('desde');
     const hasta = searchParams.get('hasta');
 
-    const where: any = {};
+    const where: Record<string, unknown> = {};
 
     if (tipo && tipo !== 'Todos') {
       where.Tipo = tipo;

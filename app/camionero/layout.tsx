@@ -1,4 +1,3 @@
-import '@css/globals.css'
 import { Metadata } from 'next'
 import BarraLateral from '@componentes/camionero/BarraLateral'
 

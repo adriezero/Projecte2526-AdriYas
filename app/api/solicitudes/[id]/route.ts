@@ -34,7 +34,7 @@ export async function GET(
     });
     if (!solicitud) return NextResponse.json({ error: 'Solicitud no encontrada' }, { status: 404 });
     return NextResponse.json({ ...solicitud, estado: mapEstadoFromEnum(solicitud.estado) });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error al obtener solicitud' }, { status: 500 });
   }
 }
@@ -106,7 +106,7 @@ export async function PATCH(
       // Actualizar solicitud con camionero asignado
       const solicitud = await prisma.solicitud.update({
         where: { id: parseInt(id) },
-        data: { estado: 'Aceptada' as any, idCamionero },
+        data: { estado: 'Aceptada', idCamionero },
         include: {
           clienteRel: true,
           camioneroRel: true
@@ -119,13 +119,13 @@ export async function PATCH(
     if (estado === 'Rechazada') {
       const solicitud = await prisma.solicitud.update({
         where: { id: parseInt(id) },
-        data: { estado: 'Rechazada' as any, motivoRechazo: motivoRechazo || 'Sin especificar' }
+        data: { estado: 'Rechazada', motivoRechazo: motivoRechazo || 'Sin especificar' }
       });
       return NextResponse.json({ ...solicitud, estado: 'Rechazada' });
     }
 
     // Actualización normal (editar solicitud)
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
     
     if (cliente !== undefined) updateData.cliente = cliente;
     if (tipo !== undefined) updateData.tipo = tipo;
@@ -142,8 +142,8 @@ export async function PATCH(
       ...solicitud,
       estado: mapEstadoFromEnum(solicitud.estado)
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Error al actualizar solicitud', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Error al actualizar solicitud', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
 
@@ -155,7 +155,7 @@ export async function DELETE(
   try {
     await prisma.solicitud.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: 'Error al eliminar solicitud', details: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    return NextResponse.json({ error: 'Error al eliminar solicitud', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }

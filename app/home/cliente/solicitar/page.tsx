@@ -21,7 +21,14 @@ function formatFecha(f: string) {
 export default function SolicitarPage() {
   const router = useRouter();
   const { data: session } = useSession();
-  const [solicitudes, setSolicitudes] = useState<any[]>([]);
+  const [solicitudes, setSolicitudes] = useState<Array<{
+    id: number;
+    cliente: string;
+    asunto: string;
+    tipo: string;
+    fecha: string;
+    estado: string;
+  }>>([]);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState("Todas");
 
@@ -31,7 +38,7 @@ export default function SolicitarPage() {
       if (!cliente) { setLoading(false); return; }
       const res = await fetch("/api/solicitudes");
       const data = await res.json();
-      setSolicitudes(Array.isArray(data) ? data.filter((s: any) => s.cliente === cliente.Nombre) : []);
+      setSolicitudes(Array.isArray(data) ? data.filter((s: { cliente: string }) => s.cliente === cliente.Nombre) : []);
       setLoading(false);
     });
   }, [session]);
@@ -42,17 +49,17 @@ export default function SolicitarPage() {
     <div className="min-h-screen bg-white px-6 pt-24 pb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-[#2C2C2C] mb-2">
+          <h1 className="text-3xl sm:text-4xl font-bold text-text mb-2">
             Mis Solicitudes
           </h1>
-          <p className="text-[#A6A6A6]">
+          <p className="text-border">
             Crea y gestiona tus solicitudes de servicio
           </p>
         </div>
         
         <button
           onClick={() => router.push("/home/cliente/solicitar/nueva")}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#F47C20] text-white text-sm font-semibold rounded-xl hover:bg-[#d66a1a] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 whitespace-nowrap"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-accent-orange text-white text-sm font-semibold rounded-xl hover:bg-[#d66a1a] transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 whitespace-nowrap"
         >
           <Plus className="w-5 h-5" />
           <span>Nueva solicitud</span>

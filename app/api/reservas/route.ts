@@ -28,7 +28,7 @@ export async function GET(request: Request) {
     });
     
     return NextResponse.json(reservas);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error al obtener reservas' }, { status: 500 });
   }
 }
@@ -49,8 +49,8 @@ export async function POST(request: Request) {
       }
     });
     return NextResponse.json(reserva);
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error al crear reserva:', error);
-    return NextResponse.json({ error: 'Error al crear reserva', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Error al crear reserva', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }

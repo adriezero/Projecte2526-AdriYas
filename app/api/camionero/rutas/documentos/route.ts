@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const doc = await prisma.documentos.create({
       data: {
         Nombre: file.name,
-        Tipo: tipo as any,
+        Tipo: tipo,
         Tamano: tamano,
         RutaArchivo: rutaArchivo,
         idRuta: parseInt(idRuta),
@@ -66,8 +66,8 @@ export async function POST(request: NextRequest) {
       rutaArchivo: doc.RutaArchivo,
       fechaSubida: doc.FechaSubida,
     }, { status: 201 });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Error subiendo documento:', e);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: e instanceof Error ? e.message : 'Unknown error' }, { status: 500 });
   }
 }

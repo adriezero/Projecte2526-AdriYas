@@ -49,13 +49,13 @@ export async function POST(request: NextRequest) {
     const nuevoDocumento = await prisma.documentos.create({
       data: {
         Nombre: file.name,
-        Tipo: tipoFinal as any,
+        Tipo: tipoFinal,
         AsociadoA: asociadoA || 'General',
         Tamano: tamano,
         RutaArchivo: rutaArchivo,
         Descripcion: descripcion,
         SubidoPor: subidoPor ? parseInt(subidoPor) : null,
-        RolSubidor: rolSubidor as any || null,
+        RolSubidor: rolSubidor || null,
         Dispatcher: dispatcher ? parseInt(dispatcher) : null,
       },
     });

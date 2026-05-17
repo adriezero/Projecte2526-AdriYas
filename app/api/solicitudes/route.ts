@@ -33,7 +33,7 @@ export async function GET() {
       estado: mapEstadoFromEnum(s.estado)
     }));
     return NextResponse.json(mapped);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error al obtener solicitudes' }, { status: 500 });
   }
 }
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
         asunto: body.asunto,
         descripcion: body.descripcion || null,
         fecha: body.fecha ? new Date(body.fecha) : new Date(),
-        estado: mapEstadoToEnum(body.estado || 'Pendiente') as any,
+        estado: mapEstadoToEnum(body.estado || 'Pendiente'),
         origen: body.origen || null,
         destino: body.destino || null,
         idCliente,
@@ -73,8 +73,8 @@ export async function POST(request: Request) {
       ...solicitud,
       estado: mapEstadoFromEnum(solicitud.estado)
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error al crear solicitud:', error);
-    return NextResponse.json({ error: 'Error al crear solicitud', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Error al crear solicitud', details: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }

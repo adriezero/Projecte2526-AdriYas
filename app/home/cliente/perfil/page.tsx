@@ -65,7 +65,7 @@ function ModalCambioGmail({ onClose }: { onClose: () => void }) {
 
 export default function PerfilClientePage() {
   const { data: session } = useSession();
-  const id = (session?.user as any)?.id;
+  const id = (session?.user as { id?: number })?.id;
 
   const [form, setForm] = useState({ Nombre: "", NombreEmpresa: "", RazonSocial: "", Telf: "", Gmail: "" });
   const [original, setOriginal] = useState({ Nombre: "", NombreEmpresa: "", RazonSocial: "", Telf: "", Gmail: "" });
@@ -85,7 +85,7 @@ export default function PerfilClientePage() {
         setOriginal(data);
         setLoading(false);
       });
-  }, [id]);
+  }, [id, session?.user?.email]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,7 +132,7 @@ export default function PerfilClientePage() {
         <aside className="w-80 shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
 
           {/* Avatar */}
-          <div className="flex flex-col items-center px-8 pt-14 pb-10 bg-gradient-to-b from-blue-600 to-blue-700">
+          <div className="flex flex-col items-center px-8 pt-14 pb-10 bg-linear-to-b from-blue-600 to-blue-700">
             <div className="w-24 h-24 rounded-full bg-white/20 border-4 border-white/40 flex items-center justify-center text-white text-3xl font-bold mb-5 shadow-xl">
               {initials}
             </div>

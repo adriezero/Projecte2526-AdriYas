@@ -11,7 +11,7 @@ jest.mock('next/navigation', () => ({
 
 const mockSignIn = jest.fn();
 jest.mock('next-auth/react', () => ({
-  signIn: (...args: any[]) => mockSignIn(...args),
+  signIn: (...args: unknown[]) => mockSignIn(...args),
 }));
 
 // Mock de fetch global
@@ -55,7 +55,7 @@ describe('useRegister', () => {
     });
 
     await act(async () => {
-      await result.current.manejarEnvio({ preventDefault: jest.fn() } as any);
+      await result.current.manejarEnvio({ preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>);
     });
 
     expect(result.current.error).toBe('Las contraseñas no coinciden.');
@@ -76,7 +76,7 @@ describe('useRegister', () => {
     });
 
     await act(async () => {
-      await result.current.manejarEnvio({ preventDefault: jest.fn() } as any);
+      await result.current.manejarEnvio({ preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>);
     });
 
     expect(fetch).toHaveBeenCalledWith('/api/auth/register', expect.objectContaining({ method: 'POST' }));
@@ -94,7 +94,7 @@ describe('useRegister', () => {
     });
 
     await act(async () => {
-      await result.current.manejarEnvio({ preventDefault: jest.fn() } as any);
+      await result.current.manejarEnvio({ preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>);
     });
 
     expect(result.current.error).toBe('Error al registrarse. Inténtelo de nuevo.');
@@ -111,7 +111,7 @@ describe('useRegister', () => {
     });
 
     await act(async () => {
-      await result.current.manejarEnvio({ preventDefault: jest.fn() } as any);
+      await result.current.manejarEnvio({ preventDefault: jest.fn() } as React.FormEvent<HTMLFormElement>);
     });
 
     expect(result.current.error).toBe('Error de conexión.');

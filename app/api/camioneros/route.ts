@@ -12,7 +12,7 @@ export async function GET() {
       orderBy: { Nombre: 'asc' }
     });
     return NextResponse.json(camioneros);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error al obtener camioneros' }, { status: 500 });
   }
 }

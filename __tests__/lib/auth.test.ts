@@ -18,15 +18,20 @@ import { prisma } from '@lib/prisma';
 import bcryptjs from 'bcryptjs';
 import { authOptions } from '@lib/auth';
 
-const db = prisma as any;
+const db = prisma as jest.Mocked<typeof prisma> & {
+  cliente: { findFirst: jest.Mock };
+  dispatcher: { findFirst: jest.Mock };
+  camionero: { findFirst: jest.Mock };
+  administrador: { findFirst: jest.Mock };
+};
 const PASS = 'pass123';
 let hashedPass: string;
 
 // Replica de la lógica de authorize usando bcryptjs (compatible con bcrypt)
-async function authorizeLogic(credentials: any) {
+async function authorizeLogic(credentials: { correo?: string; clave?: string }) {
   if (!credentials?.correo || !credentials?.clave) return null;
 
-  let usuario: any = await db.cliente.findFirst({ where: { Email: credentials.correo } });
+  let usuario: { ID: number; Email: string; Nombre: string; Contrase_a: string } | null = await db.cliente.findFirst({ where: { Email: credentials.correo } });
   let tipo = 'cliente';
 
   if (!usuario) { usuario = await db.dispatcher.findFirst({ where: { Email: credentials.correo } }); tipo = 'dispatcher'; }
@@ -121,7 +126,10 @@ describe('authorize logic', () => {
 
 // ─── Callbacks de authOptions ─────────────────────────────────────────────────
 describe('authOptions - callbacks', () => {
-  const { jwt, session } = authOptions.callbacks as any;
+  const { jwt, session } = authOptions.callbacks as {
+    jwt: (params: { token: Record<string, unknown>; user?: { id: string; role: string } }) => Promise<Record<string, unknown>>;
+    session: (params: { session: { user?: Record<string, unknown> }; token: { role?: string; id?: string } }) => Promise<{ user: Record<string, unknown> }>;
+  };
 
   it('jwt callback añade role e id al token', async () => {
     const token = await jwt({ token: {}, user: { id: '1', role: 'cliente' } });

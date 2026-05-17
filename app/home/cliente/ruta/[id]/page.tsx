@@ -113,7 +113,24 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
 export default function DetallePedidoPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<{
+    idReserva: number;
+    rutaEstado: string | null;
+    rutaOrigen?: string;
+    rutaDestino?: string;
+    rutaFechaInicio?: string;
+    rutaCargas?: string;
+    reservaOrigen?: string;
+    reservaDestino?: string;
+    reservaFecha: string;
+    reservaHora: string;
+    reservaMotivo: string;
+    reservaRepresentante?: string;
+    reservaDescripcion?: string;
+    conductorNombre: string;
+    conductorTelf: string;
+    conductorLicencia: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [modalReporte, setModalReporte] = useState(false);

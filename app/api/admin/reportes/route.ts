@@ -103,15 +103,15 @@ export async function POST(req: NextRequest) {
   try {
     const reporte = await prisma.reportes.create({
       data: {
-        Tipo: tipoEnum as any,
+        Tipo: tipoEnum,
         Descripcion: Descripcion ?? null,
         idReportante: parseInt(session.user.id),
-        rolReportante: rol as any,
+        rolReportante: rol,
       },
     })
     return NextResponse.json(reporte, { status: 201 })
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Error creando reporte:', e)
-    return NextResponse.json({ error: e.message }, { status: 500 })
+    return NextResponse.json({ error: e instanceof Error ? e.message : 'Unknown error' }, { status: 500 })
   }
 }

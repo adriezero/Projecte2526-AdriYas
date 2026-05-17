@@ -8,7 +8,7 @@ export default function FooterGrande() {
   return (
     <footer className="mt-auto bg-gray-950 text-gray-400">
       {/* Top accent bar */}
-      <div className="h-1 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-500" />
+      <div className="h-1 bg-linear-to-r from-orange-500 via-yellow-400 to-orange-500" />
 
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">

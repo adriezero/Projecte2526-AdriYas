@@ -16,7 +16,19 @@ function formatFecha(f: string) {
 export default function DetalleSolicitudPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<{
+    id: number;
+    cliente: string;
+    tipo: string;
+    asunto: string;
+    origen?: string;
+    destino?: string;
+    fechaServicio?: string;
+    fecha: string;
+    estado: string;
+    descripcion?: string;
+    motivoRechazo?: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -80,7 +92,7 @@ export default function DetalleSolicitudPage() {
               </div>
             )}
             {data.estado === "Rechazada" && (
-              <div className="mt-4 rounded-xl border border-red-200 bg-gradient-to-br from-red-50 to-rose-50 overflow-hidden">
+              <div className="mt-4 rounded-xl border border-red-200 bg-linear-to-br from-red-50 to-rose-50 overflow-hidden">
                 <div className="flex items-center gap-2 px-4 py-3 bg-red-100/60 border-b border-red-200">
                   <span className="text-base">🚫</span>
                   <p className="text-xs font-semibold text-red-600 uppercase tracking-widest">Solicitud rechazada</p>
