@@ -40,22 +40,22 @@ export default function NavBar() {
         <ul className="hidden lg:flex gap-6 text-black items-center">
           {isCliente ? (
             <>
-              <li><NavLink href="/home" className="hover:text-blue-600">{translations('home')}</NavLink></li>
-              <li><NavLink href="/contacto" className="hover:text-blue-600">{translations('contact')}</NavLink></li>
-              <li><NavLink href="/sobre-nosotros" className="hover:text-blue-600">{translations('about')}</NavLink></li>
+              <li><NavLink href="/home" className="hover:text-accent-orange transition-colors active:scale-95">{translations('home')}</NavLink></li>
+              <li><NavLink href="/contacto" className="hover:text-accent-orange transition-colors active:scale-95">{translations('contact')}</NavLink></li>
+              <li><NavLink href="/sobre-nosotros" className="hover:text-accent-orange transition-colors active:scale-95">{translations('about')}</NavLink></li>
               <li className="text-gray-300">|</li>
-              <li><NavLink href="/home/cliente/ruta" className="hover:text-blue-600">Reservas</NavLink></li>
-              <li><NavLink href="/home/cliente/solicitar" className="hover:text-blue-600">Solicitar</NavLink></li>
+              <li><NavLink href="/home/cliente/ruta" className="hover:text-accent-orange transition-colors active:scale-95">Reservas</NavLink></li>
+              <li><NavLink href="/home/cliente/solicitar" className="hover:text-accent-orange transition-colors active:scale-95">Solicitar</NavLink></li>
             </>
           ) : (
             <>
-              <li><NavLink href="/home" className="hover:text-blue-600">{translations('home')}</NavLink></li>
-              <li><NavLink href="/contacto" className="hover:text-blue-600">{translations('contact')}</NavLink></li>
-              <li><NavLink href="/sobre-nosotros" className="hover:text-blue-600">{translations('about')}</NavLink></li>
+              <li><NavLink href="/home" className="hover:text-accent-orange transition-colors active:scale-95">{translations('home')}</NavLink></li>
+              <li><NavLink href="/contacto" className="hover:text-accent-orange transition-colors active:scale-95">{translations('contact')}</NavLink></li>
+              <li><NavLink href="/sobre-nosotros" className="hover:text-accent-orange transition-colors active:scale-95">{translations('about')}</NavLink></li>
               {!isLoading && !session && (
                 <>
                   <li className="text-gray-300">|</li>
-                  <li><NavLink href="/auth/login" className="hover:text-blue-600">{translations('login')}</NavLink></li>
+                  <li><NavLink href="/auth/login" className="hover:text-accent-orange transition-colors active:scale-95">{translations('login')}</NavLink></li>
                 </>
               )}
             </>
@@ -74,16 +74,16 @@ export default function NavBar() {
               {isCliente ? (
                 <>
                   <span className="text-sm">{translations('hello')}, {session?.user?.name}</span>
-                  <Link href="/home/cliente/perfil" className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 hover:text-blue-600 transition" title="Mi Perfil">
+                  <Link href="/home/cliente/perfil" className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 hover:text-accent-orange transition-colors" title="Mi Perfil">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                     </svg>
                   </Link>
                 </>
               ) : (
-                <Link href={userRoute} className="px-4 py-2 hover:text-blue-600">{translations('myArea')}</Link>
+                <Link href={userRoute} className="px-4 py-2 hover:text-accent-orange transition-colors">{translations('myArea')}</Link>
               )}
-              <button onClick={() => signOut({ callbackUrl: '/home' })} className="px-4 py-2 hover:text-red-600">{translations('logout')}</button>
+              <button onClick={() => signOut({ callbackUrl: '/home' })} className="px-4 py-2 hover:text-red-600 transition-colors">{translations('logout')}</button>
             </>
           ) : (
             <Link href="/auth/login" className="px-4 py-2">{translations('clientArea')}</Link>
@@ -130,15 +130,15 @@ export default function NavBar() {
       {/* MENÚ MÓVIL */}
       {menuOpen && (
         <div className="lg:hidden bg-white border-t px-4 py-4 flex flex-col gap-3 text-sm text-gray-800 shadow-md">
-          <Link href="/home" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('home')}</Link>
-          <Link href="/contacto" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('contact')}</Link>
-          <Link href="/sobre-nosotros" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('about')}</Link>
+          <Link href="/home" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('home')}</Link>
+          <Link href="/contacto" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('contact')}</Link>
+          <Link href="/sobre-nosotros" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('about')}</Link>
 
           {isCliente && (
             <>
               <hr className="border-gray-200" />
-              <Link href="/home/cliente/ruta" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>Ruta</Link>
-              <Link href="/home/cliente/solicitar" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>Solicitar</Link>
+              <Link href="/home/cliente/ruta" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>Ruta</Link>
+              <Link href="/home/cliente/solicitar" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>Solicitar</Link>
             </>
           )}
 
@@ -149,24 +149,24 @@ export default function NavBar() {
           ) : session ? (
             <>
               {isCliente ? (
-                <Link href="/home/cliente/perfil" className="flex items-center gap-2 hover:text-blue-600" onClick={() => setMenuOpen(false)}>
+                <Link href="/home/cliente/perfil" className="flex items-center gap-2 hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>
                   <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
                   {translations('hello')}, {session?.user?.name}
                 </Link>
               ) : (
-                <Link href={userRoute} className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('myArea')}</Link>
+                <Link href={userRoute} className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('myArea')}</Link>
               )}
               {!isCliente && (
-                <Link href="/contacto" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('requestService')}</Link>
+                <Link href="/contacto" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('requestService')}</Link>
               )}
-              <button onClick={() => { signOut({ callbackUrl: '/home' }); setMenuOpen(false) }} className="text-left text-red-500 hover:text-red-600">{translations('logout')}</button>
+              <button onClick={() => { signOut({ callbackUrl: '/home' }); setMenuOpen(false) }} className="text-left text-red-500 hover:text-red-600 transition-colors">{translations('logout')}</button>
             </>
           ) : (
             <>
-              <Link href="/auth/login" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('login')}</Link>
-              <Link href="/contacto" className="hover:text-blue-600" onClick={() => setMenuOpen(false)}>{translations('requestService')}</Link>
+              <Link href="/auth/login" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('login')}</Link>
+              <Link href="/contacto" className="hover:text-accent-orange transition-colors" onClick={() => setMenuOpen(false)}>{translations('requestService')}</Link>
             </>
           )}
 

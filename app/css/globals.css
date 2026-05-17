@@ -40,9 +40,29 @@ body {
 }
 
 .active {
-  color: #2563eb;
-  font-weight: 600;
-  border-bottom: 2px solid #2563eb;
+  color: var(--color-primary);
+  font-weight: 500;
+  position: relative;
+}
+
+.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-accent-orange);
+  border-radius: 2px;
+}
+
+.active:hover {
+  color: var(--color-accent-orange);
+}
+
+.active:active {
+  color: var(--color-accent-orange);
+  transform: translateY(1px);
 }
 
 .font-arsenal {

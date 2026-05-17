@@ -93,5 +93,70 @@
     "terms": "Términos y Condiciones",
     "cookies": "Política de Cookies",
     "legal": "Aviso Legal"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "user": "Usuario",
+      "emailPlaceholder": "Correo electrónico",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Contraseña",
+      "forgotPassword": "¿Olvidaste la contraseña?",
+      "submit": "Iniciar sesión",
+      "noAccount": "¿No tienes cuenta? Regístrate.",
+      "registerButton": "Registrarse"
+    },
+    "register": {
+      "title": "Registrarse",
+      "username": "Usuario",
+      "usernamePlaceholder": "Usuario",
+      "email": "Email",
+      "emailPlaceholder": "usuario@gmail.com",
+      "password": "Contraseña",
+      "passwordPlaceholder": "Introduce una contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "confirmPasswordPlaceholder": "Confirmar contraseña",
+      "role": "Rol",
+      "selectRole": "Selecciona un rol",
+      "submit": "Registrarse",
+      "hasAccount": "¿Tienes cuenta? Inicia sesión.",
+      "loginButton": "Iniciar sesión",
+      "passwordMinLength": "La contraseña tiene más de 8 caracteres.",
+      "passwordSpecialChar": "La contraseña tiene caracteres especiales.",
+      "passwordNumber": "La contraseña tiene un número.",
+      "passwordCapital": "La contraseña tiene una letra mayúscula.",
+      "passwordMatch": "Las contraseñas coinciden."
+    },
+    "forgotPassword": {
+      "title": "Recuperar contraseña",
+      "description": "Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@correo.com",
+      "submit": "Enviar enlace de recuperación",
+      "sending": "Enviando...",
+      "backToLogin": "Volver al inicio de sesión",
+      "successTitle": "¡Correo enviado!",
+      "successMessage": "Revisa tu bandeja de entrada para restablecer tu contraseña."
+    },
+    "resetPassword": {
+      "title": "Restablecer contraseña",
+      "description": "Ingresa tu nueva contraseña",
+      "newPassword": "Nueva contraseña",
+      "passwordPlaceholder": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "confirmPasswordPlaceholder": "Confirmar contraseña",
+      "submit": "Restablecer contraseña",
+      "processing": "Procesando...",
+      "backToLogin": "Volver al inicio de sesión",
+      "successTitle": "¡Contraseña restablecida!",
+      "successMessage": "Redirigiendo al inicio de sesión...",
+      "invalidToken": "Token inválido o faltante",
+      "loading": "Cargando...",
+      "passwordMinLength": "La contraseña tiene más de 8 caracteres.",
+      "passwordSpecialChar": "La contraseña tiene caracteres especiales.",
+      "passwordNumber": "La contraseña tiene un número.",
+      "passwordCapital": "La contraseña tiene una letra mayúscula.",
+      "passwordMatch": "Las contraseñas coinciden."
+    }
   }
 }

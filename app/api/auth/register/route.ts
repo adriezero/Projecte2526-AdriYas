@@ -103,7 +103,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: "TruckWave <onboarding@resend.dev>",
-      to: "adrimoodle33@gmail.com",
+      to: email,
       subject: "¡Bienvenido a TruckWave!",
       html: templateBienvenida(username, rol, email),
     });

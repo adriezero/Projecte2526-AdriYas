@@ -90,5 +90,70 @@
     "terms": "Terms and Conditions",
     "cookies": "Cookie Policy",
     "legal": "Legal Notice"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "user": "User",
+      "emailPlaceholder": "Email address",
+      "password": "Password",
+      "passwordPlaceholder": "Password",
+      "forgotPassword": "Forgot your password?",
+      "submit": "Log in",
+      "noAccount": "Don't have an account? Sign up.",
+      "registerButton": "Sign up"
+    },
+    "register": {
+      "title": "Sign up",
+      "username": "Username",
+      "usernamePlaceholder": "Username",
+      "email": "Email",
+      "emailPlaceholder": "user@gmail.com",
+      "password": "Password",
+      "passwordPlaceholder": "Enter a password",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "role": "Role",
+      "selectRole": "Select a role",
+      "submit": "Sign up",
+      "hasAccount": "Have an account? Log in.",
+      "loginButton": "Log in",
+      "passwordMinLength": "Password has more than 8 characters.",
+      "passwordSpecialChar": "Password has special characters.",
+      "passwordNumber": "Password has a number.",
+      "passwordCapital": "Password has an uppercase letter.",
+      "passwordMatch": "Passwords match."
+    },
+    "forgotPassword": {
+      "title": "Recover password",
+      "description": "Enter your email address and we'll send you a link to reset your password.",
+      "email": "Email address",
+      "emailPlaceholder": "your@email.com",
+      "submit": "Send recovery link",
+      "sending": "Sending...",
+      "backToLogin": "Back to login",
+      "successTitle": "Email sent!",
+      "successMessage": "Check your inbox to reset your password."
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "description": "Enter your new password",
+      "newPassword": "New password",
+      "passwordPlaceholder": "Password",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "submit": "Reset password",
+      "processing": "Processing...",
+      "backToLogin": "Back to login",
+      "successTitle": "Password reset!",
+      "successMessage": "Redirecting to login...",
+      "invalidToken": "Invalid or missing token",
+      "loading": "Loading...",
+      "passwordMinLength": "Password has more than 8 characters.",
+      "passwordSpecialChar": "Password has special characters.",
+      "passwordNumber": "Password has a number.",
+      "passwordCapital": "Password has an uppercase letter.",
+      "passwordMatch": "Passwords match."
+    }
   }
 }

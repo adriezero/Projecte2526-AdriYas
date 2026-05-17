@@ -88,5 +88,70 @@
     "terms": "Termes i Condicions",
     "cookies": "Política de Cookies",
     "legal": "Avís Legal"
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar sessió",
+      "user": "Usuari",
+      "emailPlaceholder": "Correu electrònic",
+      "password": "Contrasenya",
+      "passwordPlaceholder": "Contrasenya",
+      "forgotPassword": "Has oblidat la contrasenya?",
+      "submit": "Iniciar sessió",
+      "noAccount": "No tens compte? Registra't.",
+      "registerButton": "Registrar-se"
+    },
+    "register": {
+      "title": "Registrar-se",
+      "username": "Usuari",
+      "usernamePlaceholder": "Usuari",
+      "email": "Email",
+      "emailPlaceholder": "usuari@gmail.com",
+      "password": "Contrasenya",
+      "passwordPlaceholder": "Introdueix una contrasenya",
+      "confirmPassword": "Confirmar contrasenya",
+      "confirmPasswordPlaceholder": "Confirmar contrasenya",
+      "role": "Rol",
+      "selectRole": "Selecciona un rol",
+      "submit": "Registrar-se",
+      "hasAccount": "Tens compte? Inicia sessió.",
+      "loginButton": "Iniciar sessió",
+      "passwordMinLength": "La contrasenya té més de 8 caràcters.",
+      "passwordSpecialChar": "La contrasenya té caràcters especials.",
+      "passwordNumber": "La contrasenya té un número.",
+      "passwordCapital": "La contrasenya té una lletra majúscula.",
+      "passwordMatch": "Les contrasenyes coincideixen."
+    },
+    "forgotPassword": {
+      "title": "Recuperar contrasenya",
+      "description": "Introdueix el teu correu electrònic i t'enviarem un enllaç per restablir la teva contrasenya.",
+      "email": "Correu electrònic",
+      "emailPlaceholder": "el.teu@correu.com",
+      "submit": "Enviar enllaç de recuperació",
+      "sending": "Enviant...",
+      "backToLogin": "Tornar a l'inici de sessió",
+      "successTitle": "Correu enviat!",
+      "successMessage": "Revisa la teva safata d'entrada per restablir la teva contrasenya."
+    },
+    "resetPassword": {
+      "title": "Restablir contrasenya",
+      "description": "Introdueix la teva nova contrasenya",
+      "newPassword": "Nova contrasenya",
+      "passwordPlaceholder": "Contrasenya",
+      "confirmPassword": "Confirmar contrasenya",
+      "confirmPasswordPlaceholder": "Confirmar contrasenya",
+      "submit": "Restablir contrasenya",
+      "processing": "Processant...",
+      "backToLogin": "Tornar a l'inici de sessió",
+      "successTitle": "Contrasenya restablerta!",
+      "successMessage": "Redirigint a l'inici de sessió...",
+      "invalidToken": "Token invàlid o faltant",
+      "loading": "Carregant...",
+      "passwordMinLength": "La contrasenya té més de 8 caràcters.",
+      "passwordSpecialChar": "La contrasenya té caràcters especials.",
+      "passwordNumber": "La contrasenya té un número.",
+      "passwordCapital": "La contrasenya té una lletra majúscula.",
+      "passwordMatch": "Les contrasenyes coincideixen."
+    }
   }
 }
