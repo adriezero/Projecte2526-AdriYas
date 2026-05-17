@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@generated/prisma';
+import { PrismaClient, Solicitud_Estado } from '@generated/prisma';
 
 const prisma = new PrismaClient();
 
-function mapEstadoToEnum(estado: string): string {
-  const mapping: Record<string, string> = {
-    'Pendiente': 'Pendiente',
-    'En Proceso': 'En_Proceso',
-    'Aceptada': 'Aceptada',
-    'Rechazada': 'Rechazada'
+function mapEstadoToEnum(estado: string): Solicitud_Estado {
+  const mapping: Record<string, Solicitud_Estado> = {
+    'Pendiente': Solicitud_Estado.Pendiente,
+    'En Proceso': Solicitud_Estado.En_Proceso,
+    'Aceptada': Solicitud_Estado.Aceptada,
+    'Rechazada': Solicitud_Estado.Rechazada
   };
-  return mapping[estado] || estado;
+  return mapping[estado] || Solicitud_Estado.Pendiente;
 }
 
 function mapEstadoFromEnum(estado: string): string {

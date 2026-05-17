@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
-import { PrismaClient } from '@generated/prisma';
+import { PrismaClient, documentos_Tipo, documentos_RolSubidor } from '@generated/prisma';
 
 const prisma = new PrismaClient();
 
@@ -24,8 +24,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const tiposValidos = ['Factura', 'Contrato', 'Permiso', 'Seguro', 'Licencia', 'Certificado', 'Otro'];
-    const tipoFinal = tiposValidos.includes(tipo) ? tipo : 'Otro';
+    const tiposValidos: Record<string, documentos_Tipo> = {
+      'Factura': documentos_Tipo.Factura,
+      'Contrato': documentos_Tipo.Contrato,
+      'Permiso': documentos_Tipo.Permiso,
+      'Seguro': documentos_Tipo.Seguro,
+      'Licencia': documentos_Tipo.Licencia,
+      'Certificado': documentos_Tipo.Certificado,
+      'Otro': documentos_Tipo.Otro
+    };
+    const tipoFinal = tiposValidos[tipo] || documentos_Tipo.Otro;
+
+    const rolesValidos: Record<string, documentos_RolSubidor> = {
+      'Administrador': documentos_RolSubidor.Administrador,
+      'Dispatcher': documentos_RolSubidor.Dispatcher,
+      'Camionero': documentos_RolSubidor.Camionero,
+      'Cliente': documentos_RolSubidor.Cliente
+    };
+    const rolFinal = rolSubidor ? rolesValidos[rolSubidor] || null : null;
 
     const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'documentos');
     
@@ -55,7 +71,7 @@ export async function POST(request: NextRequest) {
         RutaArchivo: rutaArchivo,
         Descripcion: descripcion,
         SubidoPor: subidoPor ? parseInt(subidoPor) : null,
-        RolSubidor: rolSubidor || null,
+        RolSubidor: rolFinal,
         Dispatcher: dispatcher ? parseInt(dispatcher) : null,
       },
     });

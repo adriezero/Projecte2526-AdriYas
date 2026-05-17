@@ -23,7 +23,7 @@ const ESTADO_LABEL: Record<string, string> = {
   En_pausa: "En Pausa", Finalizado: "Finalizado", Incidente: "Incidente",
 };
 
-function formatFecha(f: string | null) {
+function formatFecha(f: string | null | undefined) {
   if (!f) return "—";
   return new Date(f).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
 }
@@ -147,9 +147,9 @@ export default function DetallePedidoPage() {
       <p className="text-gray-400 text-sm">Cargando...</p>
     </div>
   );
-  if (error) return (
+  if (error || !data) return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <p className="text-red-500 text-sm">{error}</p>
+      <p className="text-red-500 text-sm">{error || "No se encontraron datos"}</p>
     </div>
   );
 

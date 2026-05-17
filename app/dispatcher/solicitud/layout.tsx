@@ -1,4 +1,3 @@
-import '@css/globals.css'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

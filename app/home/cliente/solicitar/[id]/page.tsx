@@ -40,7 +40,7 @@ export default function DetalleSolicitudPage() {
   }, [id]);
 
   if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><p className="text-gray-400 text-sm">Cargando...</p></div>;
-  if (error)   return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><p className="text-red-500 text-sm">{error}</p></div>;
+  if (error || !data) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><p className="text-red-500 text-sm">{error || "No se encontraron datos"}</p></div>;
 
   const colores = ESTADO_COLOR[data.estado] ?? { badge: "bg-gray-100 text-gray-600", bg: "bg-white", border: "border-gray-200", text: "text-gray-800" };
 

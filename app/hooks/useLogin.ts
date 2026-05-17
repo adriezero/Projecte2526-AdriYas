@@ -29,7 +29,8 @@ export function useAuth() {
   useEffect(() => {
     if (status === "authenticated" && session?.user?.role) {
       const callbackUrl = searchParams.get("callbackUrl");
-      router.push(callbackUrl || ROLE_ROUTES[session.user.role] || "/home");
+      const defaultRoute = session.user.role ? ROLE_ROUTES[session.user.role] : undefined;
+      router.push(callbackUrl || defaultRoute || "/home");
     }
   }, [status, session, router, searchParams]);
 

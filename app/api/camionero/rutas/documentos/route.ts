@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
-import { PrismaClient } from '@generated/prisma';
+import { PrismaClient, documentos_Tipo } from '@generated/prisma';
 
 const prisma = new PrismaClient();
 
@@ -26,7 +26,15 @@ export async function GET(request: NextRequest) {
   })));
 }
 
-const TIPOS_VALIDOS = ['Factura','Contrato','Permiso','Seguro','Licencia','Certificado','Otro'];
+const TIPOS_VALIDOS: Record<string, documentos_Tipo> = {
+  'Factura': documentos_Tipo.Factura,
+  'Contrato': documentos_Tipo.Contrato,
+  'Permiso': documentos_Tipo.Permiso,
+  'Seguro': documentos_Tipo.Seguro,
+  'Licencia': documentos_Tipo.Licencia,
+  'Certificado': documentos_Tipo.Certificado,
+  'Otro': documentos_Tipo.Otro
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,7 +42,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get('file') as File;
     const idRuta = formData.get('idRuta') as string;
     const tipoRaw = (formData.get('tipo') as string) || 'Otro';
-    const tipo = TIPOS_VALIDOS.includes(tipoRaw) ? tipoRaw : 'Otro';
+    const tipo = TIPOS_VALIDOS[tipoRaw] || documentos_Tipo.Otro;
 
     if (!file || !idRuta) return NextResponse.json({ error: 'Faltan datos' }, { status: 400 });
 

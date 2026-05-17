@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@lib/auth'
 import { prisma } from '@lib/prisma'
+import { reportes_Tipo, reportes_Rol } from '@generated/prisma'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
@@ -82,21 +83,22 @@ export async function POST(req: NextRequest) {
   const { Tipo, Descripcion } = await req.json()
   if (!Tipo) return NextResponse.json({ error: 'Tipo requerido' }, { status: 400 })
 
-  const tiposValidos: Record<string, string> = {
-    'Problema T\u00e9cnico': 'Problema_T_cnico',
-    'Incidencia': 'Incidencia',
-    'Sugerencia': 'Sugerencia',
+  const tiposValidos: Record<string, reportes_Tipo> = {
+    'Problema T\u00e9cnico': reportes_Tipo.Problema_T_cnico,
+    'Incidencia': reportes_Tipo.Incidencia,
+    'Sugerencia': reportes_Tipo.Sugerencia,
   }
-  const rolesValidos: Record<string, string> = {
-    camionero: 'Camionero',
-    dispatcher: 'Dispatcher',
-    administrador: 'Administrador',
-    cliente: 'Cliente',
+  const rolesValidos: Record<string, reportes_Rol> = {
+    camionero: reportes_Rol.Camionero,
+    dispatcher: reportes_Rol.Dispatcher,
+    administrador: reportes_Rol.Administrador,
+    cliente: reportes_Rol.Cliente,
   }
 
   const tipoEnum = tiposValidos[Tipo]
   if (!tipoEnum) return NextResponse.json({ error: `Tipo inválido: ${Tipo}` }, { status: 400 })
 
+  if (!session.user.role) return NextResponse.json({ error: 'Rol no definido' }, { status: 400 })
   const rol = rolesValidos[session.user.role]
   if (!rol) return NextResponse.json({ error: `Rol inválido: ${session.user.role}` }, { status: 400 })
 

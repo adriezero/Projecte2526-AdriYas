@@ -1,8 +1,9 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@lib/prisma";
 import bcrypt from "bcrypt";
+import { AuthOptions } from "next-auth";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -13,7 +14,7 @@ export const authOptions = {
       async authorize(credentials) {
         if (!credentials?.correo || !credentials?.clave) return null;
 
-        let usuario: { ID: number; Email: string; Nombre: string; Contrase_a: string } | null = await prisma.cliente.findFirst({
+        let usuario: { ID: number; Email: string | null; Nombre: string; Contrase_a: string } | null = await prisma.cliente.findFirst({
           where: { Email: credentials.correo },
         });
         let tipo = 'cliente';
@@ -39,7 +40,7 @@ export const authOptions = {
           tipo = 'administrador';
         }
 
-        if (!usuario) return null;
+        if (!usuario || !usuario.Email) return null;
 
         const passwordMatch = await bcrypt.compare(credentials.clave, usuario.Contrase_a);
 
@@ -57,17 +58,17 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: { role?: string; id?: string }; user?: { role: string; id: string } }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.id = user.id;
+        token.role = (user as { role?: string }).role;
+        token.id = (user as { id?: string }).id;
       }
       return token;
     },
-    async session({ session, token }: { session: { user?: { role?: string; id?: string } }; token: { role?: string; id?: string } }) {
+    async session({ session, token }) {
       if (session?.user) {
-        session.user.role = token.role;
-        session.user.id = token.id;
+        session.user.role = token.role as string | undefined;
+        session.user.id = token.id as string | undefined;
       }
       return session;
     },
