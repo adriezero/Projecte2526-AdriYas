@@ -18,11 +18,11 @@ export async function GET(request: NextRequest) {
     }
 
     if (desde) {
-      where.FechaSubida = { ...where.FechaSubida, gte: new Date(desde) };
+      where.FechaSubida = { gte: new Date(desde) };
     }
 
     if (hasta) {
-      where.FechaSubida = { ...where.FechaSubida, lte: new Date(hasta) };
+      where.FechaSubida = { ...where.FechaSubida as object, lte: new Date(hasta) };
     }
 
     const documentos = await prisma.documentos.findMany({
