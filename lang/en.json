@@ -24,8 +24,9 @@
       "groundTransport": "Ground Transportation",
       "cargoHandling": "Cargo Handling",
       "routeTracking": "Route Tracking",
-      "description": "Reliable and efficient transportation service for your cargo.",
-      "moreInfo": "More information"
+      "groundTransportDesc": "🚛 Own fleet, national routes and on-time delivery. Your cargo in the best hands.",
+      "cargoHandlingDesc": "📦 Safe loading and unloading, every time. Every shipment arrives in perfect condition.",
+      "routeTrackingDesc": "📍 Track your shipment in real time from pickup to delivery. No surprises."
     },
     "whyUs": {
       "title": "Why choose TruckWave?",

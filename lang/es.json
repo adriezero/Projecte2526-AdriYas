@@ -24,8 +24,9 @@
       "groundTransport": "Transporte Terrestre",
       "cargoHandling": "Gestión de Carga",
       "routeTracking": "Seguimiento de Rutas",
-      "description": "Servicio de transporte confiable y eficiente para tu mercancía.",
-      "moreInfo": "Más información"
+      "groundTransportDesc": "🚛 Flota propia, rutas nacionales y entrega puntual. Tu mercancía en las mejores manos.",
+      "cargoHandlingDesc": "📦 Carga y descarga con total seguridad. Cada envío llega en perfectas condiciones, siempre.",
+      "routeTrackingDesc": "📍 Sigue tu envío en tiempo real desde la recogida hasta la entrega. Sin sorpresas."
     },
     "whyUs": {
       "title": "¿Por qué elegir TruckWave?",

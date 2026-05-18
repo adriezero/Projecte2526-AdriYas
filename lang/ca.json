@@ -22,8 +22,11 @@
       "title": "Els Nostres Serveis",
       "subtitle": "Oferim una àmplia gamma de solucions de transport",
       "groundTransport": "Transport Terrestre",
-      "description": "Servei de transport fiable i eficient per a la teva mercaderia.",
-      "moreInfo": "Més informació"
+      "cargoHandling": "Gestió de Càrrega",
+      "routeTracking": "Seguiment de Rutes",
+      "groundTransportDesc": "🚛 Flota pròpia, rutes nacionals i entrega puntual. La teva mercaderia en les millors mans.",
+      "cargoHandlingDesc": "📦 Càrrega i descàrrega amb total seguretat. Cada enviament arriba en perfectes condicions, sempre.",
+      "routeTrackingDesc": "📍 Segueix el teu enviament en temps real des de la recollida fins a l'entrega. Sense sorpreses."
     },
     "whyUs": {
       "title": "Per què triar TruckWave?",

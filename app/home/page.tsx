@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from 'next-intl';
-import { ChevronDown, Truck, Package, MapPin, ArrowRight, Check } from 'lucide-react';
+import { ChevronDown, Truck, Package, MapPin, Check } from 'lucide-react';
 
 export default function Home() {
   const t = useTranslations('home');
@@ -12,7 +12,7 @@ export default function Home() {
     
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center bg-[#1F4E79] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1F4E79] via-[#1F4E79] to-[#163a5f] opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-[#163a5f] opacity-90" />
         <div className="relative z-10 text-center px-6 py-20 max-w-5xl mx-auto">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
             {t('hero.title')}
@@ -34,34 +34,30 @@ export default function Home() {
         </div>
       </section>
       {/* SERVICIOS */}
-      <section id="servicios" className="bg-gradient-to-b from-white to-[#F2F2F2] py-16 sm:py-20 px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#2C2C2C] text-center mb-4">
+      <section id="servicios" className="bg-linear-to-b from-white to-bg py-16 sm:py-20 px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text text-center mb-4">
           {t('services.title')}
         </h2>
-        <p className="text-center text-[#A6A6A6] text-lg sm:text-xl mb-10 sm:mb-16 max-w-2xl mx-auto">
+        <p className="text-center text-border text-lg sm:text-xl mb-10 sm:mb-16 max-w-2xl mx-auto">
           {t('services.subtitle')}
         </p>
         <div className="flex items-center justify-center">
           <div className="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-10">
             {[
-              { icon: Truck, key: 'groundTransport' },
-              { icon: Package, key: 'cargoHandling' },
-              { icon: MapPin, key: 'routeTracking' }
-            ].map(({ icon: Icon, key }, index) => (
+              { icon: Truck, key: 'groundTransport', descKey: 'groundTransportDesc' },
+              { icon: Package, key: 'cargoHandling', descKey: 'cargoHandlingDesc' },
+              { icon: MapPin, key: 'routeTracking', descKey: 'routeTrackingDesc' }
+            ].map(({ icon: Icon, key, descKey }, index) => (
               <div key={index} className="group bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:border-[#F47C20]/30 transition-all duration-300 hover:-translate-y-2">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-5 sm:mb-6 bg-gradient-to-br from-[#1F4E79] to-[#163a5f] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-5 sm:mb-6 bg-linear-to-br from-primary to-[#163a5f] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                   <Icon className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="font-bold text-lg sm:text-xl text-[#2C2C2C] mb-3">
+                <h3 className="font-bold text-lg sm:text-xl text-text mb-3">
                   {t(`services.${key}`)}
                 </h3>
-                <p className="text-[#A6A6A6] mb-6 leading-relaxed text-sm sm:text-base">
-                  {t('services.description')}
+                <p className="text-border leading-relaxed text-sm sm:text-base">
+                  {t(`services.${descKey}`)}
                 </p>
-                <a href="#" className="text-[#F47C20] hover:text-[#d66a1a] font-semibold inline-flex items-center gap-2 group/link">
-                  <span>{t('services.moreInfo')}</span>
-                  <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                </a>
               </div>
             ))}
           </div>
