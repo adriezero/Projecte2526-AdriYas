@@ -10,16 +10,36 @@ export default function Contacto() {
   const [mensaje, setMensaje] = useState("");
   const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
   const [error, setError] = useState("");
+  const [enviado, setEnviado] = useState(false);
 
   const manejarEnvio = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    try {
+      const res = await fetch("/api/solicitudes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cliente: nombre,
+          tipo: "Contacto",
+          asunto,
+          descripcion: `Email: ${correo}\n\n${mensaje}`,
+          estado: "Pendiente",
+        }),
+      });
+      if (!res.ok) throw new Error();
+      setEnviado(true);
+      setNombre(""); setCorreo(""); setAsunto(""); setMensaje(""); setAceptaPrivacidad(false);
+    } catch {
+      setError("Error al enviar el mensaje. Inténtalo de nuevo.");
+    }
   };
 
   const inputClass =
     "w-full px-5 py-4 text-lg text-[#2C2C2C] bg-white border-2 border-[#E8E8E8] rounded-2xl placeholder:text-[#C0C0C0] focus:outline-none focus:border-[#F47C20] focus:bg-[#FFFAF6] transition-all duration-200";
 
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-[#EEF2F7] via-[#F2F2F2] to-[#E8EDF5] flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-6xl">
 
@@ -178,5 +198,27 @@ export default function Contacto() {
 
       </div>
     </div>
+
+      {/* Modal éxito */}
+      {enviado && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-sm w-full mx-4 flex flex-col items-center gap-5 text-center">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-bold text-[#1a1a2e]">¡Mensaje enviado!</h3>
+            <p className="text-sm text-[#6B7280]">Hemos recibido tu mensaje correctamente. Nos pondremos en contacto contigo pronto.</p>
+            <button
+              onClick={() => setEnviado(false)}
+              className="mt-2 px-8 py-3 bg-gradient-to-r from-[#F47C20] to-[#e06a10] text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-[#F47C20]/30 transition-all duration-200 cursor-pointer"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
