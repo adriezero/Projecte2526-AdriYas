@@ -1,14 +1,13 @@
-jest.mock('@generated/prisma', () => {
-  const mockPrisma = {
+jest.mock('@lib/prisma', () => ({
+  prisma: {
     reservas: { findMany: jest.fn(), create: jest.fn() },
-  };
-  return { PrismaClient: jest.fn(() => mockPrisma) };
-});
+  },
+}));
 
 import { GET, POST } from '@/app/api/reservas/route';
-import { PrismaClient } from '@generated/prisma';
+import { prisma } from '@lib/prisma';
 
-const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as unknown as {
+const db = prisma as unknown as {
   reservas: {
     findMany: jest.Mock;
     create: jest.Mock;

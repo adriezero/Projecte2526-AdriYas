@@ -2,8 +2,8 @@
  * Tests para /api/solicitudes y /api/solicitudes/[id]
  */
 
-jest.mock('@generated/prisma', () => {
-  const mockPrisma = {
+jest.mock('@lib/prisma', () => ({
+  prisma: {
     solicitud: {
       findMany: jest.fn(),
       findUnique: jest.fn(),
@@ -15,15 +15,14 @@ jest.mock('@generated/prisma', () => {
     camionero: { findUnique: jest.fn() },
     reservas: { create: jest.fn() },
     solicitud_reserva: { create: jest.fn() },
-  };
-  return { PrismaClient: jest.fn(() => mockPrisma) };
-});
+  },
+}));
 
 import { GET, POST } from '@/app/api/solicitudes/route';
 import { GET as GET_ID, PATCH, DELETE } from '@/app/api/solicitudes/[id]/route';
-import { PrismaClient } from '@generated/prisma';
+import { prisma } from '@lib/prisma';
 
-const db = new (PrismaClient as jest.MockedClass<typeof PrismaClient>)() as unknown as {
+const db = prisma as unknown as {
   solicitud: {
     findMany: jest.Mock;
     findUnique: jest.Mock;

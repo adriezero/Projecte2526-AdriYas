@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
-import { PrismaClient, documentos_Tipo, documentos_RolSubidor } from '@generated/prisma';
-
-const prisma = new PrismaClient();
+import { documentos_Tipo, documentos_RolSubidor } from '@generated/prisma';
+import { prisma } from '@lib/prisma';
 
 export async function POST(request: NextRequest) {
   try {

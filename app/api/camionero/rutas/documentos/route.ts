@@ -2,9 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
-import { PrismaClient, documentos_Tipo } from '@generated/prisma';
-
-const prisma = new PrismaClient();
+import { documentos_Tipo } from '@generated/prisma';
+import { prisma } from '@lib/prisma';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);

@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@generated/prisma';
-
-const prisma = new PrismaClient();
+import { prisma } from '@lib/prisma';
 
 function mapEstadoToEnum(estado: string): string {
   const mapping: Record<string, string> = {
