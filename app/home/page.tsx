@@ -101,7 +101,7 @@ export default function Home() {
       <section className="bg-gradient-to-br from-[#1F4E79] to-[#163a5f] py-16 sm:py-20 flex items-center justify-center px-4">
         <div className="text-center">
           <h2 className="text-2xl sm:text-4xl font-bold text-white mb-4 sm:mb-6">{t('cta.title')}</h2>
-          <p className="text-base sm:text-xl text-white/90 mb-10 sm:mb-12">{t('cta.subtitle')}</p>
+          <p className="text-base sm:text-xl text-white/90 mb-6 sm:mb-8">{t('cta.subtitle')}</p>
           <Link href="/auth/login" className="px-8 py-4 sm:px-12 sm:py-5 bg-[#F47C20] text-white rounded-xl font-semibold hover:bg-[#d66a1a] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 text-base sm:text-xl">{t('cta.button')}</Link>
         </div>
       </section>

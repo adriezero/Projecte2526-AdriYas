@@ -55,7 +55,7 @@ export const enviarSolicitud = async (data: {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      tipo: data.servicio,
+      tipo: "Solicitar Servicio",
       cliente: data.cliente,
       asunto: data.servicio,
       descripcion: data.detalles,
