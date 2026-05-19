@@ -31,14 +31,19 @@ function ModalCambioGmail({ onClose }: { onClose: () => void }) {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl">
         <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-lg">✉️</div>
+            <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center">
+              <i className="bi bi-envelope-fill text-amber-600 text-lg"></i>
+            </div>
             <h2 className="text-lg font-bold text-gray-900">Solicitar cambio de Gmail</h2>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
         </div>
         <div className="px-8 py-6 space-y-5">
           <div className="bg-amber-50 rounded-xl px-4 py-3 border border-amber-200">
-            <p className="text-sm text-amber-700">⚠️ El Gmail está vinculado a tu cuenta. Para cambiarlo, un administrador debe gestionarlo manualmente.</p>
+            <p className="text-sm text-amber-700 flex items-center gap-2">
+              <i className="bi bi-exclamation-triangle-fill"></i>
+              El Gmail está vinculado a tu cuenta. Para cambiarlo, un administrador debe gestionarlo manualmente.
+            </p>
           </div>
           <div>
             <label className="text-sm font-semibold text-gray-700 block mb-2">Nuevo Gmail y motivo</label>

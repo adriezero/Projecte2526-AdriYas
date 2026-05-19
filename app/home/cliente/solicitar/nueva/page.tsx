@@ -10,8 +10,8 @@ function Modal({ ok, onClose }: { ok: boolean; onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-8 flex flex-col items-center gap-4">
-        <div className={`w-14 h-14 rounded-full flex items-center justify-center text-3xl ${ok ? 'bg-green-100' : 'bg-red-100'}`}>
-          {ok ? '✅' : '❌'}
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl ${ok ? 'bg-green-100' : 'bg-red-100'}`}>
+          {ok ? <i className="bi bi-check-circle-fill text-green-600 text-3xl"></i> : <i className="bi bi-x-circle-fill text-red-600 text-3xl"></i>}
         </div>
         <p className="text-gray-800 font-semibold text-center">
           {ok

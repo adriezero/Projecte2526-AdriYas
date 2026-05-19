@@ -12,17 +12,18 @@ export default function BarraLateral() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[#1C2634] text-white flex flex-col justify-between p-6">
 
-      {/* 🔝 LOGO */}
+      {/* LOGO */}
       <div>
         <div className="flex items-center gap-2 mb-10">
-          <span className="text-lg font-bold tracking-wide">🚚 TRUCKWAVE</span>
+          <i className="bi bi-truck-front-fill text-xl"></i>
+          <span className="text-lg font-bold tracking-wide">TRUCKWAVE</span>
         </div>
 
         <p className="text-sm uppercase text-gray-400 mb-6">
           Espacio de Dispatcher
         </p>
 
-        {/* 📌 MENU */}
+        {/* MENU */}
         <nav className="flex flex-col gap-3">
           <Link
             href="/home"
@@ -71,7 +72,7 @@ export default function BarraLateral() {
         </nav>
       </div>
 
-      {/* 🔽 PERFIL + BOTÓN CERRAR */}
+      {/* PERFIL + BOTÓN CERRAR */}
       <div className="mt-6">
         <div className="flex items-center gap-3 bg-[#2A3444] p-3 rounded-lg mb-3">
           <UserAvatar name={session?.user?.name} size="md" />
@@ -83,9 +84,10 @@ export default function BarraLateral() {
 
         <button
           onClick={() => signOut({ callbackUrl: '/auth/login' })}
-          className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition"
+          className="w-full bg-blue-600 hover:bg-blue-700 py-2 rounded-lg transition flex items-center justify-center gap-2"
         >
-          🔓 Cerrar sesión
+          <i className="bi bi-box-arrow-right"></i>
+          Cerrar sesión
         </button>
       </div>
 

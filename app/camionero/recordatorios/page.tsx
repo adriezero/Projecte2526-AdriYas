@@ -97,7 +97,7 @@ export default function Recordatorios() {
             className="flex items-center gap-1 px-4 py-2 rounded-xl text-sm text-gray-700 transition-all shadow-sm"
             style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
           >
-            🗑 Limpiar
+            <i className="bi bi-trash"></i> Limpiar
           </button>
           <button
             onClick={añadir}
@@ -132,7 +132,7 @@ export default function Recordatorios() {
             className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm text-gray-700 transition-all shadow-sm"
             style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
           >
-            ⇅ Ordenar por
+            <i className="bi bi-arrow-down-up"></i> Ordenar por
           </button>
           {mostrarOrden && (
             <div className="absolute right-0 mt-1 bg-white rounded-xl shadow-lg z-10 text-sm overflow-hidden" style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}>
@@ -184,9 +184,15 @@ export default function Recordatorios() {
               </div>
             </div>
             <div className="flex items-center gap-2 ml-auto md:ml-4 shrink-0 mt-2 md:mt-0">
-              <button onClick={() => toggleImportante(nota.id)} className={`text-lg ${nota.importante ? "" : "text-gray-300 hover:text-yellow-400"}`} style={{ color: nota.importante ? '#FFC757' : undefined }}>★</button>
-              <button onClick={() => iniciarEdicion(nota)} className="text-gray-500 hover:text-gray-700 text-sm transition-colors">✏</button>
-              <button onClick={() => eliminar(nota.id)} className="text-gray-500 hover:text-red-500 text-sm transition-colors">🗑</button>
+              <button onClick={() => toggleImportante(nota.id)} className={`text-lg ${nota.importante ? "" : "text-gray-300 hover:text-yellow-400"}`} style={{ color: nota.importante ? '#FFC757' : undefined }}>
+                <i className={nota.importante ? "bi bi-star-fill" : "bi bi-star"}></i>
+              </button>
+              <button onClick={() => iniciarEdicion(nota)} className="text-gray-500 hover:text-gray-700 text-sm transition-colors">
+                <i className="bi bi-pencil"></i>
+              </button>
+              <button onClick={() => eliminar(nota.id)} className="text-gray-500 hover:text-red-500 text-sm transition-colors">
+                <i className="bi bi-trash"></i>
+              </button>
             </div>
           </div>
         ))}

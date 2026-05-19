@@ -125,9 +125,9 @@ export default function RutasPage() {
 
   function iconoDoc(nombre: string) {
     const ext = nombre.split(".").pop()?.toLowerCase();
-    if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext ?? "")) return "🖼️";
-    if (ext === "pdf") return "📄";
-    return "📎";
+    if (["jpg", "jpeg", "png", "gif", "webp"].includes(ext ?? "")) return <i className="bi bi-file-image"></i>;
+    if (ext === "pdf") return <i className="bi bi-file-pdf"></i>;
+    return <i className="bi bi-paperclip"></i>;
   }
 
   return (
@@ -372,7 +372,7 @@ export default function RutasPage() {
                           className="flex items-center justify-between p-3 bg-bg rounded-lg border border-border/20 hover:border-primary/30 transition-all"
                         >
                           <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <span className="text-xl">{iconoDoc(doc.nombre)}</span>
+                            <span className="text-xl text-primary">{iconoDoc(doc.nombre)}</span>
                             <div className="flex-1 min-w-0">
                               <p className="text-sm font-medium text-text truncate">{doc.nombre}</p>
                               <p className="text-xs text-text/50">{doc.tipo} • {new Date(doc.fechaSubida).toLocaleDateString("es-ES")}</p>

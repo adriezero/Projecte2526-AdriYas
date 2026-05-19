@@ -13,12 +13,17 @@ export default function Reseñas({ name, comment, isPositive, date, route }: Pro
       </div>
 
       <div className="text-5xl mb-4 text-center text-black">
-        {isPositive ? '👍' : '👎'}
+        {isPositive ? <i className="bi bi-hand-thumbs-up-fill text-green-600"></i> : <i className="bi bi-hand-thumbs-down-fill text-red-600"></i>}
       </div>
 
       <p className="text-center text-gray-700 leading-relaxed mb-3 italic"><q>{comment}</q></p>
       
-      {route && <p className="text-center text-sm text-gray-500 font-medium mt-4 pt-3 border-t border-gray-100">📍 {route}</p>}
+      {route && (
+        <p className="text-center text-sm text-gray-500 font-medium mt-4 pt-3 border-t border-gray-100 flex items-center justify-center gap-1.5">
+          <i className="bi bi-geo-alt-fill"></i>
+          {route}
+        </p>
+      )}
     </div>
   );
 }

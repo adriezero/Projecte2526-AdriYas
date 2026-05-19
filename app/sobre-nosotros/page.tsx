@@ -172,10 +172,8 @@ export default function SobreNosotros() {
             </div>
 
             <div className="relative w-full sm:w-64">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2
-                               text-border text-sm pointer-events-none select-none">
-                🔍
-              </span>
+              <i className="bi bi-search absolute left-3 top-1/2 -translate-y-1/2
+                            text-border text-sm pointer-events-none" />
               <input
                 type="text"
                 placeholder={tr("search")}
@@ -225,12 +223,13 @@ export default function SobreNosotros() {
                   </div>
 
                   <span
-                    className={`shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full
+                    className={`shrink-0 text-[11px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1
                       ${r.isPositive
                         ? "bg-[#E1F5EE] text-[#0F6E56]"
                         : "bg-[#FCEBEB] text-[#A32D2D]"}`}
                   >
-                    {r.isPositive ? "👍 Positiva" : "👎 Negativa"}
+                    <i className={r.isPositive ? "bi bi-hand-thumbs-up-fill" : "bi bi-hand-thumbs-down-fill"} />
+                    {r.isPositive ? "Positiva" : "Negativa"}
                   </span>
                 </div>
 

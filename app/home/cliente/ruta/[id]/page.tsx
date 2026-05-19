@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 const PASOS = [
-  { key: "Programado", label: "Programado", icon: "📋", desc: "Reserva confirmada" },
-  { key: "Cargando",   label: "Cargando",   icon: "📦", desc: "Cargando mercancía" },
-  { key: "En_ruta",    label: "En Ruta",    icon: "🚛", desc: "En camino al destino" },
-  { key: "Finalizado", label: "Finalizado", icon: "✅", desc: "Entrega completada" },
+  { key: "Programado", label: "Programado", icon: <i className="bi bi-clipboard-check" />, desc: "Reserva confirmada" },
+  { key: "Cargando",   label: "Cargando",   icon: <i className="bi bi-box-seam" />, desc: "Cargando mercancía" },
+  { key: "En_ruta",    label: "En Ruta",    icon: <i className="bi bi-truck" />, desc: "En camino al destino" },
+  { key: "Finalizado", label: "Finalizado", icon: <i className="bi bi-check-circle-fill" />, desc: "Entrega completada" },
 ];
 
 const ESTADO_COLOR: Record<string, { badge: string; bg: string; border: string; text: string }> = {
@@ -54,7 +54,9 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center text-lg">⚠️</div>
+            <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center">
+              <i className="bi bi-exclamation-triangle-fill text-red-600 text-lg"></i>
+            </div>
             <h2 className="text-lg font-bold text-gray-900">Reportar Incidencia</h2>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
@@ -65,7 +67,7 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
           <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Reserva Afectada</p>
             <div className="flex items-center gap-2">
-              <span className="text-gray-400 text-lg">🚛</span>
+              <i className="bi bi-truck text-gray-400 text-lg"></i>
               <span className="text-sm font-medium text-gray-700">#{String(reservaId).padStart(6, "0")} — {origen} → {destino}</span>
             </div>
           </div>
@@ -193,11 +195,18 @@ export default function DetallePedidoPage() {
                 onClick={() => setModalReporte(true)}
                 className="flex items-center gap-2 px-4 py-2 border border-red-300 text-red-600 bg-white rounded-lg text-sm font-semibold hover:bg-red-50 transition"
               >
-                ⚠️ Reportar problema
+                <i className="bi bi-exclamation-triangle-fill"></i>
+                Reportar problema
               </button>
               {estado ? (
-                <span className={`text-sm font-semibold px-4 py-1.5 rounded-full ${colores?.badge ?? "bg-gray-100 text-gray-600"}`}>
-                  {esIncidente ? "⚠️ Incidente" : enPausa ? "⏸️ En Pausa" : ESTADO_LABEL[estado]}
+                <span className={`text-sm font-semibold px-4 py-1.5 rounded-full flex items-center gap-1.5 ${colores?.badge ?? "bg-gray-100 text-gray-600"}`}>
+                  {esIncidente ? (
+                    <><i className="bi bi-exclamation-triangle-fill"></i> Incidente</>
+                  ) : enPausa ? (
+                    <><i className="bi bi-pause-circle-fill"></i> En Pausa</>
+                  ) : (
+                    ESTADO_LABEL[estado]
+                  )}
                 </span>
               ) : (
                 <span className="text-sm font-medium px-4 py-1.5 rounded-full bg-gray-100 text-gray-500">Sin ruta asignada</span>
@@ -211,13 +220,15 @@ export default function DetallePedidoPage() {
 
         {/* Banners de alerta */}
         {esIncidente && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium">
-            ⚠️ Se ha reportado un incidente en esta ruta. El equipo está gestionando la situación.
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium flex items-center gap-2">
+            <i className="bi bi-exclamation-triangle-fill"></i>
+            Se ha reportado un incidente en esta ruta. El equipo está gestionando la situación.
           </div>
         )}
         {enPausa && (
-          <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl text-orange-700 text-sm font-medium">
-            ⏸️ La ruta está temporalmente en pausa.
+          <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl text-orange-700 text-sm font-medium flex items-center gap-2">
+            <i className="bi bi-pause-circle-fill"></i>
+            La ruta está temporalmente en pausa.
           </div>
         )}
 
@@ -275,7 +286,7 @@ export default function DetallePedidoPage() {
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Ruta asignada</p>
               <div className="flex flex-col gap-4">
                 <div className="flex items-start gap-3">
-                  <span className="text-lg mt-0.5">🟢</span>
+                  <i className="bi bi-geo-alt-fill text-green-500 text-lg mt-0.5"></i>
                   <div>
                     <p className="text-xs text-gray-400 mb-0.5">Origen</p>
                     <p className="text-sm font-semibold text-gray-800">{data.rutaOrigen ?? data.reservaOrigen ?? "—"}</p>
@@ -283,7 +294,7 @@ export default function DetallePedidoPage() {
                 </div>
                 <div className="ml-3.5 w-px h-4 bg-gray-200" />
                 <div className="flex items-start gap-3">
-                  <span className="text-lg mt-0.5">🔴</span>
+                  <i className="bi bi-geo-alt-fill text-red-500 text-lg mt-0.5"></i>
                   <div>
                     <p className="text-xs text-gray-400 mb-0.5">Destino</p>
                     <p className="text-sm font-semibold text-gray-800">{data.rutaDestino ?? data.reservaDestino ?? "—"}</p>

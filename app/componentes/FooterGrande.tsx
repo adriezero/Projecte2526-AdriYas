@@ -16,7 +16,7 @@ export default function FooterGrande() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">🚛</span>
+              <i className="bi bi-truck-front-fill text-2xl text-orange-400"></i>
               <span className="text-white font-extrabold text-xl tracking-wide">Truck<span className="text-orange-400">Wave</span></span>
             </div>
             <p className="text-sm leading-relaxed text-gray-500">
