@@ -40,18 +40,14 @@ export async function POST(request: NextRequest) {
     };
     const rolFinal = rolSubidor ? rolesValidos[rolSubidor] || null : null;
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
     const timestamp = Date.now();
     const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
 
-    const blob = await put(fileName, buffer, {
+    const blob = await put(fileName, file, {
       access: 'public',
-      multipart: true,
     });
 
-    const tamanoMB = (buffer.length / (1024 * 1024)).toFixed(2);
+    const tamanoMB = (file.size / (1024 * 1024)).toFixed(2);
     const tamano = `${tamanoMB} MB`;
 
     const rutaArchivo = blob.url;

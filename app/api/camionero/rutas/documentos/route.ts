@@ -44,14 +44,12 @@ export async function POST(request: NextRequest) {
     if (!file || !idRuta) return NextResponse.json({ error: 'Faltan datos' }, { status: 400 });
 
     const fileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
-    const buffer = Buffer.from(await file.arrayBuffer());
 
-    const blob = await put(fileName, buffer, {
+    const blob = await put(fileName, file, {
       access: 'public',
-      multipart: true,
     });
 
-    const tamano = `${(buffer.length / (1024 * 1024)).toFixed(2)} MB`;
+    const tamano = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
     const rutaArchivo = blob.url;
 
     const doc = await prisma.documentos.create({

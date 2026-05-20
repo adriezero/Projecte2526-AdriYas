@@ -24,9 +24,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Si es una URL de Vercel Blob, redirigir directamente
+    // Si es una URL de Vercel Blob, redirigir con parámetros de descarga
     if (documento.RutaArchivo.startsWith('https://')) {
-      return NextResponse.redirect(documento.RutaArchivo);
+      const downloadUrl = new URL(documento.RutaArchivo);
+      downloadUrl.searchParams.set('download', '1');
+      downloadUrl.searchParams.set('filename', documento.Nombre);
+      return NextResponse.redirect(downloadUrl.toString());
     }
 
     // Fallback para archivos locales antiguos (si existen)
