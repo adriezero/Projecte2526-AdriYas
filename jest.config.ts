@@ -9,7 +9,6 @@ const config: Config = {
       transform: { '^.+\\.tsx?$': ['ts-jest', { tsconfig: { module: 'commonjs' } }] },
       moduleNameMapper: {
         '^@lib/(.*)$': '<rootDir>/lib/$1',
-        '^@generated/prisma$': '<rootDir>/app/generated/prisma',
         '^@/(.*)$': '<rootDir>/$1',
         '^next-auth$': '<rootDir>/__mocks__/next-auth/index.ts',
       },
@@ -35,7 +34,6 @@ const config: Config = {
       moduleNameMapper: {
         '^@lib/(.*)$': '<rootDir>/lib/$1',
         '^@/(.*)$': '<rootDir>/$1',
-        '^@generated/prisma$': '<rootDir>/app/generated/prisma',
       },
     },
   ],

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Solicitud_Estado } from '@generated/prisma';
+import { Solicitud_Estado } from '@prisma/client';
 import { prisma } from '@lib/prisma';
 
 function mapEstadoToEnum(estado: string): Solicitud_Estado {

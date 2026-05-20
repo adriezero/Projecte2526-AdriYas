@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import path from 'path';
-import { documentos_Tipo, documentos_RolSubidor } from '@generated/prisma';
+import { documentos_Tipo, documentos_RolSubidor } from '@prisma/client';
 import { prisma } from '@lib/prisma';
 
 export async function POST(request: NextRequest) {
