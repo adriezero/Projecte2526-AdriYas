@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFile } from 'fs/promises';
-import path from 'path';
 import { prisma } from '@lib/prisma';
 
 export async function GET(request: NextRequest) {
@@ -26,29 +24,16 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const filePath = path.join(process.cwd(), 'public', documento.RutaArchivo);
-    const fileBuffer = await readFile(filePath);
+    // Si es una URL de Vercel Blob, redirigir directamente
+    if (documento.RutaArchivo.startsWith('https://')) {
+      return NextResponse.redirect(documento.RutaArchivo);
+    }
 
-    // Determinar el tipo MIME basado en la extensión
-    const ext = path.extname(documento.Nombre).toLowerCase();
-    const mimeTypes: { [key: string]: string } = {
-      '.pdf': 'application/pdf',
-      '.doc': 'application/msword',
-      '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      '.jpg': 'image/jpeg',
-      '.jpeg': 'image/jpeg',
-      '.png': 'image/png',
-      '.txt': 'text/plain',
-    };
-
-    const mimeType = mimeTypes[ext] || 'application/octet-stream';
-
-    return new NextResponse(fileBuffer, {
-      headers: {
-        'Content-Type': mimeType,
-        'Content-Disposition': `attachment; filename="${documento.Nombre}"`,
-      },
-    });
+    // Fallback para archivos locales antiguos (si existen)
+    return NextResponse.json(
+      { error: 'Archivo no disponible' },
+      { status: 404 }
+    );
   } catch (error) {
     console.error('Error al descargar archivo:', error);
     return NextResponse.json(

@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { existsSync } from 'fs';
-import path from 'path';
+import { put } from '@vercel/blob';
 import { documentos_Tipo, documentos_RolSubidor } from '@prisma/client';
 import { prisma } from '@lib/prisma';
 
@@ -42,24 +40,21 @@ export async function POST(request: NextRequest) {
     };
     const rolFinal = rolSubidor ? rolesValidos[rolSubidor] || null : null;
 
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'documentos');
-    
-    if (!existsSync(uploadsDir)) {
-      await mkdir(uploadsDir, { recursive: true });
-    }
-
-    const timestamp = Date.now();
-    const fileName = `${timestamp}_${file.name}`;
-    const filePath = path.join(uploadsDir, fileName);
-
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-    await writeFile(filePath, buffer);
+
+    const timestamp = Date.now();
+    const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+
+    const blob = await put(fileName, buffer, {
+      access: 'public',
+      multipart: true,
+    });
 
     const tamanoMB = (buffer.length / (1024 * 1024)).toFixed(2);
     const tamano = `${tamanoMB} MB`;
 
-    const rutaArchivo = `/uploads/documentos/${fileName}`;
+    const rutaArchivo = blob.url;
     
     const nuevoDocumento = await prisma.documentos.create({
       data: {

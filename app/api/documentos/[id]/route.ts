@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { del } from '@vercel/blob';
 import { prisma } from '@lib/prisma';
 
 // GET - Obtener un documento específico
@@ -92,11 +93,20 @@ export async function DELETE(
     const { id: paramId } = await params;
     const id = parseInt(paramId);
 
-    // Aquí también deberías eliminar el archivo físico del servidor
-    // const documento = await prisma.documentos.findUnique({ where: { ID: id } });
-    // if (documento?.RutaArchivo) {
-    //   await fs.unlink(documento.RutaArchivo);
-    // }
+    // Obtener el documento para eliminar el archivo de Blob
+    const documento = await prisma.documentos.findUnique({ where: { ID: id } });
+    
+    if (documento?.RutaArchivo) {
+      // Solo intentar eliminar si es una URL de Vercel Blob
+      if (documento.RutaArchivo.startsWith('https://')) {
+        try {
+          await del(documento.RutaArchivo);
+        } catch (error) {
+          // No fallar si el blob ya no existe
+          console.warn('Error al eliminar blob (puede que ya no exista):', error);
+        }
+      }
+    }
 
     await prisma.documentos.delete({
       where: { ID: id },
