@@ -4,42 +4,42 @@
     "contact": "Contacto",
     "about": "Sobre nosotros",
     "login": "Iniciar sesión",
-    "requestService": "Solicitar Servicio",
-    "myArea": "Mi Área",
-    "clientArea": "Área Clientes",
+    "requestService": "Solicitar servicio",
+    "myArea": "Mi área",
+    "clientArea": "Área clientes",
     "logout": "Cerrar sesión",
     "language": "Idioma",
     "hello": "Hola"
   },
   "home": {
     "hero": {
-      "title": "Tu Mercancía, Nuestro Compromiso",
+      "title": "Tu mercancía, nuestro compromiso",
       "subtitle": "Soluciones logísticas integrales para tus necesidades de transporte terrestre.",
-      "discoverServices": "Descubre Nuestros Servicios",
+      "discoverServices": "Descubre nuestros servicios",
       "trackShipment": "Seguimiento de mercancía"
     },
     "services": {
-      "title": "Nuestros Servicios",
+      "title": "Nuestros servicios",
       "subtitle": "Ofrecemos una amplia gama de soluciones de transporte",
-      "groundTransport": "Transporte Terrestre",
-      "cargoHandling": "Gestión de Carga",
+      "groundTransport": "Transporte terrestre",
+      "cargoHandling": "Gestión de carga",
       "routeTracking": "Seguimiento de Rutas",
-      "groundTransportDesc": "🚛 Flota propia, rutas nacionales y entrega puntual. Tu mercancía en las mejores manos.",
-      "cargoHandlingDesc": "📦 Carga y descarga con total seguridad. Cada envío llega en perfectas condiciones, siempre.",
-      "routeTrackingDesc": "📍 Sigue tu envío en tiempo real desde la recogida hasta la entrega. Sin sorpresas."
+      "groundTransportDesc": "Flota propia, rutas nacionales y entrega puntual. Tu mercancía en las mejores manos.",
+      "cargoHandlingDesc": "Carga y descarga con total seguridad. Cada envío llega en perfectas condiciones, siempre.",
+      "routeTrackingDesc": "Sigue tu envío en tiempo real desde la recogida hasta la entrega. Sin sorpresas."
     },
     "whyUs": {
       "title": "¿Por qué elegir TruckWave?",
-      "subtitle": "Experiencia, Eficiencia y Confianza en Cada Envío.",
-      "modernFleet": "Flota Moderna",
+      "subtitle": "Experiencia, eficiencia y confianza en cada envío.",
+      "modernFleet": "Flota moderna",
       "modernFleetDesc": "Vehículos de última generación equipados con tecnología avanzada.",
-      "qualifiedStaff": "Personal Calificado",
+      "qualifiedStaff": "Personal calificado",
       "qualifiedStaffDesc": "Equipo altamente capacitado y con años de experiencia.",
       "monitoring": "Monitoreo 24/7",
       "monitoringDesc": "Seguimiento en tiempo real de tu mercancía."
     },
     "cta": {
-      "title": "¿Necesitas un Transporte? Solicita tu Presupuesto Ahora",
+      "title": "¿Necesitas un transporte? Solicita tu presupuesto ahora",
       "subtitle": "Contáctanos y obtén una cotización personalizada para tus necesidades de transporte.",
       "button": "Solicitar Servicio"
     }
@@ -79,21 +79,21 @@
     "search": "Buscar en valoraciones..."
   },
   "footer": {
-    "quickLinks": "Enlaces Rápidos",
+    "quickLinks": "Enlaces rápidos",
     "home": "Inicio",
     "services": "Servicios",
     "about": "Nosotros",
     "contact": "Contacto",
     "servicesTitle": "Servicios",
-    "nationalTransport": "Transporte Nacional",
-    "internationalTransport": "Transporte Internacional",
+    "nationalTransport": "Transporte nacional",
+    "internationalTransport": "Transporte internacional",
     "logistics": "Logística",
     "storage": "Almacenamiento",
-    "legalInfo": "Información Legal",
-    "privacy": "Política de Privacidad",
-    "terms": "Términos y Condiciones",
+    "legalInfo": "Información legal",
+    "privacy": "Política de privacidad",
+    "terms": "Términos y condiciones",
     "cookies": "Política de Cookies",
-    "legal": "Aviso Legal"
+    "legal": "Aviso legal"
   },
   "auth": {
     "login": {

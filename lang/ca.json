@@ -4,42 +4,42 @@
     "contact": "Contacte",
     "about": "Sobre nosaltres",
     "login": "Iniciar sessió",
-    "requestService": "Sol·licitar Servei",
-    "myArea": "La meva Àrea",
-    "clientArea": "Àrea Clients",
+    "requestService": "Sol·licitar servei",
+    "myArea": "La meva àrea",
+    "clientArea": "Àrea clients",
     "logout": "Tancar sessió",
     "language": "Idioma",
     "hello": "Hola"
   },
   "home": {
     "hero": {
-      "title": "La teva Mercaderia, el Nostre Compromís",
+      "title": "La teva mercaderia, el nostre compromís",
       "subtitle": "Solucions logístiques integrals per a les teves necessitats de transport terrestre.",
-      "discoverServices": "Descobreix els Nostres Serveis",
+      "discoverServices": "Descobreix els nostres serveis",
       "trackShipment": "Seguiment de mercaderia"
     },
     "services": {
-      "title": "Els Nostres Serveis",
+      "title": "Els nostres serveis",
       "subtitle": "Oferim una àmplia gamma de solucions de transport",
-      "groundTransport": "Transport Terrestre",
-      "cargoHandling": "Gestió de Càrrega",
+      "groundTransport": "Transport terrestre",
+      "cargoHandling": "Gestió de càrrega",
       "routeTracking": "Seguiment de Rutes",
-      "groundTransportDesc": "🚛 Flota pròpia, rutes nacionals i entrega puntual. La teva mercaderia en les millors mans.",
-      "cargoHandlingDesc": "📦 Càrrega i descàrrega amb total seguretat. Cada enviament arriba en perfectes condicions, sempre.",
-      "routeTrackingDesc": "📍 Segueix el teu enviament en temps real des de la recollida fins a l'entrega. Sense sorpreses."
+      "groundTransportDesc": "Flota pròpia, rutes nacionals i entrega puntual. La teva mercaderia en les millors mans.",
+      "cargoHandlingDesc": "Càrrega i descàrrega amb total seguretat. Cada enviament arriba en perfectes condicions, sempre.",
+      "routeTrackingDesc": "Segueix el teu enviament en temps real des de la recollida fins a l'entrega. Sense sorpreses."
     },
     "whyUs": {
       "title": "Per què triar TruckWave?",
-      "subtitle": "Experiència, Eficiència i Confiança en Cada Enviament.",
-      "modernFleet": "Flota Moderna",
+      "subtitle": "Experiència, eficiència i confiança en cada enviament.",
+      "modernFleet": "Flota moderna",
       "modernFleetDesc": "Vehicles d'última generació equipats amb tecnologia avançada.",
-      "qualifiedStaff": "Personal Qualificat",
+      "qualifiedStaff": "Personal qualificat",
       "qualifiedStaffDesc": "Equip altament capacitat i amb anys d'experiència.",
       "monitoring": "Monitoratge 24/7",
       "monitoringDesc": "Seguiment en temps real de la teva mercaderia."
     },
     "cta": {
-      "title": "Necessites un Transport? Sol·licita el teu Pressupost Ara",
+      "title": "Necessites un transport? Sol·licita el teu pressupost ara",
       "subtitle": "Contacta'ns i obtén un pressupost personalitzat per a les teves necessitats de transport.",
       "button": "Sol·licitar Servei"
     }
@@ -67,7 +67,7 @@
     "historyText3": "Treballem cada dia perquè la teva mercaderia arribi a temps i en perfectes condicions."
   },
   "reviews": {
-    "title": "Valoracions i Comentaris d'Usuaris",
+    "title": "Valoracions i comentaris d'usuaris",
     "subtitle": "Descobreix el que altres usuaris pensen sobre el servei rebut.",
     "all": "Totes les valoracions",
     "recent": "Més recents",
@@ -76,19 +76,19 @@
     "search": "Cercar en valoracions..."
   },
   "footer": {
-    "quickLinks": "Enllaços Ràpids",
+    "quickLinks": "Enllaços ràpids",
     "home": "Inici",
     "services": "Serveis",
     "about": "Nosaltres",
     "contact": "Contacte",
     "servicesTitle": "Serveis",
-    "nationalTransport": "Transport Nacional",
-    "internationalTransport": "Transport Internacional",
+    "nationalTransport": "Transport nacional",
+    "internationalTransport": "Transport internacional",
     "logistics": "Logística",
     "storage": "Emmagatzematge",
-    "legalInfo": "Informació Legal",
-    "privacy": "Política de Privacitat",
-    "terms": "Termes i Condicions",
+    "legalInfo": "Informació legal",
+    "privacy": "Política de privacitat",
+    "terms": "Termes i condicions",
     "cookies": "Política de Cookies",
     "legal": "Avís Legal"
   },

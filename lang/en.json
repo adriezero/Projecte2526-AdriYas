@@ -13,24 +13,24 @@
   },
   "home": {
     "hero": {
-      "title": "Your Cargo, Our Commitment",
+      "title": "Your cargo, our commitment",
       "subtitle": "Comprehensive logistics solutions for your ground transportation needs.",
-      "discoverServices": "Discover Our Services",
+      "discoverServices": "Discover our services",
       "trackShipment": "Track shipment"
     },
     "services": {
-      "title": "Our Services",
+      "title": "Our services",
       "subtitle": "We offer a wide range of transportation solutions",
-      "groundTransport": "Ground Transportation",
-      "cargoHandling": "Cargo Handling",
-      "routeTracking": "Route Tracking",
-      "groundTransportDesc": "🚛 Own fleet, national routes and on-time delivery. Your cargo in the best hands.",
-      "cargoHandlingDesc": "📦 Safe loading and unloading, every time. Every shipment arrives in perfect condition.",
-      "routeTrackingDesc": "📍 Track your shipment in real time from pickup to delivery. No surprises."
+      "groundTransport": "Ground transportation",
+      "cargoHandling": "Cargo handling",
+      "routeTracking": "Route tracking",
+      "groundTransportDesc": "Own fleet, national routes and on-time delivery. Your cargo in the best hands.",
+      "cargoHandlingDesc": "Safe loading and unloading, every time. Every shipment arrives in perfect condition.",
+      "routeTrackingDesc": "Track your shipment in real time from pickup to delivery. No surprises."
     },
     "whyUs": {
       "title": "Why choose TruckWave?",
-      "subtitle": "Experience, Efficiency and Trust in Every Shipment.",
+      "subtitle": "Experience, efficiency and trust in every shipment.",
       "modernFleet": "Modern Fleet",
       "modernFleetDesc": "Latest generation vehicles equipped with advanced technology.",
       "qualifiedStaff": "Qualified Staff",
@@ -39,9 +39,9 @@
       "monitoringDesc": "Real-time tracking of your cargo."
     },
     "cta": {
-      "title": "Need Transportation? Request Your Quote Now",
+      "title": "Need transportation? Request your quote now",
       "subtitle": "Contact us and get a personalized quote for your transportation needs.",
-      "button": "Request Service"
+      "button": "Request service"
     }
   },
   "contact": {
