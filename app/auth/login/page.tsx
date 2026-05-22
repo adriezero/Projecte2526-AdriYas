@@ -56,20 +56,20 @@ export default function IniciarSesion() {
             <Button type="submit" variant="primary" className="w-full">
               {t('submit')}
             </Button>
-
-            <Separator />
-
-            {/* Texto: No tienes cuenta */}
-            <h2 className="text-center text-xl font-medium text-text pb-4">
-              {t('noAccount')}
-            </h2>
-
-            <a href="/auth/register" className="block">
-              <Button variant="secondary" className="w-full">
-                {t('registerButton')}
-              </Button>
-            </a>
           </form>
+
+          <Separator />
+
+          {/* Texto: No tienes cuenta */}
+          <h2 className="text-center text-xl font-medium text-text pb-4">
+            {t('noAccount')}
+          </h2>
+
+          <a href="/auth/register" className="block">
+            <Button variant="secondary" className="w-full">
+              {t('registerButton')}
+            </Button>
+          </a>
         </div>
       </div>
     </div>
