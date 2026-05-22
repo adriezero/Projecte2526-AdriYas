@@ -130,19 +130,19 @@ export default function Register() {
                             </Button>
                         </div>
 
-                        <Separator />
-
-                        {/* Texto: No tienes cuenta */}
-                        <h2 className="text-center text-xl font-medium text-text pb-4">
-                            {t('hasAccount')}
-                        </h2>
-
-                        <a href="/auth/login" className="block">
-                            <Button variant="secondary" className="w-full">
-                                {t('loginButton')}
-                            </Button>
-                        </a>
                     </form>
+                    <Separator />
+
+                    {/* Texto: No tienes cuenta */}
+                    <h2 className="text-center text-xl font-medium text-text pb-4">
+                        {t('hasAccount')}
+                    </h2>
+
+                    <a href="/auth/login" className="block">
+                        <Button variant="secondary" className="w-full">
+                            {t('loginButton')}
+                        </Button>
+                    </a>
                 </div>
             </div>
         </div>
