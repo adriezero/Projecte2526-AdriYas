@@ -10,11 +10,11 @@ const PASOS = [
 ];
 
 const ESTADO_COLOR: Record<string, { badge: string; bg: string; border: string; text: string }> = {
-  Programado: { badge: "bg-yellow-100 text-yellow-700", bg: "bg-yellow-50",  border: "border-yellow-200", text: "text-yellow-700" },
-  Cargando:   { badge: "bg-blue-100 text-blue-700",     bg: "bg-blue-50",    border: "border-blue-200",   text: "text-blue-700"   },
+  Programado: { badge: "bg-accent-yellow/20 text-accent-yellow", bg: "bg-accent-yellow/5",  border: "border-accent-yellow/20", text: "text-accent-yellow" },
+  Cargando:   { badge: "bg-primary/10 text-primary",     bg: "bg-primary/5",    border: "border-primary/20",   text: "text-primary"   },
   En_ruta:    { badge: "bg-green-100 text-green-700",   bg: "bg-green-50",   border: "border-green-200",  text: "text-green-700"  },
-  En_pausa:   { badge: "bg-orange-100 text-orange-700", bg: "bg-orange-50",  border: "border-orange-200", text: "text-orange-700" },
-  Finalizado: { badge: "bg-gray-100 text-gray-600",     bg: "bg-gray-50",    border: "border-gray-200",   text: "text-gray-600"   },
+  En_pausa:   { badge: "bg-accent-orange/20 text-accent-orange", bg: "bg-accent-orange/5",  border: "border-accent-orange/20", text: "text-accent-orange" },
+  Finalizado: { badge: "bg-gray-100 text-border",     bg: "bg-gray-50",    border: "border-gray-200",   text: "text-border"   },
   Incidente:  { badge: "bg-red-100 text-red-600",       bg: "bg-red-50",     border: "border-red-200",    text: "text-red-600"    },
 };
 
@@ -57,7 +57,7 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
             <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center">
               <i className="bi bi-exclamation-triangle-fill text-red-600 text-lg"></i>
             </div>
-            <h2 className="text-lg font-bold text-gray-900">Reportar Incidencia</h2>
+            <h2 className="text-lg font-bold text-text">Reportar Incidencia</h2>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
         </div>
@@ -74,11 +74,11 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
 
           {/* Tipo */}
           <div>
-            <label className="text-sm font-semibold text-gray-700 block mb-2">Tipo de Reporte</label>
+            <label className="text-sm font-semibold text-text block mb-2">Tipo de Reporte</label>
             <select
               value={tipo}
               onChange={e => setTipo(e.target.value)}
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-border/20 rounded-xl px-4 py-3 text-sm text-text bg-bg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
             >
               <option value="">Selecciona el tipo de reporte</option>
               <option value="Problema Técnico">Problema Técnico</option>
@@ -89,21 +89,21 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
 
           {/* Descripción */}
           <div>
-            <label className="text-sm font-semibold text-gray-700 block mb-2">Descripción</label>
+            <label className="text-sm font-semibold text-text block mb-2">Descripción</label>
             <textarea
               value={descripcion}
               onChange={e => setDescripcion(e.target.value)}
               rows={4}
               placeholder="Describe el problema o incidencia con detalle..."
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-border/20 rounded-xl px-4 py-3 text-sm text-text resize-none bg-bg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
             />
           </div>
         </div>
 
         {/* Footer */}
         <div className="flex justify-end gap-3 px-8 py-5 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-          <button onClick={onClose} className="px-5 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">Cancelar</button>
-          <button onClick={enviarReporte} disabled={!tipo || enviando} className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 shadow-sm shadow-blue-200 transition disabled:opacity-50">
+          <button onClick={onClose} className="px-5 py-2.5 rounded-xl border border-border/30 text-sm font-medium text-text hover:bg-bg transition">Cancelar</button>
+          <button onClick={enviarReporte} disabled={!tipo || enviando} className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-[#163a5f] shadow-sm transition disabled:opacity-50">
             {enviando ? "Enviando..." : "Enviar Reporte"}
           </button>
         </div>
@@ -145,12 +145,12 @@ export default function DetallePedidoPage() {
   }, [id]);
 
   if (loading) return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <p className="text-gray-400 text-sm">Cargando...</p>
+    <div className="min-h-screen bg-bg flex items-center justify-center">
+      <p className="text-border text-sm">Cargando...</p>
     </div>
   );
   if (error || !data) return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <div className="min-h-screen bg-bg flex items-center justify-center">
       <p className="text-red-500 text-sm">{error || "No se encontraron datos"}</p>
     </div>
   );
@@ -162,7 +162,7 @@ export default function DetallePedidoPage() {
   const colores = estado ? ESTADO_COLOR[estado] : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-bg pt-20">
 
       {modalReporte && (
         <ModalReporte
@@ -178,17 +178,17 @@ export default function DetallePedidoPage() {
         <div>
           <button
             onClick={() => router.back()}
-            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 mb-4"
+            className="text-sm text-border hover:text-text flex items-center gap-1 mb-4"
           >
             ← Volver a mis rutas
           </button>
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Detalle del pedido</p>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Reserva <span className={colores?.text ?? "text-gray-900"}>#{String(data.idReserva).padStart(6, "0")}</span>
+              <p className="text-sm text-border mb-1">Detalle del pedido</p>
+              <h1 className="text-3xl font-bold text-text">
+                Reserva <span className={colores?.text ?? "text-text"}>#{String(data.idReserva).padStart(6, "0")}</span>
               </h1>
-              <p className="text-sm text-gray-500 mt-1">{formatFecha(data.reservaFecha)} · {data.reservaHora}</p>
+              <p className="text-sm text-border mt-1">{formatFecha(data.reservaFecha)} · {data.reservaHora}</p>
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -235,12 +235,12 @@ export default function DetallePedidoPage() {
         {/* Timeline */}
         {estado && !esIncidente && (
           <div className="bg-white border border-gray-200 rounded-xl p-8 mb-12 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-8">Estado del pedido</p>
+            <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-8">Estado del pedido</p>
             <div className="relative flex items-start justify-between">
               <div className="absolute top-6 left-[6%] right-[6%] h-0.5 bg-gray-200" />
               {idxActual > 0 && (
                 <div
-                  className="absolute top-6 left-[6%] h-0.5 bg-blue-500 transition-all duration-500"
+                  className="absolute top-6 left-[6%] h-0.5 bg-primary transition-all duration-500"
                   style={{ width: `${(idxActual / (PASOS.length - 1)) * 88}%` }}
                 />
               )}
@@ -250,8 +250,8 @@ export default function DetallePedidoPage() {
                 return (
                   <div key={paso.key} className="flex flex-col items-center z-10 flex-1">
                     <div className={`w-12 h-12 rounded-full flex items-center justify-center text-xl border-2 transition-all duration-300 ${
-                      activo     ? "border-blue-500 bg-white shadow-lg shadow-blue-100 scale-110" :
-                      completado ? "border-blue-400 bg-blue-500" :
+                      activo     ? "border-primary bg-white shadow-lg shadow-primary/20 scale-110" :
+                      completado ? "border-primary/60 bg-primary" :
                                    "border-gray-200 bg-white"
                     }`}>
                       {completado
@@ -260,12 +260,12 @@ export default function DetallePedidoPage() {
                       }
                     </div>
                     <span className={`text-sm mt-3 font-semibold ${
-                      activo ? "text-blue-600" : completado ? "text-blue-400" : "text-gray-300"
+                      activo ? "text-primary" : completado ? "text-primary/70" : "text-gray-300"
                     }`}>
                       {paso.label}
                     </span>
                     <span className={`text-xs mt-0.5 text-center ${
-                      activo ? "text-gray-500" : completado ? "text-gray-400" : "text-gray-300"
+                      activo ? "text-border" : completado ? "text-border/70" : "text-gray-300"
                     }`}>
                       {paso.desc}
                     </span>
@@ -283,32 +283,32 @@ export default function DetallePedidoPage() {
           {/* Ruta */}
           {estado && (
             <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Ruta asignada</p>
+              <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-5">Ruta asignada</p>
               <div className="flex flex-col gap-4">
                 <div className="flex items-start gap-3">
                   <i className="bi bi-geo-alt-fill text-green-500 text-lg mt-0.5"></i>
                   <div>
-                    <p className="text-xs text-gray-400 mb-0.5">Origen</p>
-                    <p className="text-sm font-semibold text-gray-800">{data.rutaOrigen ?? data.reservaOrigen ?? "—"}</p>
+                    <p className="text-xs text-border/70 mb-0.5">Origen</p>
+                    <p className="text-sm font-semibold text-text">{data.rutaOrigen ?? data.reservaOrigen ?? "—"}</p>
                   </div>
                 </div>
                 <div className="ml-3.5 w-px h-4 bg-gray-200" />
                 <div className="flex items-start gap-3">
                   <i className="bi bi-geo-alt-fill text-red-500 text-lg mt-0.5"></i>
                   <div>
-                    <p className="text-xs text-gray-400 mb-0.5">Destino</p>
-                    <p className="text-sm font-semibold text-gray-800">{data.rutaDestino ?? data.reservaDestino ?? "—"}</p>
+                    <p className="text-xs text-border/70 mb-0.5">Destino</p>
+                    <p className="text-sm font-semibold text-text">{data.rutaDestino ?? data.reservaDestino ?? "—"}</p>
                   </div>
                 </div>
               </div>
               <div className="mt-5 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-400 mb-0.5">Fecha de inicio</p>
-                <p className="text-sm font-semibold text-gray-800">{formatFecha(data.rutaFechaInicio)}</p>
+                <p className="text-xs text-border/70 mb-0.5">Fecha de inicio</p>
+                <p className="text-sm font-semibold text-text">{formatFecha(data.rutaFechaInicio)}</p>
               </div>
               {data.rutaCargas && (
                 <div className="mt-3">
-                  <p className="text-xs text-gray-400 mb-0.5">Cargas</p>
-                  <p className="text-sm font-semibold text-gray-800">{data.rutaCargas}</p>
+                  <p className="text-xs text-border/70 mb-0.5">Cargas</p>
+                  <p className="text-sm font-semibold text-text">{data.rutaCargas}</p>
                 </div>
               )}
             </div>
@@ -316,7 +316,7 @@ export default function DetallePedidoPage() {
 
           {/* Conductor */}
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Conductor asignado</p>
+            <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-5">Conductor asignado</p>
             <div className="flex items-center gap-4 mb-5">
               <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -324,25 +324,25 @@ export default function DetallePedidoPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-base font-bold text-gray-800">{data.conductorNombre}</p>
-                <p className="text-xs text-gray-400">Conductor</p>
+                <p className="text-base font-bold text-text">{data.conductorNombre}</p>
+                <p className="text-xs text-border/70">Conductor</p>
               </div>
             </div>
             <div className="space-y-3 pt-4 border-t border-gray-100">
               <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400">Teléfono</span>
-                <span className="text-sm font-semibold text-gray-800">{data.conductorTelf}</span>
+                <span className="text-xs text-border/70">Teléfono</span>
+                <span className="text-sm font-semibold text-text">{data.conductorTelf}</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400">Licencia</span>
-                <span className="text-sm font-semibold text-gray-800 bg-gray-100 px-2 py-0.5 rounded">{data.conductorLicencia}</span>
+                <span className="text-xs text-border/70">Licencia</span>
+                <span className="text-sm font-semibold text-text bg-gray-100 px-2 py-0.5 rounded">{data.conductorLicencia}</span>
               </div>
             </div>
           </div>
 
           {/* Reserva */}
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5">Detalles de la reserva</p>
+            <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-5">Detalles de la reserva</p>
             <div className="space-y-3">
               {[
                 { label: "Motivo",        value: data.reservaMotivo },
@@ -353,14 +353,14 @@ export default function DetallePedidoPage() {
                 { label: "Representante", value: data.reservaRepresentante },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-start gap-4">
-                  <span className="text-xs text-gray-400 shrink-0">{label}</span>
-                  <span className="text-sm font-medium text-gray-800 text-right">{value ?? "—"}</span>
+                  <span className="text-xs text-border/70 shrink-0">{label}</span>
+                  <span className="text-sm font-medium text-text text-right">{value ?? "—"}</span>
                 </div>
               ))}
               {data.reservaDescripcion && (
                 <div className="pt-3 border-t border-gray-100">
-                  <p className="text-xs text-gray-400 mb-1">Descripción</p>
-                  <p className="text-sm text-gray-700">{data.reservaDescripcion}</p>
+                  <p className="text-xs text-border/70 mb-1">Descripción</p>
+                  <p className="text-sm text-text">{data.reservaDescripcion}</p>
                 </div>
               )}
             </div>

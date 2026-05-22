@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 const ESTADO_COLOR: Record<string, { badge: string; bg: string; border: string; text: string }> = {
-  Pendiente:    { badge: "bg-yellow-100 text-yellow-700", bg: "bg-yellow-50",  border: "border-yellow-200", text: "text-yellow-700" },
-  "En Proceso": { badge: "bg-blue-100 text-blue-700",    bg: "bg-blue-50",    border: "border-blue-200",   text: "text-blue-700"   },
+  Pendiente:    { badge: "bg-accent-yellow/20 text-accent-yellow", bg: "bg-accent-yellow/5",  border: "border-accent-yellow/20", text: "text-accent-yellow" },
+  "En Proceso": { badge: "bg-primary/10 text-primary",    bg: "bg-primary/5",    border: "border-primary/20",   text: "text-primary"   },
   Aceptada:     { badge: "bg-green-100 text-green-700",  bg: "bg-green-50",   border: "border-green-200",  text: "text-green-700"  },
   Rechazada:    { badge: "bg-red-100 text-red-600",      bg: "bg-red-50",     border: "border-red-200",    text: "text-red-600"    },
 };
@@ -39,26 +39,26 @@ export default function DetalleSolicitudPage() {
       .catch(() => { setError("Error al cargar"); setLoading(false); });
   }, [id]);
 
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><p className="text-gray-400 text-sm">Cargando...</p></div>;
-  if (error || !data) return <div className="min-h-screen bg-gray-50 flex items-center justify-center"><p className="text-red-500 text-sm">{error || "No se encontraron datos"}</p></div>;
+  if (loading) return <div className="min-h-screen bg-bg flex items-center justify-center"><p className="text-border text-sm">Cargando...</p></div>;
+  if (error || !data) return <div className="min-h-screen bg-bg flex items-center justify-center"><p className="text-red-500 text-sm">{error || "No se encontraron datos"}</p></div>;
 
-  const colores = ESTADO_COLOR[data.estado] ?? { badge: "bg-gray-100 text-gray-600", bg: "bg-white", border: "border-gray-200", text: "text-gray-800" };
+  const colores = ESTADO_COLOR[data.estado] ?? { badge: "bg-gray-100 text-border", bg: "bg-white", border: "border-gray-200", text: "text-text" };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-bg pt-20">
 
       {/* Hero banner */}
       <div className={`w-full px-10 py-8 ${colores.bg} border-b ${colores.border}`}>
-        <button onClick={() => router.back()} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1 mb-4">
+        <button onClick={() => router.back()} className="text-sm text-border hover:text-text flex items-center gap-1 mb-4">
           ← Volver a mis solicitudes
         </button>
         <div className="flex items-end justify-between">
           <div>
-            <p className="text-sm text-gray-500 mb-1">Detalle de la solicitud</p>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <p className="text-sm text-border mb-1">Detalle de la solicitud</p>
+            <h1 className="text-3xl font-bold text-text">
               Solicitud <span className={colores.text}>#{String(data.id).padStart(6, "0")}</span>
             </h1>
-            <p className="text-sm text-gray-500 mt-1">{formatFecha(data.fecha)}</p>
+            <p className="text-sm text-border mt-1">{formatFecha(data.fecha)}</p>
           </div>
           <span className={`text-sm font-semibold px-4 py-1.5 rounded-full ${colores.badge}`}>
             {data.estado}
@@ -68,7 +68,7 @@ export default function DetalleSolicitudPage() {
 
       <div className="px-10 py-8">
         <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm max-w-2xl">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-6">Información de la solicitud</p>
+          <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-6">Información de la solicitud</p>
           <div className="space-y-4">
             {[
               { label: "Cliente", value: data.cliente },
@@ -81,14 +81,14 @@ export default function DetalleSolicitudPage() {
               { label: "Estado",  value: data.estado },
             ].map(({ label, value }) => (
               <div key={label} className="flex justify-between items-start gap-4 border-b border-gray-50 pb-3">
-                <span className="text-xs text-gray-400 shrink-0 w-24">{label}</span>
-                <span className="text-sm font-medium text-gray-800 text-right">{value ?? "—"}</span>
+                <span className="text-xs text-border/70 shrink-0 w-24">{label}</span>
+                <span className="text-sm font-medium text-text text-right">{value ?? "—"}</span>
               </div>
             ))}
             {data.descripcion && (
               <div className="pt-2">
-                <p className="text-xs text-gray-400 mb-2">Descripción</p>
-                <p className="text-sm text-gray-700 bg-gray-50 rounded-lg p-4">{data.descripcion}</p>
+                <p className="text-xs text-border/70 mb-2">Descripción</p>
+                <p className="text-sm text-text bg-bg rounded-lg p-4">{data.descripcion}</p>
               </div>
             )}
             {data.estado === "Rechazada" && (

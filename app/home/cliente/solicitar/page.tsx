@@ -6,8 +6,8 @@ import { Plus } from "lucide-react";
 import { getClienteCompleto } from "./logic";
 
 const ESTADO_COLOR: Record<string, string> = {
-  Pendiente:    "bg-yellow-100 text-yellow-700",
-  "En Proceso": "bg-blue-100 text-blue-700",
+  Pendiente:    "bg-accent-yellow/20 text-accent-yellow",
+  "En Proceso": "bg-primary/10 text-primary",
   Aceptada:     "bg-green-100 text-green-700",
   Rechazada:    "bg-red-100 text-red-600",
 };
@@ -46,7 +46,7 @@ export default function SolicitarPage() {
   const filtradas = filtro === "Todas" ? solicitudes : solicitudes.filter(s => s.estado === filtro);
 
   return (
-    <div className="min-h-screen bg-white px-6 pt-24 pb-6">
+    <div className="min-h-screen bg-white px-6 pt-24 pb-6 md:px-8 lg:px-12">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-text mb-2">
@@ -73,8 +73,8 @@ export default function SolicitarPage() {
             onClick={() => setFiltro(f)}
             className={`px-4 py-1.5 rounded-full text-xs font-medium border transition ${
               filtro === f
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                ? "bg-primary text-white border-primary"
+                : "bg-white text-border border-border/30 hover:bg-bg"
             }`}
           >
             {f}
@@ -92,19 +92,19 @@ export default function SolicitarPage() {
             <button
               key={s.id}
               onClick={() => router.push(`/home/cliente/solicitar/${s.id}`)}
-              className="text-left border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-blue-300 transition-all bg-white"
+              className="text-left border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-accent-orange/50 transition-all bg-white"
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="font-bold text-sm text-gray-800">
+                <span className="font-bold text-sm text-text">
                   Solicitud #{String(s.id).padStart(6, "0")}
                 </span>
                 <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${ESTADO_COLOR[s.estado] ?? "bg-gray-100 text-gray-600"}`}>
                   {s.estado}
                 </span>
               </div>
-              <div className="text-sm font-medium text-gray-700 mb-1 truncate">{s.asunto}</div>
-              <div className="text-xs text-gray-400 mb-1">Tipo: {s.tipo}</div>
-              <div className="text-xs text-gray-400">Fecha: {formatFecha(s.fecha)}</div>
+              <div className="text-sm font-medium text-text mb-1 truncate">{s.asunto}</div>
+              <div className="text-xs text-border/70 mb-1">Tipo: {s.tipo}</div>
+              <div className="text-xs text-border/70">Fecha: {formatFecha(s.fecha)}</div>
             </button>
           ))}
         </div>

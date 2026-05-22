@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import { MapPin, ArrowDown, FileText, Calendar, User } from "lucide-react";
 
 const ESTADO_COLOR: Record<string, string> = {
-  Programado:  "bg-[#FFC757]/20 text-[#d4a030] border border-[#FFC757]/30",
-  Cargando:    "bg-[#1F4E79]/10 text-[#1F4E79] border border-[#1F4E79]/20",
+  Programado:  "bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30",
+  Cargando:    "bg-primary/10 text-primary border border-primary/20",
   En_ruta:     "bg-green-50 text-green-700 border border-green-200",
-  En_pausa:    "bg-[#F47C20]/10 text-[#F47C20] border border-[#F47C20]/20",
-  Finalizado:  "bg-gray-100 text-[#A6A6A6] border border-gray-200",
+  En_pausa:    "bg-accent-orange/10 text-accent-orange border border-accent-orange/20",
+  Finalizado:  "bg-gray-100 text-border border border-gray-200",
   Incidente:   "bg-red-50 text-red-600 border border-red-200",
 };
 
@@ -54,7 +54,7 @@ export default function RutaListPage() {
     : reservas.filter(r => r.rutaEstado === filtro);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-white to-bg px-6 py-24">
+    <div className="min-h-screen bg-linear-to-br from-white to-bg px-6 py-24 md:px-8 lg:px-12">
       <div className="mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-text mb-2">
           Mis Reservas

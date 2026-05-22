@@ -10,14 +10,16 @@ export default function FooterGrande() {
       {/* Top accent bar */}
       <div className="h-1 bg-linear-to-r from-orange-500 via-yellow-400 to-orange-500" />
 
-      <div className="max-w-7xl mx-auto px-6 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="mx-auto p-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-8">
 
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <i className="bi bi-truck-front-fill text-2xl text-orange-400"></i>
-              <span className="text-white font-extrabold text-xl tracking-wide">Truck<span className="text-orange-400">Wave</span></span>
+              <span className="font-arsenal font-bold text-2xl sm:text-3xl text-black tracking-wide">
+                <span className="text-bg">TRUCK</span><span className="text-accent-orange">WAVE</span>
+              </span>
             </div>
             <p className="text-sm leading-relaxed text-gray-500">
               Soluciones logísticas de confianza para el transporte de mercancías en España y Europa.
@@ -40,7 +42,7 @@ export default function FooterGrande() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold text-sm uppercase tracking-widest mb-5">{t('quickLinks')}</h3>
+            <h3 className="text-white font-semibold text-sm uppercase tracking-widest mb-5 font-arsenal">{t('quickLinks')}</h3>
             <ul className="space-y-3 text-sm">
               {[['home', '/home'], ['services', '/servicios'], ['about', '/sobre-nosotros'], ['contact', '/contacto']].map(([key, href]) => (
                 <li key={key}>
@@ -55,7 +57,7 @@ export default function FooterGrande() {
 
           {/* Services */}
           <div>
-            <h3 className="text-white font-semibold text-sm uppercase tracking-widest mb-5">{t('servicesTitle')}</h3>
+            <h3 className="text-white font-semibold text-sm uppercase tracking-widest mb-5 font-arsenal">{t('servicesTitle')}</h3>
             <ul className="space-y-3 text-sm">
               {[['nationalTransport'], ['internationalTransport'], ['logistics'], ['storage']].map(([key]) => (
                 <li key={key}>
@@ -70,7 +72,7 @@ export default function FooterGrande() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-white font-semibold text-sm uppercase tracking-widest mb-5">{t('legalInfo')}</h3>
+            <h3 className="text-white font-semibold text-sm uppercase tracking-widest mb-5 font-arsenal">{t('legalInfo')}</h3>
             <ul className="space-y-3 text-sm">
               {[['privacy', '/privacidad'], ['terms', '/terminos'], ['cookies', '/cookies'], ['legal', '/aviso-legal']].map(([key, href]) => (
                 <li key={key}>

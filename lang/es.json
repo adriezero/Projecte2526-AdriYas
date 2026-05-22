@@ -41,7 +41,99 @@
     "cta": {
       "title": "¿Necesitas un transporte? Solicita tu presupuesto ahora",
       "subtitle": "Contáctanos y obtén una cotización personalizada para tus necesidades de transporte.",
-      "button": "Solicitar Servicio"
+      "button": "Solicitar Servicio",
+      "contactUs": "Contáctanos",
+      "callUs": "llámanos al",
+      "emailUs": "o escríbenos a"
+    },
+    "stats": {
+      "shipmentsCompleted": "Envíos Completados",
+      "customerSatisfaction": "Satisfacción del Cliente",
+      "operatingCountries": "Países de Operación"
+    },
+    "testimonials": {
+      "title": "Lo que dicen nuestros clientes",
+      "reviews": [
+        {
+          "text": "TruckWave transformó completamente nuestra logística. La puntualidad y el seguimiento en tiempo real nos dieron la tranquilidad que necesitábamos para crecer.",
+          "name": "María Contreras",
+          "role": "Directora de Operaciones, LogiCorp"
+        },
+        {
+          "text": "Llevamos 3 años trabajando con ellos y nunca nos han fallado. Su flota moderna y personal cualificado marcan la diferencia.",
+          "name": "Carlos Mendoza",
+          "role": "Gerente de Logística, Distribuciones del Sur"
+        },
+        {
+          "text": "El mejor servicio de transporte con el que hemos trabajado. Profesionales, puntuales y con tarifas muy competitivas.",
+          "name": "Ana Ruiz",
+          "role": "CEO, ImportExport Global"
+        }
+      ]
+    },
+    "clients": {
+      "title": "Confían en Nosotros"
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "subtitle": "Contratar nuestro servicio es simple y rápido. Sigue estos pasos:",
+      "steps": [
+        {
+          "title": "Solicita el servicio",
+          "description": "Rellena el formulario online o llámanos. Te respondemos en menos de 2 horas."
+        },
+        {
+          "title": "Recogemos tu carga",
+          "description": "Nuestro equipo acude al punto de origen en el plazo acordado."
+        },
+        {
+          "title": "Seguimiento en tiempo real",
+          "description": "Monitoriza tu envío en todo momento desde tu panel de cliente."
+        },
+        {
+          "title": "Entrega confirmada",
+          "description": "Recibe notificación cuando la carga llegue a su destino."
+        }
+      ]
+    },
+    "coverage": {
+      "title": "Nuestra cobertura",
+      "subtitle": "Operamos en 8 países con rutas regulares por toda Europa",
+      "countries": [
+        { "name": "España" },
+        { "name": "Francia" },
+        { "name": "Alemania" },
+        { "name": "Italia" },
+        { "name": "Portugal" },
+        { "name": "Bélgica" },
+        { "name": "Países Bajos" },
+        { "name": "Polonia" }
+      ]
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "questions": [
+        {
+          "question": "¿Cuáles son los plazos de entrega habituales?",
+          "answer": "Los plazos varían según la distancia y el destino. Para rutas nacionales, entre 24-48 horas. Para rutas internacionales en Europa, entre 3-5 días laborables. Ofrecemos también servicio express con entregas en menos de 24 horas."
+        },
+        {
+          "question": "¿Puedo hacer seguimiento de mi envío en tiempo real?",
+          "answer": "Sí, todos nuestros clientes tienen acceso a un panel personalizado donde pueden monitorizar la ubicación exacta de su envío en tiempo real, ver el estado de la entrega y recibir notificaciones automáticas."
+        },
+        {
+          "question": "¿Qué tipo de mercancía transportáis?",
+          "answer": "Transportamos todo tipo de mercancía general, desde palets y cajas hasta maquinaria industrial. Contamos con vehículos especializados para cargas refrigeradas, mercancía frágil y cargas de gran volumen. Consulta con nuestro equipo para casos específicos."
+        },
+        {
+          "question": "¿Cómo solicito un presupuesto?",
+          "answer": "Puedes solicitar un presupuesto sin compromiso a través de nuestro formulario online, llamando al +34 900 000 000 o escribiendo a hola@truckwave.com. Te responderemos en menos de 2 horas con una cotización detallada."
+        },
+        {
+          "question": "¿Qué ocurre si hay una incidencia durante el transporte?",
+          "answer": "Contamos con un seguro de mercancías que cubre cualquier incidencia. Nuestro equipo de atención al cliente está disponible 24/7 para gestionar cualquier problema. Además, recibirás notificaciones inmediatas ante cualquier eventualidad."
+        }
+      ]
     }
   },
   "contact": {

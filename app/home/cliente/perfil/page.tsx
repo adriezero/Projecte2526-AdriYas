@@ -34,7 +34,7 @@ function ModalCambioGmail({ onClose }: { onClose: () => void }) {
             <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center">
               <i className="bi bi-envelope-fill text-amber-600 text-lg"></i>
             </div>
-            <h2 className="text-lg font-bold text-gray-900">Solicitar cambio de Gmail</h2>
+            <h2 className="text-lg font-bold text-text">Solicitar cambio de Gmail</h2>
           </div>
           <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
         </div>
@@ -46,20 +46,20 @@ function ModalCambioGmail({ onClose }: { onClose: () => void }) {
             </p>
           </div>
           <div>
-            <label className="text-sm font-semibold text-gray-700 block mb-2">Nuevo Gmail y motivo</label>
+            <label className="text-sm font-semibold text-text block mb-2">Nuevo Gmail y motivo</label>
             <textarea
               value={descripcion}
               onChange={e => setDescripcion(e.target.value)}
               rows={4}
               placeholder="Indica el nuevo Gmail que deseas usar y el motivo del cambio..."
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 resize-none bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full border border-border/20 rounded-xl px-4 py-3 text-sm text-text resize-none bg-bg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
             />
           </div>
           {enviado && <p className="text-sm text-green-600">✓ Incidencia enviada correctamente.</p>}
         </div>
         <div className="flex justify-end gap-3 px-8 py-5 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-          <button onClick={onClose} className="px-5 py-2.5 rounded-xl border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">Cancelar</button>
-          <button onClick={enviar} disabled={!descripcion || enviando || enviado} className="px-5 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-50">
+          <button onClick={onClose} className="px-5 py-2.5 rounded-xl border border-border/30 text-sm font-medium text-text hover:bg-bg transition">Cancelar</button>
+          <button onClick={enviar} disabled={!descripcion || enviando || enviado} className="px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-[#163a5f] transition disabled:opacity-50">
             {enviando ? "Enviando..." : "Enviar incidencia"}
           </button>
         </div>
@@ -120,7 +120,7 @@ export default function PerfilClientePage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-bg">
       <div className="text-gray-400 text-sm">Cargando...</div>
     </div>
   );
@@ -128,7 +128,7 @@ export default function PerfilClientePage() {
   const initials = form.Nombre ? form.Nombre.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase() : "?";
 
   return (
-    <div className="h-screen flex flex-col pt-16 bg-gray-100 overflow-hidden">
+    <div className="h-screen flex flex-col pt-16 bg-bg overflow-hidden">
       {modalGmail && <ModalCambioGmail onClose={() => setModalGmail(false)} />}
 
       <div className="flex flex-1 overflow-hidden">
@@ -137,12 +137,12 @@ export default function PerfilClientePage() {
         <aside className="w-80 shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-y-auto">
 
           {/* Avatar */}
-          <div className="flex flex-col items-center px-8 pt-14 pb-10 bg-linear-to-b from-blue-600 to-blue-700">
+          <div className="flex flex-col items-center px-8 pt-14 pb-10 bg-linear-to-b from-primary to-[#163a5f]">
             <div className="w-24 h-24 rounded-full bg-white/20 border-4 border-white/40 flex items-center justify-center text-white text-3xl font-bold mb-5 shadow-xl">
               {initials}
             </div>
             <p className="font-bold text-white text-xl text-center leading-tight">{form.Nombre || "—"}</p>
-            <p className="text-blue-200 text-sm mt-1 text-center truncate w-full">{form.Gmail || session?.user?.email}</p>
+            <p className="text-white/70 text-sm mt-1 text-center truncate w-full">{form.Gmail || session?.user?.email}</p>
             <span className="mt-4 inline-block bg-white/20 text-white text-xs font-semibold px-4 py-1.5 rounded-full tracking-wide">Cliente</span>
           </div>
 
@@ -188,14 +188,14 @@ export default function PerfilClientePage() {
           <div className="bg-white border-b border-gray-200 px-12 py-7 shrink-0">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Mi Perfil</h1>
-                <p className="text-sm text-gray-500 mt-1">Gestiona tu información personal y de empresa.</p>
+                <h1 className="text-2xl font-bold text-text">Mi Perfil</h1>
+                <p className="text-sm text-border mt-1">Gestiona tu información personal y de empresa.</p>
               </div>
               {!editing && (
                 <button
                   type="button"
                   onClick={() => { setEditing(true); setMsg(null); }}
-                  className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-5 py-2.5 text-sm font-semibold transition shadow-sm shadow-blue-200"
+                  className="flex items-center gap-2 bg-primary hover:bg-[#163a5f] text-white rounded-xl px-5 py-2.5 text-sm font-semibold transition shadow-sm"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
@@ -211,28 +211,28 @@ export default function PerfilClientePage() {
             {/* Sección: Información personal */}
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm">
               <div className="flex items-center gap-3 px-8 py-5 border-b border-gray-100">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800">Información personal</p>
-                  <p className="text-xs text-gray-400">Datos de identificación y contacto</p>
+                  <p className="text-sm font-semibold text-text">Información personal</p>
+                  <p className="text-xs text-border/70">Datos de identificación y contacto</p>
                 </div>
               </div>
               <div className="px-8 py-7 grid grid-cols-2 gap-x-8 gap-y-6">
                 {FIELDS.map(({ label, key }) => (
                   <div key={key} className="flex flex-col gap-2">
-                    <label className="text-sm font-medium text-gray-600">{label}</label>
+                    <label className="text-sm font-medium text-border">{label}</label>
                     {editing ? (
                       <input
-                        className="border border-gray-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white transition"
+                        className="border border-border/30 rounded-xl px-4 py-3 text-sm text-text focus:outline-none focus:ring-2 focus:ring-primary bg-white transition"
                         value={form[key as keyof typeof form]}
                         onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                       />
                     ) : (
-                      <p className="px-4 py-3 text-sm text-gray-800 bg-gray-50 rounded-xl border border-gray-100">{form[key as keyof typeof form] || "—"}</p>
+                      <p className="px-4 py-3 text-sm text-text bg-bg rounded-xl border border-gray-100">{form[key as keyof typeof form] || "—"}</p>
                     )}
                   </div>
                 ))}
@@ -248,18 +248,18 @@ export default function PerfilClientePage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-800">Acceso y seguridad</p>
-                  <p className="text-xs text-gray-400">Credenciales vinculadas a tu cuenta</p>
+                  <p className="text-sm font-semibold text-text">Acceso y seguridad</p>
+                  <p className="text-xs text-border/70">Credenciales vinculadas a tu cuenta</p>
                 </div>
               </div>
               <div className="px-8 py-7">
-                <label className="text-sm font-medium text-gray-600 block mb-2">Gmail</label>
-                <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-5 py-4 gap-6">
+                <label className="text-sm font-medium text-border block mb-2">Gmail</label>
+                <div className="flex items-center justify-between bg-bg border border-border/20 rounded-xl px-5 py-4 gap-6">
                   <div className="flex items-center gap-3 min-w-0">
                     <svg className="w-5 h-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                     </svg>
-                    <span className="text-sm font-medium text-gray-700 truncate">{form.Gmail || "—"}</span>
+                    <span className="text-sm font-medium text-text truncate">{form.Gmail || "—"}</span>
                   </div>
                   <div className="flex items-center gap-3 shrink-0">
                     <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
@@ -290,14 +290,14 @@ export default function PerfilClientePage() {
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="bg-white border border-gray-300 text-gray-700 rounded-xl px-6 py-2.5 text-sm font-medium hover:bg-gray-50 transition"
+                    className="bg-white border border-border/30 text-text rounded-xl px-6 py-2.5 text-sm font-medium hover:bg-bg transition"
                   >
                     Cancelar
                   </button>
                   <button
                     type="submit"
                     disabled={saving}
-                    className="bg-blue-600 text-white rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition shadow-sm shadow-blue-200"
+                    className="bg-primary text-white rounded-xl px-6 py-2.5 text-sm font-semibold hover:bg-[#163a5f] disabled:opacity-50 transition shadow-sm"
                   >
                     {saving ? "Guardando..." : "Guardar cambios"}
                   </button>

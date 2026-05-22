@@ -41,7 +41,99 @@
     "cta": {
       "title": "Necessites un transport? Sol·licita el teu pressupost ara",
       "subtitle": "Contacta'ns i obtén un pressupost personalitzat per a les teves necessitats de transport.",
-      "button": "Sol·licitar Servei"
+      "button": "Sol·licitar Servei",
+      "contactUs": "Contacta'ns",
+      "callUs": "truca'ns al",
+      "emailUs": "o escriu-nos a"
+    },
+    "stats": {
+      "shipmentsCompleted": "Enviaments Completats",
+      "customerSatisfaction": "Satisfacció del Client",
+      "operatingCountries": "Països d'Operació"
+    },
+    "testimonials": {
+      "title": "El que diuen els nostres clients",
+      "reviews": [
+        {
+          "text": "TruckWave va transformar completament la nostra logística. La puntualitat i el seguiment en temps real ens van donar la tranquil·litat que necessitàvem per créixer.",
+          "name": "Maria Contreras",
+          "role": "Directora d'Operacions, LogiCorp"
+        },
+        {
+          "text": "Portem 3 anys treballant amb ells i mai ens han fallat. La seva flota moderna i personal qualificat marquen la diferència.",
+          "name": "Carles Mendoza",
+          "role": "Gerent de Logística, Distribucions del Sud"
+        },
+        {
+          "text": "El millor servei de transport amb el qual hem treballat. Professionals, puntuals i amb tarifes molt competitives.",
+          "name": "Anna Ruiz",
+          "role": "CEO, ImportExport Global"
+        }
+      ]
+    },
+    "clients": {
+      "title": "Confien en Nosaltres"
+    },
+    "howItWorks": {
+      "title": "Com funciona",
+      "subtitle": "Contractar el nostre servei és simple i ràpid. Segueix aquests passos:",
+      "steps": [
+        {
+          "title": "Sol·licita el servei",
+          "description": "Omple el formulari online o truca'ns. Et responem en menys de 2 hores."
+        },
+        {
+          "title": "Recollim la teva càrrega",
+          "description": "El nostre equip acudeix al punt d'origen en el termini acordat."
+        },
+        {
+          "title": "Seguiment en temps real",
+          "description": "Monitoritza el teu enviament en tot moment des del teu panell de client."
+        },
+        {
+          "title": "Entrega confirmada",
+          "description": "Rep notificació quan la càrrega arribi a la seva destinació."
+        }
+      ]
+    },
+    "coverage": {
+      "title": "La nostra cobertura",
+      "subtitle": "Operem en 8 països amb rutes regulars per tota Europa",
+      "countries": [
+        { "name": "Espanya" },
+        { "name": "França" },
+        { "name": "Alemanya" },
+        { "name": "Itàlia" },
+        { "name": "Portugal" },
+        { "name": "Bèlgica" },
+        { "name": "Països Baixos" },
+        { "name": "Polònia" }
+      ]
+    },
+    "faq": {
+      "title": "Preguntes freqüents",
+      "questions": [
+        {
+          "question": "Quins són els terminis d'entrega habituals?",
+          "answer": "Els terminis varien segons la distància i la destinació. Per a rutes nacionals, entre 24-48 hores. Per a rutes internacionals a Europa, entre 3-5 dies laborables. Oferim també servei express amb entregues en menys de 24 hores."
+        },
+        {
+          "question": "Puc fer seguiment del meu enviament en temps real?",
+          "answer": "Sí, tots els nostres clients tenen accés a un panell personalitzat on poden monitoritzar la ubicació exacta del seu enviament en temps real, veure l'estat de l'entrega i rebre notificacions automàtiques."
+        },
+        {
+          "question": "Quin tipus de mercaderia transporteu?",
+          "answer": "Transportem tot tipus de mercaderia general, des de palets i caixes fins a maquinària industrial. Comptem amb vehicles especialitzats per a càrregues refrigerades, mercaderia fràgil i càrregues de gran volum. Consulta amb el nostre equip per a casos específics."
+        },
+        {
+          "question": "Com sol·licito un pressupost?",
+          "answer": "Pots sol·licitar un pressupost sense compromís a través del nostre formulari online, trucant al +34 900 000 000 o escrivint a hola@truckwave.com. Et respondrem en menys de 2 hores amb una cotització detallada."
+        },
+        {
+          "question": "Què passa si hi ha una incidència durant el transport?",
+          "answer": "Comptem amb una assegurança de mercaderies que cobreix qualsevol incidència. El nostre equip d'atenció al client està disponible 24/7 per gestionar qualsevol problema. A més, rebràs notificacions immediates davant qualsevol eventualitat."
+        }
+      ]
     }
   },
   "contact": {

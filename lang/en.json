@@ -41,7 +41,99 @@
     "cta": {
       "title": "Need transportation? Request your quote now",
       "subtitle": "Contact us and get a personalized quote for your transportation needs.",
-      "button": "Request service"
+      "button": "Request service",
+      "contactUs": "Contact us",
+      "callUs": "call us at",
+      "emailUs": "or email us at"
+    },
+    "stats": {
+      "shipmentsCompleted": "Shipments Completed",
+      "customerSatisfaction": "Customer Satisfaction",
+      "operatingCountries": "Operating Countries"
+    },
+    "testimonials": {
+      "title": "What our customers say",
+      "reviews": [
+        {
+          "text": "TruckWave completely transformed our logistics. The punctuality and real-time tracking gave us the peace of mind we needed to grow.",
+          "name": "Maria Contreras",
+          "role": "Operations Director, LogiCorp"
+        },
+        {
+          "text": "We've been working with them for 3 years and they've never let us down. Their modern fleet and qualified staff make the difference.",
+          "name": "Carlos Mendoza",
+          "role": "Logistics Manager, Distribuciones del Sur"
+        },
+        {
+          "text": "The best transportation service we've worked with. Professional, punctual and with very competitive rates.",
+          "name": "Ana Ruiz",
+          "role": "CEO, ImportExport Global"
+        }
+      ]
+    },
+    "clients": {
+      "title": "They Trust Us"
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "subtitle": "Hiring our service is simple and fast. Follow these steps:",
+      "steps": [
+        {
+          "title": "Request the service",
+          "description": "Fill out the online form or call us. We respond in less than 2 hours."
+        },
+        {
+          "title": "We pick up your cargo",
+          "description": "Our team arrives at the origin point within the agreed timeframe."
+        },
+        {
+          "title": "Real-time tracking",
+          "description": "Monitor your shipment at all times from your customer panel."
+        },
+        {
+          "title": "Confirmed delivery",
+          "description": "Receive notification when the cargo reaches its destination."
+        }
+      ]
+    },
+    "coverage": {
+      "title": "Our coverage",
+      "subtitle": "We operate in 8 countries with regular routes throughout Europe",
+      "countries": [
+        { "name": "Spain" },
+        { "name": "France" },
+        { "name": "Germany" },
+        { "name": "Italy" },
+        { "name": "Portugal" },
+        { "name": "Belgium" },
+        { "name": "Netherlands" },
+        { "name": "Poland" }
+      ]
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "questions": [
+        {
+          "question": "What are the usual delivery times?",
+          "answer": "Delivery times vary depending on distance and destination. For national routes, between 24-48 hours. For international routes in Europe, between 3-5 business days. We also offer express service with deliveries in less than 24 hours."
+        },
+        {
+          "question": "Can I track my shipment in real time?",
+          "answer": "Yes, all our customers have access to a personalized panel where they can monitor the exact location of their shipment in real time, see the delivery status and receive automatic notifications."
+        },
+        {
+          "question": "What type of cargo do you transport?",
+          "answer": "We transport all types of general cargo, from pallets and boxes to industrial machinery. We have specialized vehicles for refrigerated loads, fragile cargo and large volume loads. Consult with our team for specific cases."
+        },
+        {
+          "question": "How do I request a quote?",
+          "answer": "You can request a no-obligation quote through our online form, by calling +34 900 000 000 or writing to hola@truckwave.com. We will respond in less than 2 hours with a detailed quote."
+        },
+        {
+          "question": "What happens if there is an incident during transport?",
+          "answer": "We have cargo insurance that covers any incident. Our customer service team is available 24/7 to handle any problem. In addition, you will receive immediate notifications in case of any eventuality."
+        }
+      ]
     }
   },
   "contact": {

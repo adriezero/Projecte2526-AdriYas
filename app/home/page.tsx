@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useTranslations } from 'next-intl';
-import { ChevronDown, Truck, Package, MapPin, Check, Star } from 'lucide-react';
+import { ChevronDown, Truck, Package, MapPin, Check, Star, ClipboardList, PackageCheck, Radio, CheckCircle2, ChevronDown as ChevronDownIcon } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 
 export default function Home() {
@@ -11,6 +11,7 @@ export default function Home() {
   const [stats, setStats] = useState({ shipments: 0, satisfaction: 0, countries: 0 });
   const statsRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -82,26 +83,54 @@ export default function Home() {
             <div className="text-4xl sm:text-5xl font-bold text-primary mb-2">
               {stats.shipments.toLocaleString()}+
             </div>
-            <div className="text-gray-600 text-lg">Envíos Completados</div>
+            <div className="text-gray-600 text-lg">{t('stats.shipmentsCompleted')}</div>
           </div>
           <div className="group flex flex-col items-center justify-center">
             <div className="text-4xl sm:text-5xl font-bold text-accent-orange mb-2">
               {stats.satisfaction}%
             </div>
-            <div className="text-gray-600 text-lg">Satisfacción del Cliente</div>
+            <div className="text-gray-600 text-lg">{t('stats.customerSatisfaction')}</div>
           </div>
           <div className="group flex flex-col items-center justify-center">
             <div className="text-4xl sm:text-5xl font-bold text-primary mb-2">
               {stats.countries}
             </div>
-            <div className="text-gray-600 text-lg">Países de Operación</div>
+            <div className="text-gray-600 text-lg">{t('stats.operatingCountries')}</div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIOS */}
+      <section className="bg-white py-16 sm:py-20 px-4 sm:px-6">
+        <div className="mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-text text-center mb-12 pb-8">{t('testimonials.title')}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {t.raw('testimonials.reviews').map((testimonial: {text: string, name: string, role: string}, idx: number) => (
+              <div key={idx} className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow">
+                <div className="flex justify-center mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-accent-orange text-accent-orange" />
+                  ))}
+                </div>
+                <p className="text-gray-700 italic mb-6 leading-relaxed text-sm">&quot;{testimonial.text}&quot;</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full overflow-hidden relative shrink-0">
+                    <Image src="/img/review-web.png" alt={testimonial.name} fill className="object-cover" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900 text-sm">{testimonial.name}</div>
+                    <div className="text-gray-500 text-xs">{testimonial.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* LOGOS CLIENTES */}
       <section className="bg-gray-50 py-12 px-4 overflow-hidden flex flex-col items-center justify-center">
-        <h3 className="text-center text-gray-500 text-2xl font-bold uppercase tracking-wider pb-8 font-arsenal">Confían en Nosotros</h3>
+        <h3 className="text-center text-gray-500 text-2xl font-bold uppercase tracking-wider pb-8 font-arsenal">{t('clients.title')}</h3>
         <div className="relative w-full">
           <div className="flex gap-12 animate-scroll-infinite">
             {[...Array(3)].map((_, idx) => (
@@ -111,29 +140,6 @@ export default function Home() {
                 </div>
               ))
             )).flat()}
-          </div>
-        </div>
-      </section>
-
-      {/* TESTIMONIO */}
-      <section className="bg-white py-16 sm:py-20 px-4 flex items-center justify-center">
-        <div className="max-w-4xl w-full text-center flex flex-col items-center justify-center">
-          <div className="flex justify-center mb-6">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-6 h-6 fill-accent-orange text-accent-orange" />
-            ))}
-          </div>
-          <blockquote className="text-xl sm:text-2xl text-gray-700 italic mb-8 leading-relaxed">
-            &quot;TruckWave transformó completamente nuestra logística. La puntualidad y el seguimiento en tiempo real nos dieron la tranquilidad que necesitábamos para crecer.&quot;
-          </blockquote>
-          <div className="flex items-center justify-center gap-4">
-            <div className="w-16 h-16 rounded-full overflow-hidden relative shrink-0">
-              <Image src="/img/review-web.png" alt="María Contreras" fill className="object-cover" />
-            </div>
-            <div className="text-left">
-              <div className="font-bold text-gray-900">María Contreras</div>
-              <div className="text-gray-500 text-sm">Directora de Operaciones, LogiCorp</div>
-            </div>
           </div>
         </div>
       </section>
@@ -168,6 +174,38 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* CÓMO FUNCIONA */}
+      <section className="bg-white py-16 sm:py-20 px-4 sm:px-6">
+        <h2 className="text-3xl sm:text-4xl font-bold text-text text-center pb-4">{t('howItWorks.title')}</h2>
+        <p className="text-center text-gray-600 pb-10 mx-auto">{t('howItWorks.subtitle')}</p>
+        <div className="flex items-center justify-center">
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-10">
+            {[
+              { icon: ClipboardList },
+              { icon: PackageCheck },
+              { icon: Radio },
+              { icon: CheckCircle2 }
+            ].map(({ icon: Icon }, index) => {
+              const step = t.raw('howItWorks.steps')[index];
+              return (
+              <div key={index} className="group bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 text-center hover:shadow-2xl hover:border-accent-orange/30 transition-all duration-300 hover:-translate-y-2 flex flex-col items-center gap-6">
+                <div className="text-5xl font-bold text-accent-orange">{index + 1}</div>
+                <div className="w-16 h-16 sm:w-20 sm:h-20 mb-5 sm:mb-6 bg-linear-to-br from-primary to-[#163a5f] rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  <Icon className="w-10 h-10 text-white" />
+                </div>
+                <h3 className="font-bold text-lg sm:text-xl text-text mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-border leading-relaxed text-sm sm:text-base">
+                  {step.description}
+                </p>
+              </div>
+            )})}
+          </div>
+        </div>
+      </section>
+
       {/* WHY US */}
       <section className="bg-bg py-16 sm:py-20 mb-0 flex items-center justify-center px-4 sm:px-6">
         <div className="max-w-7xl w-full text-center">
@@ -203,6 +241,58 @@ export default function Home() {
         </div>
       </section>
 
+      {/* COBERTURA GEOGRÁFICA */}
+      <section className="bg-white py-16 sm:py-20 px-4 sm:px-6">
+        <div className="mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-text pb-4">{t('coverage.title')}</h2>
+          <p className="text-gray-600 pb-10">{t('coverage.subtitle')}</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              { code: "es" },
+              { code: "fr" },
+              { code: "de" },
+              { code: "it" },
+              { code: "pt" },
+              { code: "be" },
+              { code: "nl" },
+              { code: "pl" }
+            ].map((country, idx) => {
+              const countryData = t.raw('coverage.countries')[idx];
+              return (
+              <div key={idx} className="bg-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-md hover:border-accent-orange/30 transition-all">
+                <span className={`fi fi-${country.code} text-4xl mb-2 block rounded-xl`} />
+                <div className="text-sm font-semibold text-gray-700">{countryData.name}</div>
+              </div>
+            )})}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-gray-50 py-16 sm:py-20 px-4 sm:px-6">
+        <div className="mx-auto">
+          <h2 className="text-3xl sm:text-4xl font-bold text-text text-center pb-10">{t('faq.title')}</h2>
+          <div className="space-y-4">
+            {t.raw('faq.questions').map((faq: {question: string, answer: string}, idx: number) => (
+              <div key={idx} className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-semibold text-text pr-4">{faq.question}</span>
+                  <ChevronDownIcon className={`w-5 h-5 text-gray-500 shrink-0 transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
+                </button>
+                {openFaq === idx && (
+                  <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                    {faq.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-linear-to-br from-primary to-[#163a5f] py-16 sm:py-20 flex items-center justify-center px-4 sm:px-6 flex-col gap-8">
         <div className="text-center">
@@ -210,12 +300,9 @@ export default function Home() {
           <p className="text-base sm:text-xl text-white/90 mb-6 sm:mb-8">{t('cta.subtitle')}</p>
         </div>
         <Link href="/auth/login" className="px-8 py-4 sm:px-12 sm:py-5 bg-accent-orange text-white rounded-xl font-semibold hover:bg-[#d66a1a] transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 text-base sm:text-xl">{t('cta.button')}</Link>
-      </section>
-
-      {/* IMAGEN FINAL */}
-      <section className="relative h-64 sm:h-80 md:h-96 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/img/diferentescamiones.jpg')] bg-cover bg-center" />
-        <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
+        <p className="text-sm text-white/70 text-center mt-4">
+          ¿Prefieres hablar con nosotros? <Link href="/contacto" className="underline hover:text-white transition-colors">{t('cta.contactUs')}</Link>, {t('cta.callUs')} <a href="tel:+34900000000" className="underline hover:text-white transition-colors">+34 900 000 000</a> {t('cta.emailUs')} <a href="mailto:hola@truckwave.com" className="underline hover:text-white transition-colors">hola@truckwave.com</a>
+        </p>
       </section>
     </main>
   );
