@@ -73,11 +73,11 @@ export default function SobreNosotros() {
     
 
           {/* Encabezado centrado */}
-          <div className="text-center w-full max-w-2xl mx-auto mb-16 space-y-5">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight leading-tight">
+          <div className="text-center w-full max-w-2xl mx-auto mb-10 space-y-3">
+            <h1 className="text-3xl sm:text-5xl py-8 pt-2 font-bold text-white tracking-tight leading-tight">
               {t("title")}
             </h1>
-            <p className="text-base text-white/60 leading-relaxed">
+            <p className="text-base   pb-4 font-bold leading-relaxed bg-gradient-to-r from-accent-orange to-accent-yellow bg-clip-text text-transparent drop-shadow-sm">
               {t("subtitle")}
             </p>
             <div className="mx-auto w-12 h-1 bg-accent-orange rounded-full" />
@@ -87,17 +87,15 @@ export default function SobreNosotros() {
           <div className="w-full max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 rounded-2xl overflow-hidden shadow-2xl">
 
             {/* Panel texto */}
-            <div className="bg-white px-12 py-16 flex flex-col justify-center">
+            <div className="bg-white px-12 py-12 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <i className="bi bi-clock-history text-primary text-base" />
-                </div>
+               
                 <h3 className="text-xl font-bold text-primary">
                   {t("historyTitle")}
                 </h3>
               </div>
-              <div className="w-8 h-1 bg-accent-orange rounded-full mb-8" />
-              <div className="space-y-5 text-sm text-text/80 leading-relaxed">
+              <div className="w-8 h-1  bg-accent-orange rounded-full mb-8" />
+              <div className="space-y-5 pb-8 text-sm text-text/80 leading-relaxed">
                 <p>{t("historyText1")}</p>
                 <p>{t("historyText2")}</p>
                 <p>{t("historyText3")}</p>
@@ -116,7 +114,7 @@ export default function SobreNosotros() {
           </div>
 
           {/* Estadísticas */}
-          <div className="w-full max-w-5xl mx-auto mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="w-full max-w-5xl py-8 mx-auto mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { num: "30+",  label: t("statYears"),     icon: "bi-calendar-check" },
               { num: "80",   label: t("statTeam"),      icon: "bi-people-fill" },
@@ -139,15 +137,11 @@ export default function SobreNosotros() {
       {/* ══════════════════════════════════════
           SECCIÓN 2 — RESEÑAS
       ══════════════════════════════════════ */}
-      <section className="bg-bg py-24 px-4 sm:px-8 w-full flex flex-col items-center">
+      <section className="bg-bg py-15 px-4 sm:px-8 w-full flex flex-col items-center">
         <div className="w-full max-w-5xl mx-auto space-y-14">
 
           {/* Encabezado centrado */}
           <div className="flex flex-col items-center text-center space-y-5">
-            <span className="inline-flex items-center gap-2 bg-primary/8 text-primary text-xs font-semibold px-4 py-1.5 rounded-full tracking-wide uppercase">
-              <i className="bi bi-chat-quote-fill" />
-              {tr("title")}
-            </span>
             <h2 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
               {tr("title")}
             </h2>
