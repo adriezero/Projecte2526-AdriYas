@@ -1,6 +1,5 @@
 "use client";
 
-import BarraLateral from "@componentes/camionero/BarraLateral";
 import { useState, useEffect } from "react";
 import { 
   ChevronLeft, ChevronRight, Calendar as CalendarIcon,
@@ -76,7 +75,6 @@ export default function Horario() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F2F2F2' }}>
-      <BarraLateral />
 
       <div className="p-4 md:p-6 lg:p-8 md:ml-64" style={{ marginLeft: '256px' }}>
         <div className="max-w-screen-2xl mx-auto">

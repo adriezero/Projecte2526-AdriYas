@@ -1,6 +1,5 @@
 "use client";
 
-import BarraLateral from "@componentes/camionero/BarraLateral";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { FileText, Upload, Eye, CheckCircle2, Clock, AlertCircle, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
@@ -193,7 +192,6 @@ export default function Documentos() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F2F2F2' }}>
-      <BarraLateral />
 
       <div className="p-6 md:p-8 lg:p-10 md:ml-64"  style={{ marginLeft: '256px' }}>
         <div className="mx-auto">

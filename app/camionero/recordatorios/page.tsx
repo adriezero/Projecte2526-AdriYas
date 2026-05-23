@@ -167,7 +167,7 @@ export default function Recordatorios() {
                 {editandoId === nota.id ? (
                   <div className="flex gap-2 items-center flex-wrap">
                     <input
-                      className="text-sm rounded-xl px-3 py-2 outline-none transition-all flex-1 min-w-[200px]"
+                      className="text-sm rounded-xl px-3 py-2 outline-none transition-all flex-1 min-w-50"
                       style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
                       value={textoEdicion}
                       onChange={e => setTextoEdicion(e.target.value)}
