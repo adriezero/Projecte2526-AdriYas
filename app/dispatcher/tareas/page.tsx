@@ -1,6 +1,5 @@
 "use client";
 
-import BarraLateral from "@componentes/dispatcher/BarraLateral";
 import { useState, useEffect } from "react";
 import { Tarea, FiltroTarea } from '@interfaces/interfaces';
 import { useSession } from "next-auth/react";
@@ -143,7 +142,6 @@ export default function Tareas() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <BarraLateral />
 
       {/* Portal del menú — fuera del scroll, siempre encima */}
       {menuAbierto !== null && menuPos && tareaMenuAbierta && (

@@ -1,5 +1,5 @@
-import BarraLateral from '@componentes/admin/BarraLateral'
 import { Metadata } from 'next'
+import BarraLateral from '@componentes/shared/BarraLateral'
 
 export const metadata: Metadata = {
   title: 'Admin - TruckWave'
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <BarraLateral />
+      <BarraLateral role="admin" />
       {children}
     </>
   )

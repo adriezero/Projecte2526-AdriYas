@@ -119,7 +119,7 @@ export default function ReportesPage() {
   const { pendientes, enRevision, resueltos } = calcularEstadisticas(reportes);
 
   return (
-    <div className="bg-bg min-h-screen p-10" style={{ marginLeft: "320px" }}>
+    <div className="bg-bg min-h-screen p-10" style={{ marginLeft: '256px' }}>
       <PageHeader 
         title="Centro de Reportes" 
         subtitle="Supervisión y gestión centralizada de incidencias" 

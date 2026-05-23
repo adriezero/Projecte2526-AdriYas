@@ -194,7 +194,7 @@ export default function GestionUsersPage() {
     );
 
   return (
-    <div className="bg-bg min-h-screen p-10" style={{ marginLeft: "320px" }}>
+    <div className="bg-bg min-h-screen p-10" style={{ marginLeft: '256px' }}>
       <div className="max-w-full">
         <PageHeader 
           title="Control de Usuarios" 

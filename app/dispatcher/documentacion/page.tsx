@@ -1,6 +1,5 @@
 "use client";
 
-import BarraLateral from "@componentes/dispatcher/BarraLateral";
 import { useState, useEffect } from "react";
 import { 
   Eye, Edit, Trash2, Download, FileText, Calendar, 
@@ -179,7 +178,6 @@ export default function Documentacion() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <BarraLateral />
 
       {/* Modal Ver Detalles */}
       {modalDetalles && documentoSeleccionado && (

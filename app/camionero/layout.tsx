@@ -1,17 +1,14 @@
 import { Metadata } from 'next'
-import BarraLateral from '@componentes/camionero/BarraLateral'
+import BarraLateral from '@componentes/shared/BarraLateral'
 
 export const metadata: Metadata = {
-  title: 'TruckWave'
+  title: 'Camionero - TruckWave'
 }
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+
+export default function RootLayout({ children, }: { children: React.ReactNode}) {
   return (
     <>
-      <BarraLateral />
+      <BarraLateral role="camionero" />
       {children}
     </>
   )
