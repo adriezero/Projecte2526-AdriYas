@@ -37,9 +37,32 @@ export default function Tareas() {
   useEffect(() => {
     fetch('/api/tareas')
       .then(res => res.json())
-      .then(data => { setTareas(data); setCargando(false); })
+      .then(data => {
+        const tareasMapeadas = data.map((t: any) => {
+          let fecha = 'Por definir';
+          let usuario = iniciales;
+          
+          if (t.descripcion) {
+            const fechaMatch = t.descripcion.match(/Fecha: ([^|]+)/);
+            const usuarioMatch = t.descripcion.match(/Asignado: ([^|]+)/);
+            if (fechaMatch) fecha = fechaMatch[1].trim();
+            if (usuarioMatch) usuario = usuarioMatch[1].trim();
+          }
+          
+          return {
+            id: t.id,
+            nombre: t.titulo,
+            prioridad: t.prioridad || 'Baja',
+            fecha,
+            usuario,
+            completada: t.estado === 'Completada'
+          };
+        });
+        setTareas(tareasMapeadas);
+        setCargando(false);
+      })
       .catch(() => setCargando(false));
-  }, []);
+  }, [iniciales]);
 
   const [filtro, setFiltro] = useState<FiltroTarea>('pendientes');
   const [nuevaTarea, setNuevaTarea] = useState('');
@@ -71,16 +94,28 @@ export default function Tareas() {
 
   async function agregarTarea() {
     if (!nuevaTarea.trim()) return;
-    const nueva = crearTarea(nuevaTarea, nuevaPrioridad, iniciales);
-    if (nuevaFecha) nueva.fecha = formatearFecha(nuevaFecha, nuevaHora);
+    const fechaFormateada = nuevaFecha ? formatearFecha(nuevaFecha, nuevaHora) : 'Por definir';
     const res = await fetch('/api/tareas', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(nueva)
+      body: JSON.stringify({
+        titulo: nuevaTarea,
+        descripcion: `Fecha: ${fechaFormateada} | Asignado: ${iniciales}`,
+        prioridad: nuevaPrioridad,
+        estado: 'Pendiente'
+      })
     });
     if (res.ok) {
       const tareaGuardada = await res.json();
-      setTareas([...tareas, tareaGuardada]);
+      const tareaParaUI: Tarea = {
+        id: tareaGuardada.id,
+        nombre: tareaGuardada.titulo,
+        prioridad: tareaGuardada.prioridad,
+        fecha: fechaFormateada,
+        usuario: iniciales,
+        completada: tareaGuardada.estado !== 'Pendiente'
+      };
+      setTareas([...tareas, tareaParaUI]);
       setNuevaTarea(''); setNuevaPrioridad('Baja'); setNuevaFecha(''); setNuevaHora('');
     }
   }
@@ -88,10 +123,11 @@ export default function Tareas() {
   async function toggleCompletada(id: number) {
     const tarea = tareas.find(t => t.id === id);
     if (!tarea) return;
+    const nuevoEstado = tarea.completada ? 'Pendiente' : 'Completada';
     const res = await fetch(`/api/tareas/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ completada: !tarea.completada })
+      body: JSON.stringify({ estado: nuevoEstado })
     });
     if (res.ok) setTareas(toggleTareaCompletada(tareas, id));
     setMenuAbierto(null); setMenuPos(null);

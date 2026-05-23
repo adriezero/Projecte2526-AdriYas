@@ -11,6 +11,7 @@ export function useRegister() {
   const [mostrarClave, setMostrarClave] = useState(false);
   const [mostrarConfirmarClave, setMostrarConfirmarClave] = useState(false);
   const [error, setError] = useState("");
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const manejarEnvio = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,9 +30,10 @@ export function useRegister() {
       });
 
       if (res.ok) {
-        router.push("/auth/login");
+        setMostrarModal(true);
       } else {
-        setError("Error al registrarse. Inténtelo de nuevo.");
+        const data = await res.json();
+        setError(data.error || "Error al registrarse. Inténtelo de nuevo.");
       }
     } catch {
       setError("Error de conexión.");
@@ -55,5 +57,7 @@ export function useRegister() {
     setMostrarConfirmarClave,
     error,
     manejarEnvio,
+    mostrarModal,
+    setMostrarModal,
   };
 }

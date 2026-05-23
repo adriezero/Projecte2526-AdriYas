@@ -13,11 +13,11 @@ export async function POST(request: Request) {
   const tarea = await prisma.tarea.create({
     data: {
       titulo: body.titulo || body.nombre,
-      descripcion: body.descripcion,
+      descripcion: body.descripcion || null,
       estado: body.estado || 'Pendiente',
       prioridad: body.prioridad,
-      asignadoA: body.asignadoA || body.usuario,
-      creadoPor: body.creadoPor
+      asignadoA: body.asignadoA ? parseInt(body.asignadoA) : null,
+      creadoPor: body.creadoPor ? parseInt(body.creadoPor) : null
     }
   });
   return NextResponse.json(tarea);

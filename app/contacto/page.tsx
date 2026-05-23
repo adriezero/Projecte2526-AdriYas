@@ -8,6 +8,7 @@ export default function Contacto() {
   const [correo, setCorreo] = useState("");
   const [asunto, setAsunto] = useState("");
   const [mensaje, setMensaje] = useState("");
+  const [fechaServicio, setFechaServicio] = useState("");
   const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
   const [error, setError] = useState("");
   const [enviado, setEnviado] = useState(false);
@@ -25,11 +26,12 @@ export default function Contacto() {
           asunto,
           descripcion: `Email: ${correo}\n\n${mensaje}`,
           estado: "Pendiente",
+          fechaServicio: fechaServicio || null,
         }),
       });
       if (!res.ok) throw new Error();
       setEnviado(true);
-      setNombre(""); setCorreo(""); setAsunto(""); setMensaje(""); setAceptaPrivacidad(false);
+      setNombre(""); setCorreo(""); setAsunto(""); setMensaje(""); setFechaServicio(""); setAceptaPrivacidad(false);
     } catch {
       setError("Error al enviar el mensaje. Inténtalo de nuevo.");
     }
@@ -40,7 +42,7 @@ export default function Contacto() {
 
   return (
     <>
-    <div className="min-h-screen bg-gradient-to-br from-[#EEF2F7] via-[#F2F2F2] to-[#E8EDF5] flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-linear-to-br from-[#EEF2F7] via-bg to-[#E8EDF5] flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-6xl">
 
         {/* Header */}
@@ -49,8 +51,8 @@ export default function Contacto() {
           <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a2e] leading-tight mt-3 mb-2">
             {t("title")}
           </h2>
-          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-[#F47C20] mb-4 bg-[#F47C20]/10 px-4 py-1.5 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F47C20] inline-block" />
+          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-accent-orange mb-4 bg-accent-orange/10 px-4 py-1.5 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-orange inline-block" />
             {t("subtitle")}
           </span>
           <br />
@@ -58,15 +60,15 @@ export default function Contacto() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-xl shadow-[#1F4E79]/10 border border-white overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-xl shadow-primary/10 border border-white overflow-hidden">
 
           {/* Franja superior */}
-          <div className="h-1.5 bg-linear-to-r from-[#F47C20] via-[#1F4E79] to-[#F47C20]" />
+          <div className="h-1.5 bg-linear-to-r from-accent-orange via-primary to-accent-orange" />
 
           <div className="grid md:grid-cols-5 min-h-150">
 
             {/* Panel lateral izquierdo */}
-            <div className="md:col-span-2 bg-gradient-to-b from-[#1F4E79] to-[#163d60] p-12 flex flex-col justify-between text-white">
+            <div className="md:col-span-2 bg-linear-to-b from-primary to-[#163d60] p-12 flex flex-col justify-between text-white">
               <div>
                 <h3 className="text-2xl font-bold mb-2">Información de contacto</h3>
                 <p className="text-white/60 text-sm mb-10">Estamos aquí para ayudarte</p>
@@ -105,7 +107,7 @@ export default function Contacto() {
               {/* Círculos decorativos */}
               <div className="relative mt-10 h-24">
                 <div className="absolute bottom-0 right-0 w-32 h-32 rounded-full bg-white/5 -mb-10 -mr-10" />
-                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-full bg-[#F47C20]/20 -mb-4 mr-4" />
+                <div className="absolute bottom-0 right-0 w-20 h-20 rounded-full bg-accent-orange/20 -mb-4 mr-4" />
               </div>
             </div>
 
@@ -161,13 +163,24 @@ export default function Contacto() {
                 />
               </div>
 
+              <div className="flex flex-col gap-3">
+                <label htmlFor="fechaServicio" className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">
+                  Fecha de servicio (opcional)
+                </label>
+                <input
+                  id="fechaServicio" type="date"
+                  value={fechaServicio} onChange={(e) => setFechaServicio(e.target.value)}
+                  className={inputClass}
+                />
+              </div>
+
               <div className="flex items-start gap-4">
                 <div className="relative flex items-center justify-center mt-0.5 shrink-0">
                   <input
                     type="checkbox" id="privacidad" required
                     checked={aceptaPrivacidad}
                     onChange={(e) => setAceptaPrivacidad(e.target.checked)}
-                    className="peer appearance-none w-5 h-5 border-2 border-[#E8E8E8] rounded-md bg-white checked:bg-[#F47C20] checked:border-[#F47C20] focus:outline-none transition-all duration-150 cursor-pointer"
+                    className="peer appearance-none w-5 h-5 border-2 border-[#E8E8E8] rounded-md bg-white checked:bg-accent-orange checked:border-accent-orange focus:outline-none transition-all duration-150 cursor-pointer"
                   />
                   <svg
                     className="absolute w-3 h-3 text-white pointer-events-none hidden peer-checked:block"
@@ -187,7 +200,7 @@ export default function Contacto() {
 
               <button
                 type="submit"
-                className="w-full py-4 px-6 bg-gradient-to-r from-[#F47C20] to-[#e06a10] text-white text-base font-bold rounded-2xl hover:shadow-lg hover:shadow-[#F47C20]/30 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none transition-all duration-200 tracking-wide cursor-pointer"
+                className="w-full py-4 px-6 bg-linear-to-r from-accent-orange to-[#e06a10] text-white text-base font-bold rounded-2xl hover:shadow-lg hover:shadow-accent-orange/30 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none transition-all duration-200 tracking-wide cursor-pointer"
               >
                 {t("send")} →
               </button>
@@ -212,7 +225,7 @@ export default function Contacto() {
             <p className="text-sm text-[#6B7280]">Hemos recibido tu mensaje correctamente. Nos pondremos en contacto contigo pronto.</p>
             <button
               onClick={() => setEnviado(false)}
-              className="mt-2 px-8 py-3 bg-gradient-to-r from-[#F47C20] to-[#e06a10] text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-[#F47C20]/30 transition-all duration-200 cursor-pointer"
+              className="mt-2 px-8 py-3 bg-linear-to-r from-accent-orange to-[#e06a10] text-white font-bold rounded-2xl hover:shadow-lg hover:shadow-accent-orange/30 transition-all duration-200 cursor-pointer"
             >
               Cerrar
             </button>

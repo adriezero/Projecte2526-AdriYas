@@ -4,9 +4,12 @@ import PasswordChecklist from "react-password-checklist";
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Input, PasswordInput, Alert, Button, Separator } from "@componentes/ui";
+import Modal from "@componentes/ui/Modal";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
     const t = useTranslations('auth.register');
+    const router = useRouter();
     const [passwordValida, setPasswordValida] = useState(false);
 
     // Esto inserta los roles de la BBDD en el drop-down list de ROL
@@ -31,6 +34,8 @@ export default function Register() {
         setRol,
         error,
         manejarEnvio,
+        mostrarModal,
+        setMostrarModal,
     } = useRegister();
 
     return (
@@ -145,6 +150,32 @@ export default function Register() {
                     </a>
                 </div>
             </div>
+
+            <Modal
+                isOpen={mostrarModal}
+                onClose={() => {
+                    setMostrarModal(false);
+                    router.push("/auth/login");
+                }}
+                title="¡Registro exitoso!"
+                icon={<i className="bi bi-envelope-check-fill"></i>}
+            >
+                <div className="space-y-4">
+                    <p className="text-gray-700 py-2">
+                        Se ha enviado un correo de confirmación a <strong>{email}</strong>
+                    </p>
+                    <Button
+                        variant="primary"
+                        className="w-full mt-4"
+                        onClick={() => {
+                            setMostrarModal(false);
+                            router.push("/auth/login");
+                        }}
+                    >
+                        Ir al inicio de sesión
+                    </Button>
+                </div>
+            </Modal>
         </div>
     );
 }

@@ -16,7 +16,6 @@ import {
   getEstadoColor,
   formatearFecha,
   obtenerSolicitudes,
-  crearSolicitud,
   eliminarSolicitud
 } from './logic';
 
@@ -48,6 +47,7 @@ export default function Solicitudes() {
   const [nuevoAsunto, setNuevoAsunto] = useState('');
   const [nuevaDescripcion, setNuevaDescripcion] = useState('');
   const [nuevoEstado, setNuevoEstado] = useState<EstadoSolicitud>('Pendiente');
+  const [nuevaFechaServicio, setNuevaFechaServicio] = useState('');
 
   useEffect(() => {
     Promise.all([
@@ -115,7 +115,20 @@ export default function Solicitudes() {
   async function handleCrearSolicitud() {
     if (!nuevoCliente.trim() || !nuevoAsunto.trim()) return;
     try {
-      const nuevaSolicitud = await crearSolicitud(nuevoCliente, nuevoTipo, nuevoAsunto, nuevaDescripcion, nuevoEstado);
+      const res = await fetch('/api/solicitudes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          cliente: nuevoCliente, 
+          tipo: nuevoTipo, 
+          asunto: nuevoAsunto, 
+          descripcion: nuevaDescripcion, 
+          estado: nuevoEstado,
+          fechaServicio: nuevaFechaServicio ? new Date(nuevaFechaServicio).toISOString() : null
+        })
+      });
+      if (!res.ok) throw new Error('Error al crear');
+      const nuevaSolicitud = await res.json();
       setSolicitudes([nuevaSolicitud, ...solicitudes]);
       setModalAbierto(false);
       setNuevoCliente('');
@@ -123,6 +136,7 @@ export default function Solicitudes() {
       setNuevoAsunto('');
       setNuevaDescripcion('');
       setNuevoEstado('Pendiente');
+      setNuevaFechaServicio('');
     } catch (error) {
       console.error('Error al crear solicitud:', error);
     }
@@ -140,6 +154,7 @@ export default function Solicitudes() {
     setNuevoAsunto(solicitud.asunto);
     setNuevaDescripcion(solicitud.descripcion || '');
     setNuevoEstado(solicitud.estado);
+    setNuevaFechaServicio(solicitud.fechaServicio ? new Date(solicitud.fechaServicio).toISOString().slice(0, 16) : '');
     setModalEditar(true);
   }
 
@@ -149,7 +164,14 @@ export default function Solicitudes() {
       const res = await fetch(`/api/solicitudes/${solicitudSeleccionada.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cliente: nuevoCliente, tipo: nuevoTipo, asunto: nuevoAsunto, descripcion: nuevaDescripcion, estado: nuevoEstado })
+        body: JSON.stringify({ 
+          cliente: nuevoCliente, 
+          tipo: nuevoTipo, 
+          asunto: nuevoAsunto, 
+          descripcion: nuevaDescripcion, 
+          estado: nuevoEstado,
+          fechaServicio: nuevaFechaServicio ? new Date(nuevaFechaServicio).toISOString() : null
+        })
       });
       if (!res.ok) throw new Error('Error al actualizar');
       const actualizada = await res.json();
@@ -161,6 +183,7 @@ export default function Solicitudes() {
       setNuevoAsunto('');
       setNuevaDescripcion('');
       setNuevoEstado('Pendiente');
+      setNuevaFechaServicio('');
     } catch (error) {
       console.error('Error al editar solicitud:', error);
     }
@@ -250,6 +273,18 @@ export default function Solicitudes() {
                   placeholder="Descripción detallada (opcional)..."
                   rows={4}
                   className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                  <Calendar size={14} /> Fecha de Servicio
+                </label>
+                <input
+                  type="datetime-local"
+                  value={nuevaFechaServicio}
+                  onChange={e => setNuevaFechaServicio(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
@@ -454,6 +489,18 @@ export default function Solicitudes() {
                   placeholder="Descripción detallada (opcional)..."
                   rows={4}
                   className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                />
+              </div>
+
+              <div>
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                  <Calendar size={14} /> Fecha de Servicio
+                </label>
+                <input
+                  type="datetime-local"
+                  value={nuevaFechaServicio}
+                  onChange={e => setNuevaFechaServicio(e.target.value)}
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 

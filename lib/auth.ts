@@ -14,28 +14,30 @@ export const authOptions: AuthOptions = {
       async authorize(credentials) {
         if (!credentials?.correo || !credentials?.clave) return null;
 
+        const correoLowerCase = credentials.correo.toLowerCase();
+
         let usuario: { ID: number; Email: string | null; Nombre: string; Contrase_a: string } | null = await prisma.cliente.findFirst({
-          where: { Email: credentials.correo },
+          where: { Email: { equals: correoLowerCase, mode: 'insensitive' } },
         });
         let tipo = 'cliente';
 
         if (!usuario) {
           usuario = await prisma.dispatcher.findFirst({
-            where: { Email: credentials.correo },
+            where: { Email: { equals: correoLowerCase, mode: 'insensitive' } },
           });
           tipo = 'dispatcher';
         }
 
         if (!usuario) {
           usuario = await prisma.camionero.findFirst({
-            where: { Email: credentials.correo },
+            where: { Email: { equals: correoLowerCase, mode: 'insensitive' } },
           });
           tipo = 'camionero';
         }
 
         if (!usuario) {
           usuario = await prisma.administrador.findFirst({
-            where: { Email: credentials.correo },
+            where: { Email: { equals: correoLowerCase, mode: 'insensitive' } },
           });
           tipo = 'administrador';
         }

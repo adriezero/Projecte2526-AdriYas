@@ -130,6 +130,7 @@ export async function PATCH(
     if (asunto !== undefined) updateData.asunto = asunto;
     if (descripcion !== undefined) updateData.descripcion = descripcion;
     if (estado !== undefined) updateData.estado = mapEstadoToEnum(estado);
+    if (body.fechaServicio !== undefined) updateData.fechaServicio = body.fechaServicio ? new Date(body.fechaServicio) : null;
 
     const solicitud = await prisma.solicitud.update({
       where: { id: parseInt(id) },
