@@ -16,12 +16,12 @@ export async function GET(req: NextRequest) {
 
   const where: Record<string, unknown> = {}
   const toEnum: Record<string, string> = {
-    'En revisión': 'En_revision',
-    'Problema Técnico': 'Problema_Tecnico',
+    'En revisión': 'En_revisi_n',
+    'Problema técnico': 'Problema_T_cnico',
   }
   const fromEnum: Record<string, string> = {
-    'En_revision': 'En revisión',
-    'Problema_Tecnico': 'Problema Técnico',
+    'En_revisi_n': 'En revisión',
+    'Problema_T_cnico': 'Problema Técnico',
   }
   if (tipo) where.Tipo = toEnum[tipo] ?? tipo
   if (estado) where.Estado = toEnum[estado] ?? estado

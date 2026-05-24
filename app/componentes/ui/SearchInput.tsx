@@ -9,7 +9,7 @@ export default function SearchInput({ value, onChange, placeholder = "Buscar..."
   return (
     <div className="flex-1 min-w-70">
       {label && (
-        <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+        <label className="block text-xs font-bold text-text/60 uppercase tracking-wider pb-2">
           {label}
         </label>
       )}

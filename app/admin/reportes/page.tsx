@@ -121,11 +121,11 @@ export default function ReportesPage() {
   return (
     <div className="bg-bg min-h-screen p-10" style={{ marginLeft: '256px' }}>
       <PageHeader 
-        title="Centro de Reportes" 
+        title="Centro de reportes" 
         subtitle="Supervisión y gestión centralizada de incidencias" 
       />
 
-      <div className="grid grid-cols-4 gap-5 mb-8">
+      <div className="grid grid-cols-4 gap-8 pb-8">
         {[
           {
             label: "Total Reportes",
@@ -171,7 +171,7 @@ export default function ReportesPage() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-lg border border-border/20 p-6 mb-8">
+      <div className="bg-white rounded-2xl shadow-lg border border-border/20 p-6 pb-8">
         <div className="flex gap-4 items-end flex-wrap">
           <div className="flex-1 min-w-75">
             <SearchInput
@@ -181,18 +181,18 @@ export default function ReportesPage() {
                 setPagina(1);
               }}
               placeholder="ID, usuario o palabra clave..."
-              label="Búsqueda Global"
+              label="Búsqueda global"
             />
           </div>
 
           <div ref={tipoRef}>
-            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider pb-2">
               Tipo
             </label>
             <div className="relative">
               <button
                 onClick={() => setTipoOpen((o) => !o)}
-                className="flex items-center gap-3 border-2 border-border/30 rounded-xl bg-white px-4 py-3 text-sm font-bold min-w-45 justify-between hover:border-primary/50 transition-all"
+                className="flex items-center gap-3 border-2 border-border/30 rounded-xl bg-white px-4 py-3 text-sm min-w-45 justify-between hover:border-primary/50 transition-all"
               >
                 <span>{filtroTipo || "Todos los tipos"}</span>
                 <i className="bi bi-chevron-down text-xs" />
@@ -205,7 +205,7 @@ export default function ReportesPage() {
                       setTipoOpen(false);
                       setPagina(1);
                     }}
-                    className="w-full text-left px-5 py-3 text-sm font-bold hover:bg-primary/10 hover:text-primary transition-colors border-b border-border/10"
+                    className="w-full text-left px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary transition-colors border-b border-border/10"
                   >
                     Todos los tipos
                   </button>
@@ -217,7 +217,7 @@ export default function ReportesPage() {
                         setTipoOpen(false);
                         setPagina(1);
                       }}
-                      className="w-full text-left px-5 py-3 text-sm font-bold hover:bg-primary/10 hover:text-primary flex items-center gap-3 transition-colors border-b border-border/10 last:border-b-0"
+                      className="w-full text-left px-5 py-3 text-sm hover:bg-primary/10 hover:text-primary flex items-center gap-3 transition-colors border-b border-border/10 last:border-b-0"
                     >
                       <i className={`${iconoTipo[t]} text-base`} /> {t}
                     </button>
@@ -228,7 +228,7 @@ export default function ReportesPage() {
           </div>
 
           <div ref={calRef}>
-            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-text/60 uppercase tracking-wider pb-2">
               Fecha
             </label>
             <div className="relative">
@@ -237,7 +237,7 @@ export default function ReportesPage() {
                 className={`flex items-center gap-3 border-2 rounded-xl bg-white px-4 py-3 text-sm font-bold min-w-45 justify-between transition-all ${fechaFiltro ? "border-primary text-primary ring-2 ring-primary/20" : "border-border/30 hover:border-primary/50"}`}
               >
                 <i className="bi bi-calendar3 text-base" />
-                <span className="text-xs">{fechaFiltro || "Seleccionar"}</span>
+                <span className="text-xs font-normal">{fechaFiltro || "Seleccionar"}</span>
                 <i className="bi bi-chevron-down text-xs" />
               </button>
               {calOpen && (
@@ -343,17 +343,19 @@ export default function ReportesPage() {
         </div>
       </div>
 
+      <br />
+
       <div className="bg-white rounded-2xl shadow-xl border border-border/20 overflow-hidden">
         <div className="bg-primary px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <i className="bi bi-file-earmark-text-fill text-white text-2xl" />
             <h2 className="text-white font-bold text-lg tracking-wide">
-              Registro de Reportes
+              Registro de reportes
             </h2>
           </div>
           <div className="bg-white/20 px-4 py-2 rounded-lg">
             <span className="text-white font-bold text-sm">
-              {total} reportes
+              Total: {total} reportes
             </span>
           </div>
         </div>
@@ -400,7 +402,7 @@ export default function ReportesPage() {
                   <tr>
                     <td colSpan={7} className="px-6 py-20">
                       <EmptyState 
-                        icon="bi-inbox" 
+                        icon="bi-inbox text-gray-500 text-4xl" 
                         title="No hay reportes disponibles" 
                       />
                     </td>
@@ -426,12 +428,7 @@ export default function ReportesPage() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
-                            <span className="text-xs font-black text-primary uppercase">
-                              {r.rolReportante?.[0] ?? "?"}
-                            </span>
-                          </div>
-                          <span className="text-sm font-bold text-text">
+                          <span className="font-bold text-text">
                             {r.rolReportante}
                           </span>
                         </div>
@@ -440,9 +437,7 @@ export default function ReportesPage() {
                         <span
                           className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide border-2 ${badgeTipo[r.Tipo] ?? "bg-border/20 text-text border-border/30"}`}
                         >
-                          <i
-                            className={`${iconoTipo[r.Tipo] ?? "bi-file-text"} text-sm`}
-                          />{" "}
+                          <i className={`${iconoTipo[r.Tipo] ?? "bi-file-text"} text-sm`}/>
                           {r.Tipo}
                         </span>
                       </td>
@@ -523,8 +518,8 @@ export default function ReportesPage() {
             </button>
           </div>
         ) : (
-          <p className="text-sm font-bold text-text/60 uppercase tracking-wide">
-            <i className="bi bi-database mr-2" />
+          <p className="text-sm font-bold text-text/60 uppercase tracking-wide pt-2">
+            <i className="bi bi-database-fill pr-2" />
             Total: {total} registros
           </p>
         )}
@@ -547,16 +542,14 @@ export default function ReportesPage() {
             className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-3xl mx-4 border-2 border-primary/20"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-6 pb-5 border-b-2 border-primary/20">
+            <div className="flex items-center justify-between mb-6 pb-5">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center border-2 border-primary/20">
-                  <i
-                    className={`${iconoTipo[reporteVer.Tipo] ?? "bi-file-text"} text-primary text-2xl`}
-                  />
+                  <i className={`${iconoTipo[reporteVer.Tipo] ?? "bi-file-text"} text-primary text-2xl`} />
                 </div>
-                <div>
+                <div className="py-2">
                   <h2 className="text-2xl font-bold text-primary">
-                    Detalle del Reporte
+                    Detalle del reporte
                   </h2>
                   <p className="text-sm font-black font-mono text-text/60 uppercase tracking-wider">
                     {formatId(reporteVer.ID)}
@@ -572,8 +565,8 @@ export default function ReportesPage() {
             </div>
             <div className="grid grid-cols-2 gap-5 mb-6">
               <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
-                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
-                  Tipo de Reporte
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest pb-2">
+                  Tipo de reporte
                 </p>
                 <span
                   className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide border-2 ${badgeTipo[reporteVer.Tipo] ?? "bg-border/20 text-text border-border/30"}`}
@@ -585,8 +578,8 @@ export default function ReportesPage() {
                 </span>
               </div>
               <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
-                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
-                  Estado Actual
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest pb-2">
+                  Estado actual
                 </p>
                 <span
                   className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wide border-2 ${badgeEstado[reporteVer.Estado] ?? "bg-border/20 text-text/50 border-border/30"}`}
@@ -595,21 +588,21 @@ export default function ReportesPage() {
                 </span>
               </div>
               <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
-                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
-                  Reportado Por
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest pb-2">
+                  Reportado por
                 </p>
                 <p className="text-sm font-bold text-text">
-                  {reporteVer.nombreReportante ?? "—"}
+                  {reporteVer.nombreReportante ?? "-"}
                 </p>
-                <p className="text-xs font-medium text-text/60 uppercase tracking-wide mt-1">
+                <p className="text-xs font-medium text-text/60 uppercase tracking-wide pt-1">
                   {reporteVer.rolReportante}
                 </p>
               </div>
               <div className="bg-primary/5 rounded-xl p-5 border border-primary/20">
-                <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-2">
-                  Fecha y Hora
+                <p className="text-xs font-black text-primary/60 uppercase tracking-widest pb-2">
+                  Fecha y hora
                 </p>
-                <p className="text-sm font-bold text-text">
+                <p className="text-sm text-text">
                   {new Date(reporteVer.FechaHora).toLocaleString("es-ES", {
                     day: "2-digit",
                     month: "short",
@@ -621,14 +614,14 @@ export default function ReportesPage() {
               </div>
             </div>
             <div>
-              <p className="text-xs font-black text-primary/60 uppercase tracking-widest mb-3">
-                Descripción del Reporte
+              <p className="text-xs font-black text-primary/60 uppercase tracking-widest py-2">
+                Descripción del reporte
               </p>
               <div className="bg-primary/5 rounded-xl p-5 border border-primary/20 min-h-35">
                 <p className="text-text leading-relaxed text-sm font-medium">
                   {reporteVer.Descripcion ?? (
                     <span className="text-text/40 italic">
-                      Sin descripción proporcionada
+                      Sin descripción proporcionada.
                     </span>
                   )}
                 </p>
@@ -647,7 +640,7 @@ export default function ReportesPage() {
                     }}
                     variant="success"
                   >
-                    <i className="bi bi-check-circle-fill mr-2" />
+                    <i className="bi bi-check-circle-fill pr-2" />
                     Marcar Resuelto
                   </Button>
                 )}

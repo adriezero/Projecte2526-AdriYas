@@ -8,7 +8,7 @@ interface FormFieldProps {
 export default function FormField({ label, value, onChange, type = 'text' }: FormFieldProps) {
   return (
     <div>
-      <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+      <label className="block text-xs font-bold text-text/60 uppercase tracking-wider py-2">
         {label}
       </label>
       <input

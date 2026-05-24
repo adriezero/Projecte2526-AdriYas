@@ -9,11 +9,11 @@ export type Reporte = {
   nombreReportante: string | null;
 };
 
-export const TIPOS = ["Problema Técnico", "Incidencia", "Sugerencia"];
+export const TIPOS = ["Problema técnico", "Incidencia", "Sugerencia"];
 export const PAGE_SIZE = 10;
 
 export const badgeTipo: Record<string, string> = {
-  "Problema Técnico": "bg-red-50 text-red-700 border-red-200",
+  "Problema técnico": "bg-red-50 text-red-700 border-red-200",
   Incidencia: "bg-accent-orange/10 text-accent-orange border-accent-orange/30",
   Sugerencia: "bg-accent-yellow/20 text-accent-yellow border-accent-yellow/40",
 };
@@ -26,7 +26,7 @@ export const badgeEstado: Record<string, string> = {
 };
 
 export const iconoTipo: Record<string, string> = {
-  "Problema Técnico": "bi-wrench-adjustable-circle-fill",
+  "Problema técnico": "bi-wrench-adjustable-circle-fill",
   Incidencia: "bi-exclamation-triangle-fill",
   Sugerencia: "bi-lightbulb-fill",
 };

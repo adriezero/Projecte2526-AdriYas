@@ -10,7 +10,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
+        className="px-4 py-2.5 border-2 border-text bg-white rounded-xl text-sm font-bold hover:bg-primary hover:text-black hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
       >
         <i className="bi bi-chevron-left" />
       </button>
@@ -32,7 +32,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pa
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-4 py-2.5 border-2 border-border/30 rounded-xl text-sm font-bold hover:bg-primary hover:text-white hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
+        className="px-4 py-2.5 border-2 border-text bg-white rounded-xl text-sm font-bold hover:bg-primary hover:text-black hover:border-primary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-text transition-all"
       >
         <i className="bi bi-chevron-right" />
       </button>

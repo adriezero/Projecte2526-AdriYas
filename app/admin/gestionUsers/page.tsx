@@ -19,7 +19,7 @@ import {
 } from "./logic";
 
 const ROLES = ROLES_FILTRO;
-const ESTADOS = ["Todos", "Activo", "Inactivo", "suspendido", "Pendiente"];
+const ESTADOS = ["Todos", "Activo", "Inactivo", "Suspendido", "Pendiente"];
 
 export default function GestionUsersPage() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -187,7 +187,7 @@ export default function GestionUsersPage() {
     return (
       <div
         className="bg-bg min-h-screen flex items-center justify-center"
-        style={{ marginLeft: "320px" }}
+        style={{ marginLeft: "256px" }}
       >
         <Spinner size="lg" text="Cargando sistema de usuarios..." />
       </div>
@@ -196,10 +196,7 @@ export default function GestionUsersPage() {
   return (
     <div className="bg-bg min-h-screen p-10" style={{ marginLeft: '256px' }}>
       <div className="max-w-full">
-        <PageHeader 
-          title="Control de Usuarios" 
-          subtitle="Administración total del sistema" 
-        />
+        <PageHeader title="Control de usuarios" subtitle="Administración total del sistema"/>
 
         <div className="bg-white rounded-2xl shadow-lg border border-border/20 p-6 mb-8">
           <div className="flex gap-4 items-end flex-wrap">
@@ -248,17 +245,19 @@ export default function GestionUsersPage() {
 
             <div className="flex gap-3 ml-auto">
               <Button onClick={aplicarFiltros} variant="primary" className="px-6 py-3 text-sm">
-                <i className="bi bi-funnel-fill mr-2" />
+                <i className="bi bi-funnel-fill pr-2" />
                 Aplicar
               </Button>
               <Button onClick={limpiarFiltros} variant="outline" className="px-6 py-3 text-sm">
-                <i className="bi bi-x-circle mr-2" />
+                <i className="bi bi-x-circle pr-2" />
                 Limpiar
               </Button>
             </div>
           </div>
         </div>
 
+        <br/>
+              
         <div className="bg-white rounded-2xl shadow-xl border border-border/20 overflow-hidden">
           <div className="bg-primary px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -269,7 +268,7 @@ export default function GestionUsersPage() {
             </div>
             <div className="bg-white/20 px-4 py-2 rounded-lg">
               <span className="text-white font-bold text-sm">
-                {totalUsuarios} usuarios
+                Total: {totalUsuarios} usuarios
               </span>
             </div>
           </div>
@@ -287,12 +286,12 @@ export default function GestionUsersPage() {
                       >
                         <span className="flex items-center gap-2">
                           {col === "tipo" ? "Rol" : col}
-                          <span className="text-primary/50 text-base">
+                          <span className="text-primary text-base">
                             {orden.col === col
                               ? orden.dir === "asc"
-                                ? "↑"
-                                : "↓"
-                              : "↕"}
+                                ? <i className="bi bi-sort-up" />
+                                : <i className="bi bi-sort-down" />
+                              : <i className="bi bi-arrow-down-up" />}
                           </span>
                         </span>
                       </th>
@@ -420,17 +419,14 @@ export default function GestionUsersPage() {
           </div>
         </div>
 
-        <div className="mt-8 flex justify-between items-center">
-          <p className="text-sm font-bold text-text/60 uppercase tracking-wide">
-            <i className="bi bi-database mr-2" />
-            Total: {totalUsuarios} registros
-          </p>
-
-          <Pagination
-            currentPage={pagina}
-            totalPages={totalPaginas}
-            onPageChange={setPagina}
-          />
+        <div className="pt-8 flex justify-end items-end">
+          {totalPaginas > 1 && (
+            <Pagination
+              currentPage={pagina}
+              totalPages={totalPaginas}
+              onPageChange={setPagina}
+            />
+          )}
         </div>
       </div>
 
@@ -440,7 +436,7 @@ export default function GestionUsersPage() {
             <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-primary/20">
               <i className="bi bi-pencil-square text-primary text-2xl" />
               <h2 className="text-2xl font-bold text-primary">
-                Editar Usuario
+                Editar usuario
               </h2>
             </div>
 
@@ -488,7 +484,7 @@ export default function GestionUsersPage() {
                     }
                   />
                   <div>
-                    <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-bold text-text/60 uppercase tracking-wider py-2">
                       Estado Cuenta
                     </label>
                     <select
@@ -534,7 +530,7 @@ export default function GestionUsersPage() {
               )}
               {modalEditar.tipo === "administrador" && (
                 <div>
-                  <label className="block text-xs font-bold text-text/60 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-bold text-text/60 uppercase tracking-wider py-2">
                     Estado
                   </label>
                   <select
@@ -610,14 +606,14 @@ export default function GestionUsersPage() {
 
       {modalBloquear && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center border-2 border-accent-orange/30">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center border-2 border-accent-orange/30">
             <div className="w-20 h-20 bg-accent-orange/10 rounded-full flex items-center justify-center mx-auto mb-5 border-4 border-accent-orange/30">
               <i className="bi bi-lock-fill text-accent-orange text-4xl" />
             </div>
-            <h2 className="text-2xl font-bold text-text mb-3">
-              Bloquear Usuario
+            <h2 className="text-2xl font-bold text-text pb-3">
+              Bloquear usuario
             </h2>
-            <p className="text-text/70 mb-6 font-medium">
+            <p className="text-text/70 pb-6 font-medium">
               ¿Confirmas el bloqueo de{" "}
               <strong className="text-accent-orange">
                 {modalBloquear.nombre}
@@ -644,18 +640,18 @@ export default function GestionUsersPage() {
 
       {modalBorrar && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md text-center border-2 border-red-200">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md flex flex-col items-center border-2 border-red-200">
             <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-5 border-4 border-red-200">
               <i className="bi bi-exclamation-triangle-fill text-red-600 text-4xl" />
             </div>
-            <h2 className="text-2xl font-bold text-text mb-3">
-              Eliminar Usuario
+            <h2 className="text-2xl font-bold text-text pb-3">
+              Eliminar usuario
             </h2>
-            <p className="text-text/70 mb-2 font-medium">
+            <p className="text-text/70 pb-2 font-medium">
               ¿Confirmas la eliminación de{" "}
               <strong className="text-red-600">{modalBorrar.nombre}</strong>?
             </p>
-            <p className="text-red-600 text-sm font-bold mb-6 uppercase tracking-wide">
+            <p className="text-red-600 text-sm font-bold pb-6 uppercase tracking-wide">
               Acción irreversible
             </p>
             <div className="flex gap-3 justify-center">
@@ -678,4 +674,3 @@ export default function GestionUsersPage() {
     </div>
   );
 }
-
