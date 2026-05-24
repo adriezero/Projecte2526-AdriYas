@@ -134,7 +134,7 @@ export default function RutasPage() {
     <div className="bg-bg min-h-screen p-4 md:p-8 md:ml-75" style={{ marginLeft: '256px' }}>
       <div className="max-w-400 mx-auto">
         <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-text">Mis Rutas</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-text font-arsenal">Mis rutas</h1>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
@@ -288,7 +288,7 @@ export default function RutasPage() {
                   onClick={() => setModalAbierto(true)}
                   className="px-3 py-1.5 bg-accent-orange text-white rounded-lg text-sm font-medium hover:bg-accent-orange/90 transition-all shadow-sm"
                 >
-                  <i className="bi bi-exclamation-triangle mr-1.5" />
+                  <i className="bi bi-exclamation-triangle-fill pr-1.5" />
                   Reportar
                 </button>
               )}
@@ -297,38 +297,45 @@ export default function RutasPage() {
             {detalle ? (
               <>
                 <div className="space-y-4 text-sm">
-                  <div className="flex items-start gap-3">
-                    <i className="bi bi-geo-alt-fill text-primary text-lg mt-0.5" />
-                    <div>
-                      <p className="text-text/60 text-xs mb-0.5">Origen</p>
-                      <p className="text-text font-medium">{detalle.Origen}</p>
+                  {/* Fila 1: Origen y Destino */}
+                  <div className="grid grid-cols-2 gap-4 pb-4">
+                    <div className="flex items-start gap-3">
+                      <i className="bi bi-geo-alt-fill text-primary text-lg mt-0.5" />
+                      <div>
+                        <p className="mb-0.5">Origen</p>
+                        <p className="text-text font-medium">{detalle.Origen}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <i className="bi bi-geo-fill text-accent-orange text-lg mt-0.5" />
+                      <div>
+                        <p className="mb-0.5">Destino</p>
+                        <p className="text-text font-medium">{detalle.Destino}</p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <i className="bi bi-geo-fill text-accent-orange text-lg mt-0.5" />
-                    <div>
-                      <p className="text-text/60 text-xs mb-0.5">Destino</p>
-                      <p className="text-text font-medium">{detalle.Destino}</p>
+
+                  {/* Fila 2: Carga y Reservas */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-start gap-3">
+                      <i className="bi bi-box-seam text-text/60 text-lg mt-0.5" />
+                      <div>
+                        <p className="mb-0.5">Carga</p>
+                        <p className="text-text font-medium">{detalle.Cargas}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <i className="bi bi-box-seam text-text/60 text-lg mt-0.5" />
-                    <div>
-                      <p className="text-text/60 text-xs mb-0.5">Carga</p>
-                      <p className="text-text font-medium">{detalle.Cargas}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <i className="bi bi-calendar-check text-text/60 text-lg mt-0.5" />
-                    <div>
-                      <p className="text-text/60 text-xs mb-0.5">Reservas</p>
-                      <p className="text-text font-medium">{detalle.Reservas}</p>
+                    <div className="flex items-start gap-3">
+                      <i className="bi bi-calendar-check text-text/60 text-lg mt-0.5" />
+                      <div>
+                        <p className="mb-0.5">Reservas</p>
+                        <p className="text-text font-medium">{detalle.Reservas}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="border-t border-border/20 pt-5">
-                  <h3 className="text-sm font-bold text-text mb-4 flex items-center gap-2">
+                <div className="border-t border-text pt-5">
+                  <h3 className="text-sm font-bold text-text py-2 flex items-center gap-2">
                     <i className="bi bi-file-earmark-text" />
                     Documentos
                   </h3>
@@ -344,7 +351,7 @@ export default function RutasPage() {
                       <option value="Otro">Otro</option>
                     </select>
                     <label className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-all cursor-pointer shadow-sm">
-                      <i className="bi bi-upload mr-1.5" />
+                      <i className="bi bi-upload pr-1.5" />
                       Subir
                       <input
                         type="file"
@@ -356,7 +363,7 @@ export default function RutasPage() {
                   </div>
 
                   {subiendoDoc && (
-                    <div className="flex items-center gap-2 text-primary text-sm mb-3">
+                    <div className="flex items-center gap-2 text-primary text-sm py-4">
                       <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                       Subiendo...
                     </div>
@@ -364,7 +371,7 @@ export default function RutasPage() {
 
                   <div className="space-y-2 max-h-75 overflow-y-auto">
                     {documentos.length === 0 ? (
-                      <p className="text-text/50 text-xs text-center py-4">No hay documentos</p>
+                      <p className="text-text text-xl text-center py-4">No hay documentos.</p>
                     ) : (
                       documentos.map((doc) => (
                         <div
@@ -415,7 +422,7 @@ export default function RutasPage() {
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-text">Reportar Incidencia</h3>
+              <h3 className="text-lg font-bold text-text">Reportar incidencia</h3>
               <button
                 onClick={() => setModalAbierto(false)}
                 className="text-text/40 hover:text-text transition-all"
@@ -426,7 +433,7 @@ export default function RutasPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-text mb-2">Tipo de incidencia</label>
+                <label className="block text-sm font-medium text-text py-2">Tipo de incidencia</label>
                 <select
                   value={tipoIncidencia}
                   onChange={(e) => setTipoIncidencia(e.target.value)}
@@ -441,7 +448,7 @@ export default function RutasPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text mb-2">Descripción</label>
+                <label className="block text-sm font-medium text-text py-2">Descripción</label>
                 <textarea
                   value={descripcion}
                   onChange={(e) => setDescripcion(e.target.value)}

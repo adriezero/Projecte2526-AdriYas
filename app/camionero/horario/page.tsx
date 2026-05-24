@@ -130,12 +130,10 @@ export default function Horario() {
   return (
     <>
     <div className="min-h-screen" style={{ backgroundColor: '#F2F2F2' }}>
-
       <div className="p-4 md:p-6 lg:p-8 md:ml-64" style={{ marginLeft: '256px' }}>
         <div className="max-w-screen-2xl mx-auto">
           <div className="mb-6 md:mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold" style={{ color: '#2C2C2C' }}>Horarios y Turnos</h1>
-            <p className="text-gray-600 mt-1 text-sm">Visualiza los turnos de los camioneros en el calendario</p>
+            <h1 className="text-3xl md:text-4xl font-bold font-arsenal pb-1" style={{ color: '#2C2C2C' }}>Horarios y turnos</h1>
           </div>
 
           <div className="flex flex-col lg:flex-row gap-6">
@@ -268,7 +266,7 @@ export default function Horario() {
                     <CalendarIcon size={32} className="text-gray-300 mx-auto mb-2" />
                     <p className="text-sm text-gray-600">Selecciona un día del calendario</p>
                   </div>
-) : camionerosDiaSeleccionado.length === 0 && serviciosDiaSeleccionado.length === 0 ? (
+                ) : camionerosDiaSeleccionado.length === 0 && serviciosDiaSeleccionado.length === 0 ? (
                   <div className="text-center py-12">
                     <User size={32} className="text-gray-300 mx-auto mb-2" />
                     <p className="text-sm text-gray-600">No hay turnos ni servicios este día</p>
@@ -310,7 +308,7 @@ export default function Horario() {
                         className="p-4 rounded-xl transition-all shadow-sm hover:shadow-md"
                         style={{ borderWidth: '1px', borderColor: '#93C5FD', backgroundColor: '#EFF6FF' }}
                       >
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 pb-2">
                           <Truck size={16} style={{ color: '#2563EB' }} />
                           <span className="text-sm font-bold" style={{ color: '#1E40AF' }}>Servicio asignado</span>
                           {servicio.hora && (
@@ -320,17 +318,16 @@ export default function Horario() {
                           )}
                         </div>
                         <div className="space-y-1.5 text-xs" style={{ color: '#1E3A5F' }}>
-                          <div><span className="font-semibold">Cliente:</span> {servicio.cliente}</div>
-                          <div><span className="font-semibold">Tipo:</span> {servicio.tipo}</div>
+                          <div className="py-0.5"><span className="font-semibold">Cliente:</span> {servicio.cliente}</div>
+                          <div className="py-0.5"><span className="font-semibold">Tipo:</span> {servicio.tipo}</div>
                           {servicio.hora && <div className="flex items-center gap-1"><Clock size={11} /><span className="font-semibold">Hora:</span> {servicio.hora}</div>}
-                          {servicio.origen && <div><span className="font-semibold">Origen:</span> {servicio.origen}</div>}
-                          {servicio.destino && <div><span className="font-semibold">Destino:</span> {servicio.destino}</div>}
-                          {servicio.descripcion && <div className="text-gray-600 italic">{servicio.descripcion}</div>}
+                          {servicio.origen && <div className="py-0.5"><span className="font-semibold">Origen:</span> {servicio.origen}</div>}
+                          {servicio.destino && <div className="py-0.5"><span className="font-semibold">Destino:</span> {servicio.destino}</div>}
+                          {servicio.descripcion && <div className="py-0.5 pb-2"><span className="font-semibold">Descripción:</span> {servicio.descripcion}</div>}
                         </div>
                         <button
                           onClick={() => setServicioDetalle(servicio)}
-                          className="mt-3 w-full text-xs font-semibold py-1.5 rounded-lg transition-colors"
-                          style={{ backgroundColor: '#DBEAFE', color: '#1D4ED8' }}
+                          className="mt-3 w-full text-xs font-semibold py-1.5 rounded-lg transition-colors bg-primary text-white hover:bg-primary-dark cursor-pointer"
                         >
                           Ver detalles y acciones
                         </button>
@@ -349,43 +346,43 @@ export default function Horario() {
       {servicioDetalle && !modalIncidencia && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setServicioDetalle(null)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between pb-4">
               <div className="flex items-center gap-2">
-                <Truck size={18} style={{ color: '#2563EB' }} />
-                <h2 className="text-lg font-bold" style={{ color: '#1E40AF' }}>Detalles del servicio</h2>
+                <Truck size={18} style={{ color: '#1F4E79' }} />
+                <h2 className="text-lg font-bold" style={{ color: '#1F4E79' }}>Detalles del servicio</h2>
               </div>
               <button onClick={() => setServicioDetalle(null)}><X size={20} className="text-gray-400 hover:text-gray-600" /></button>
             </div>
 
-            <div className="space-y-2.5 text-sm mb-5" style={{ color: '#1E3A5F' }}>
-              <div className="flex justify-between">
+            <div className="space-y-2.5 text-sm pb-5" style={{ color: '#1E3A5F' }}>
+              <div className="flex justify-between py-0.5">
                 <span className="font-semibold">Cliente</span>
                 <span>{servicioDetalle.cliente}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between py-0.5">
                 <span className="font-semibold">Tipo</span>
                 <span>{servicioDetalle.tipo}</span>
               </div>
               {servicioDetalle.hora && (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center py-0.5">
                   <span className="font-semibold flex items-center gap-1"><Clock size={13} />Hora</span>
                   <span className="font-bold text-blue-700">{servicioDetalle.hora}</span>
                 </div>
               )}
               {servicioDetalle.origen && (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center py-0.5">
                   <span className="font-semibold flex items-center gap-1"><MapPin size={13} />Origen</span>
                   <span>{servicioDetalle.origen}</span>
                 </div>
               )}
               {servicioDetalle.destino && (
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center py-0.5">
                   <span className="font-semibold flex items-center gap-1"><MapPin size={13} />Destino</span>
                   <span>{servicioDetalle.destino}</span>
                 </div>
               )}
               {servicioDetalle.descripcion && (
-                <div className="pt-1 text-gray-500 italic text-xs">{servicioDetalle.descripcion}</div>
+                <div className="pt-1 text-gray-500 italic text-xs">Descripción: {servicioDetalle.descripcion}</div>
               )}
             </div>
 

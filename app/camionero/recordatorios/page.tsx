@@ -25,6 +25,7 @@ export default function Recordatorios() {
   const [mostrarOrden, setMostrarOrden] = useState(false);
   const [editandoId, setEditandoId] = useState<number | null>(null);
   const [textoEdicion, setTextoEdicion] = useState("");
+  const [notaAEliminar, setNotaAEliminar] = useState<number | null>(null);
 
   const guardarNotas = (nuevasNotas: Nota[]) => {
     setNotas(nuevasNotas);
@@ -50,7 +51,10 @@ export default function Recordatorios() {
   const toggleImportante = (id: number) =>
     guardarNotas(notas.map(n => n.id === id ? { ...n, importante: !n.importante } : n));
 
-  const eliminar = (id: number) => guardarNotas(notas.filter(n => n.id !== id));
+  const eliminar = (id: number) => {
+    guardarNotas(notas.filter(n => n.id !== id));
+    setNotaAEliminar(null);
+  };
 
   const iniciarEdicion = (nota: Nota) => {
     setEditandoId(nota.id);
@@ -79,11 +83,11 @@ export default function Recordatorios() {
 
         {/* Título de la página */}
         <div className="mb-6 md:mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold" style={{ color: '#2C2C2C' }}>Mis Recordatorios y Notas</h1>
-          <p className="text-gray-600 mt-1 text-sm">Organiza tus tareas y recordatorios</p>
+          <h1 className="text-3xl md:text-4xl font-bold font-arsenal" style={{ color: '#2C2C2C' }}>Mis recordatorios y notas</h1>
+          <p className="text-gray-600 py-2 text-sm">Organiza tus tareas y recordatorios.</p>
         </div>
       {/* Área de texto */}
-      <div className="bg-white rounded-xl shadow-sm p-4 mb-6 transition-all" style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}>
+      <div className="bg-white rounded-xl shadow-sm p-4 pb-6 transition-all" style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}>
         <textarea
           className="w-full resize-none outline-none text-sm min-h-20"
           style={{ color: '#2C2C2C' }}
@@ -91,26 +95,26 @@ export default function Recordatorios() {
           value={texto}
           onChange={e => setTexto(e.target.value)}
         />
-        <div className="flex justify-end gap-2 mt-2">
+        <div className="flex justify-end gap-2 pt-2">
           <button
             onClick={() => setTexto("")}
-            className="flex items-center gap-1 px-4 py-2 rounded-xl text-sm text-gray-700 transition-all shadow-sm"
+            className="flex items-center gap-1 px-4 py-2 rounded-xl text-sm text-gray-700 transition-all shadow-sm cursor-pointer"
             style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
           >
-            <i className="bi bi-trash"></i> Limpiar
+            <i className="bi bi-trash-fill"></i> Limpiar
           </button>
           <button
             onClick={añadir}
-            className="flex items-center gap-1 px-4 py-2 text-white rounded-xl text-sm font-medium transition-all shadow-sm"
+            className="flex items-center gap-1 px-4 py-2 text-white rounded-xl text-sm font-medium transition-all shadow-sm cursor-pointer"
             style={{ backgroundColor: '#F47C20' }}
           >
-            + Añadir Nota
+            <i className="bi bi-plus-circle"></i> Añadir Nota
           </button>
         </div>
       </div>
 
       {/* Filtros + Ordenar */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 gap-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between py-4 gap-4">
         <div className="flex gap-4 md:gap-6 text-sm font-medium text-gray-700 overflow-x-auto w-full md:w-auto">
           {(["todos", "pendientes", "completadas", "importantes"] as Filtro[]).map(f => (
             <button
@@ -129,13 +133,13 @@ export default function Recordatorios() {
         <div className="relative">
           <button
             onClick={() => setMostrarOrden(!mostrarOrden)}
-            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm text-gray-700 transition-all shadow-sm"
+            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm text-gray-700 bg-white transition-all shadow-sm cursor-pointer"
             style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
           >
             <i className="bi bi-arrow-down-up"></i> Ordenar por
           </button>
           {mostrarOrden && (
-            <div className="absolute right-0 mt-1 bg-white rounded-xl shadow-lg z-10 text-sm overflow-hidden" style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}>
+            <div className="absolute right-0 pt-1 bg-white rounded-xl shadow-lg z-10 text-sm overflow-hidden" style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}>
               <button onClick={() => { setOrden("fecha"); setMostrarOrden(false); }} className="block w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors">Fecha</button>
               <button onClick={() => { setOrden("texto"); setMostrarOrden(false); }} className="block w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors">Texto</button>
             </div>
@@ -168,14 +172,14 @@ export default function Recordatorios() {
                   <div className="flex gap-2 items-center flex-wrap">
                     <input
                       className="text-sm rounded-xl px-3 py-2 outline-none transition-all flex-1 min-w-50"
-                      style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
+                      style={{ borderWidth: '1px', borderColor: '#A6A6A6', marginBottom: '0.25rem' }}
                       value={textoEdicion}
                       onChange={e => setTextoEdicion(e.target.value)}
                       onKeyDown={e => e.key === "Enter" && guardarEdicion(nota.id)}
                       autoFocus
                     />
                     <button onClick={() => guardarEdicion(nota.id)} className="text-xs font-medium hover:underline" style={{ color: '#1F4E79' }}>Guardar</button>
-                    <button onClick={() => setEditandoId(null)} className="text-xs text-gray-500 hover:underline">Cancelar</button>
+                    <button onClick={() => setEditandoId(null)} className="text-xs text-gray-500 hover:underline pr-2">Cancelar</button>
                   </div>
                 ) : (
                   <p className={`text-sm ${nota.completada ? "line-through text-gray-400" : ""}`} style={{ color: nota.completada ? undefined : '#2C2C2C' }}>{nota.texto}</p>
@@ -187,16 +191,42 @@ export default function Recordatorios() {
               <button onClick={() => toggleImportante(nota.id)} className={`text-lg ${nota.importante ? "" : "text-gray-300 hover:text-yellow-400"}`} style={{ color: nota.importante ? '#FFC757' : undefined }}>
                 <i className={nota.importante ? "bi bi-star-fill" : "bi bi-star"}></i>
               </button>
-              <button onClick={() => iniciarEdicion(nota)} className="text-gray-500 hover:text-gray-700 text-sm transition-colors">
-                <i className="bi bi-pencil"></i>
+              <button onClick={() => iniciarEdicion(nota)} className="text-lg text-gray-500 hover:text-gray-700 transition-colors">
+                <i className="bi bi-pencil-fill"></i>
               </button>
-              <button onClick={() => eliminar(nota.id)} className="text-gray-500 hover:text-red-500 text-sm transition-colors">
-                <i className="bi bi-trash"></i>
+              <button onClick={() => setNotaAEliminar(nota.id)} className="text-lg text-gray-500 hover:text-red-500 transition-colors">
+                <i className="bi bi-trash-fill"></i>
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Modal de confirmación */}
+      {notaAEliminar && (
+        <div className="fixed inset-0 bg-black/25 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#2C2C2C' }}>¿Eliminar nota?</h3>
+            <p className="text-sm text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
+            <div className="flex gap-3 justify-end pt-4">
+              <button
+                onClick={() => setNotaAEliminar(null)}
+                className="px-4 py-2 rounded-xl text-sm transition-all"
+                style={{ borderWidth: '1px', borderColor: '#A6A6A6' }}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => eliminar(notaAEliminar)}
+                className="px-4 py-2 rounded-xl text-sm text-white transition-all"
+                style={{ backgroundColor: '#DC2626' }}
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
     </div>

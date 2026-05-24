@@ -178,10 +178,10 @@ export default function Documentos() {
 
   function obtenerNombreCompleto(tipo: string) {
     const nombres: Record<string, string> = {
-      'Licencia': 'Licencia de Conducir',
+      'Licencia': 'Licencia de conducir',
       'DNI': 'Documento de identificación',
-      'Permiso': 'Permiso de Circulación',
-      'Antecedentes': 'Certificado de Antecedentes'
+      'Permiso': 'Permiso de circulación',
+      'Antecedentes': 'Certificado de antecedentes'
     };
     return nombres[tipo] || tipo;
   }
@@ -196,8 +196,8 @@ export default function Documentos() {
       <div className="p-6 md:p-8 lg:p-10 md:ml-64"  style={{ marginLeft: '256px' }}>
         <div className="mx-auto">
           <div className="mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold" style={{ color: '#2C2C2C' }}>Mi Documentación</h1>
-            <p className="text-gray-600 mt-1 text-sm">Gestiona y sube tus documentos requeridos</p>
+            <h1 className="text-3xl md:text-4xl font-bold font-arsenal" style={{ color: '#2C2C2C' }}>Mi documentación</h1>
+            <p className="text-gray-600 py-1 text-sm">Gestiona y sube tus documentos requeridos</p>
           </div>
 
           {/* Mensajes de feedback */}
@@ -240,11 +240,11 @@ export default function Documentos() {
                       </div>
                     </div>
                   </div>
-
+                  
                   {doc.estado === 'falta' ? (
-                    <label className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all shadow-sm" style={{ backgroundColor: '#F47C20' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d66a1a'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F47C20'}>
+                    <label className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-xl text-sm font-semibold cursor-pointer transition-all shadow-sm" style={{ backgroundColor: '#F47C20', marginTop: '0.5rem' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#d66a1a'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#F47C20'}>
                       <Upload size={16} />
-                      {subiendo === doc.tipo ? 'Subiendo...' : 'Subir Documento'}
+                      {subiendo === doc.tipo ? 'Subiendo...' : 'Subir documento'}
                       <input
                         type="file"
                         className="hidden"
@@ -266,7 +266,7 @@ export default function Documentos() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-xl text-sm font-semibold transition-all shadow-sm"
-                        style={{ backgroundColor: '#1F4E79' }}
+                        style={{ backgroundColor: '#1F4E79', marginTop: '0.5rem' }}
                       >
                         <Eye size={16} />
                         Ver
@@ -278,10 +278,10 @@ export default function Documentos() {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-xl text-sm font-semibold transition-all shadow-sm"
-                      style={{ backgroundColor: '#1F4E79' }}
+                      style={{ backgroundColor: '#1F4E79', marginTop: '0.5rem' }}
                     >
                       <Eye size={16} />
-                      Ver Documento
+                      Ver documento
                     </a>
                   )}
                 </div>

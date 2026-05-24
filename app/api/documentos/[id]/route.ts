@@ -100,7 +100,9 @@ export async function DELETE(
       // Solo intentar eliminar si es una URL de Vercel Blob
       if (documento.RutaArchivo.startsWith('https://')) {
         try {
-          await del(documento.RutaArchivo);
+          await del(documento.RutaArchivo, {
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+          });
         } catch (error) {
           // No fallar si el blob ya no existe
           console.warn('Error al eliminar blob (puede que ya no exista):', error);

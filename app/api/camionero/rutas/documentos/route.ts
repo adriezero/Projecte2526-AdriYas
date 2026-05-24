@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     nombre: d.Nombre,
     tipo: d.Tipo,
     tamano: d.Tamano,
-    rutaArchivo: d.RutaArchivo,
+    url: d.RutaArchivo,
     fechaSubida: d.FechaSubida,
   })));
 }
@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
 
     const blob = await put(fileName, file, {
       access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
     const tamano = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest) {
       nombre: doc.Nombre,
       tipo: doc.Tipo,
       tamano: doc.Tamano,
-      rutaArchivo: doc.RutaArchivo,
+      url: doc.RutaArchivo,
       fechaSubida: doc.FechaSubida,
     }, { status: 201 });
   } catch (e: unknown) {

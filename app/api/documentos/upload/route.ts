@@ -45,6 +45,7 @@ export async function POST(request: NextRequest) {
 
     const blob = await put(fileName, file, {
       access: 'public',
+      token: process.env.BLOB_READ_WRITE_TOKEN,
     });
 
     const tamanoMB = (file.size / (1024 * 1024)).toFixed(2);
