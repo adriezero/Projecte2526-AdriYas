@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { MapPin, ArrowDown, FileText, Calendar, User } from "lucide-react";
+import { MapPin, FileText, Calendar, User, ArrowRight } from "lucide-react";
+import Spinner from "@componentes/ui/Spinner";
 
 const ESTADO_COLOR: Record<string, string> = {
   Programado:  "bg-accent-yellow/20 text-accent-yellow border border-accent-yellow/30",
@@ -15,8 +16,8 @@ const ESTADO_COLOR: Record<string, string> = {
 const ESTADO_LABEL: Record<string, string> = {
   Programado: "Programado",
   Cargando:   "Cargando",
-  En_ruta:    "En Ruta",
-  En_pausa:   "En Pausa",
+  En_ruta:    "En ruta",
+  En_pausa:   "En pausa",
   Finalizado: "Finalizado",
   Incidente:  "Incidente",
 };
@@ -24,7 +25,7 @@ const ESTADO_LABEL: Record<string, string> = {
 const FILTROS = ["Todas", "Programado", "Cargando", "En_ruta", "En_pausa", "Finalizado", "Incidente"];
 
 function formatFecha(fecha: string | null) {
-  if (!fecha) return "—";
+  if (!fecha) return "-";
   return new Date(fecha).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
 }
 
@@ -56,16 +57,16 @@ export default function RutaListPage() {
   return (
     <div className="min-h-screen bg-linear-to-br from-white to-bg px-6 py-24 md:px-8 lg:px-12">
       <div className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-text mb-2">
-          Mis Reservas
+        <h1 className="text-3xl sm:text-4xl font-bold text-text pb-4 font-arsenal">
+          Mis reservas
         </h1>
-        <p className="text-border">
-          Gestiona y rastrea tus envíos
+        <p className="text-border pb-8">
+          Gestiona y rastrea tus envíos.
         </p>
       </div>
 
       {/* Filtros */}
-      <div className="flex gap-3 flex-wrap mb-8">
+      <div className="flex gap-3 flex-wrap pb-8">
         {FILTROS.map(f => (
           <button
             key={f}
@@ -82,9 +83,9 @@ export default function RutaListPage() {
       </div>
 
       {loading ? (
-        <div className="text-gray-400 text-sm">Cargando...</div>
+        <Spinner size="lg" text="Cargando reservas..." />
       ) : filtradas.length === 0 ? (
-        <div className="text-gray-400 text-sm">No hay rutas{filtro !== "Todas" ? ` con estado "${ESTADO_LABEL[filtro]}"` : ""}.</div>
+        <div className="px-5 text-text text-xl">No hay rutas{filtro !== "Todas" ? ` con estado "${ESTADO_LABEL[filtro]}"` : ""}.</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtradas.map((r) => (
@@ -108,25 +109,22 @@ export default function RutaListPage() {
               </div>
 
               {/* Route information */}
-              <div className="flex items-start gap-3 mb-4">
-                <MapPin className="w-5 h-5 text-accent-orange shrink-0 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-text font-medium truncate">
-                    {r.rutaOrigen ?? "—"}
+              <div className="flex items-center gap-2 pb-4">
+                <MapPin className="w-6 h-6 text-accent-orange shrink-0" />
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-text truncate">
+                    {r.rutaOrigen ?? "-"}
                   </p>
-                  <div className="flex items-center gap-2 my-1">
-                    <div className="h-px flex-1 bg-linear-to-r from-border to-transparent" />
-                    <ArrowDown className="w-3 h-3 text-border" />
-                  </div>
-                  <p className="text-sm text-text font-medium truncate">
-                    {r.rutaDestino ?? "—"}
+                  <ArrowRight className="w-3 h-3 text-border shrink-0" />
+                  <p className="text-sm text-text truncate">
+                    {r.rutaDestino ?? "-"}
                   </p>
                 </div>
               </div>
 
               {/* Metadata */}
-              <div className="space-y-2 mb-4 text-xs text-border">
-                <div className="flex items-center gap-2">
+              <div className="space-y-2 pb-4 text-sm">
+                <div className="flex items-center gap-2 pb-2">
                   <FileText className="w-4 h-4" />
                   <span>Motivo: {r.reservaMotivo}</span>
                 </div>

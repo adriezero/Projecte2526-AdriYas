@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const PASOS = [
   { key: "Programado", label: "Programado", icon: <i className="bi bi-clipboard-check" />, desc: "Reserva confirmada" },
   { key: "Cargando",   label: "Cargando",   icon: <i className="bi bi-box-seam" />, desc: "Cargando mercancía" },
   { key: "En_ruta",    label: "En Ruta",    icon: <i className="bi bi-truck" />, desc: "En camino al destino" },
-  { key: "Finalizado", label: "Finalizado", icon: <i className="bi bi-check-circle-fill" />, desc: "Entrega completada" },
+  { key: "Finalizado", label: "Finalizado", icon: <i className="bi bi-check-circle-fill text-green-500" />, desc: "Entrega completada" },
 ];
 
 const ESTADO_COLOR: Record<string, { badge: string; bg: string; border: string; text: string }> = {
@@ -65,16 +66,16 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
         <div className="px-8 py-6 space-y-5">
           {/* Reserva afectada */}
           <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Reserva Afectada</p>
+            <p className="text-xs font-semibold uppercase tracking-wide mb-1">Reserva Afectada</p>
             <div className="flex items-center gap-2">
-              <i className="bi bi-truck text-gray-400 text-lg"></i>
-              <span className="text-sm font-medium text-gray-700">#{String(reservaId).padStart(6, "0")} — {origen} → {destino}</span>
+              <i className="bi bi-truck text-lg"></i>
+              <span className="text-sm font-medium text-gray-700">#{String(reservaId).padStart(6, "0")} - {origen} <i className="bi bi-arrow-right"></i> {destino}</span>
             </div>
           </div>
 
           {/* Tipo */}
-          <div>
-            <label className="text-sm font-semibold text-text block mb-2">Tipo de Reporte</label>
+          <div className="py-4">
+            <label className="text-sm font-semibold text-text block pb-2">Tipo de Reporte</label>
             <select
               value={tipo}
               onChange={e => setTipo(e.target.value)}
@@ -89,7 +90,7 @@ function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => 
 
           {/* Descripción */}
           <div>
-            <label className="text-sm font-semibold text-text block mb-2">Descripción</label>
+            <label className="text-sm font-semibold text-text block pb-2">Descripción</label>
             <textarea
               value={descripcion}
               onChange={e => setDescripcion(e.target.value)}
@@ -178,17 +179,17 @@ export default function DetallePedidoPage() {
         <div>
           <button
             onClick={() => router.back()}
-            className="text-sm text-border hover:text-text flex items-center gap-1 mb-4"
+            className="text-sm text-white hover:text-bg bg-accent-orange flex items-center gap-1 pb-4 px-8 py-4 rounded-xl font-semibold hover:bg-[#d66a1a]"
           >
-            ← Volver a mis rutas
+            <ArrowLeft className="w-4 h-4" /> Volver a mis rutas
           </button>
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-sm text-border mb-1">Detalle del pedido</p>
-              <h1 className="text-3xl font-bold text-text">
+              <h1 className="text-3xl font-bold text-text pt-2">
                 Reserva <span className={colores?.text ?? "text-text"}>#{String(data.idReserva).padStart(6, "0")}</span>
               </h1>
-              <p className="text-sm text-border mt-1">{formatFecha(data.reservaFecha)} · {data.reservaHora}</p>
+              <p className="text-text py-2">Detalle del pedido</p>
+              <p className="text-sm mt-1">{formatFecha(data.reservaFecha)} - {data.reservaHora}</p>
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -235,7 +236,7 @@ export default function DetallePedidoPage() {
         {/* Timeline */}
         {estado && !esIncidente && (
           <div className="bg-white border border-gray-200 rounded-xl p-8 mb-12 shadow-sm">
-            <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-8">Estado del pedido</p>
+            <p className="text-xs font-semibold uppercase tracking-widest pb-8">Estado del pedido</p>
             <div className="relative flex items-start justify-between">
               <div className="absolute top-6 left-[6%] right-[6%] h-0.5 bg-gray-200" />
               {idxActual > 0 && (
@@ -259,13 +260,13 @@ export default function DetallePedidoPage() {
                         : <span className={activo ? "" : "opacity-40"}>{paso.icon}</span>
                       }
                     </div>
-                    <span className={`text-sm mt-3 font-semibold ${
+                    <span className={`text-sm pt-3 font-semibold ${
                       activo ? "text-primary" : completado ? "text-primary/70" : "text-gray-300"
                     }`}>
                       {paso.label}
                     </span>
-                    <span className={`text-xs mt-0.5 text-center ${
-                      activo ? "text-border" : completado ? "text-border/70" : "text-gray-300"
+                    <span className={`text-xs pt-0.5 text-center ${
+                      activo ? "text-text" : completado ? "text-gray-500" : "text-gray-300"
                     }`}>
                       {paso.desc}
                     </span>
@@ -277,47 +278,48 @@ export default function DetallePedidoPage() {
         )}
 
         {/* Grid de tarjetas */}
-        <br />
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-3 gap-5 pt-2">
 
           {/* Ruta */}
           {estado && (
             <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-              <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-5">Ruta asignada</p>
-              <div className="flex flex-col gap-4">
+              <p className="text-xs font-semibold uppercase tracking-widest pb-5">Ruta asignada</p>
+              <div className="flex justify-start items-center gap-44 pb-4">
                 <div className="flex items-start gap-3">
                   <i className="bi bi-geo-alt-fill text-green-500 text-lg mt-0.5"></i>
                   <div>
-                    <p className="text-xs text-border/70 mb-0.5">Origen</p>
-                    <p className="text-sm font-semibold text-text">{data.rutaOrigen ?? data.reservaOrigen ?? "—"}</p>
+                    <p className="text-xs font-semibold pb-0.5">Origen</p>
+                    <p className="text-sm text-text">{data.rutaOrigen ?? data.reservaOrigen ?? "—"}</p>
                   </div>
                 </div>
-                <div className="ml-3.5 w-px h-4 bg-gray-200" />
+                <ArrowRight className="text-gray-400" />
                 <div className="flex items-start gap-3">
                   <i className="bi bi-geo-alt-fill text-red-500 text-lg mt-0.5"></i>
                   <div>
-                    <p className="text-xs text-border/70 mb-0.5">Destino</p>
-                    <p className="text-sm font-semibold text-text">{data.rutaDestino ?? data.reservaDestino ?? "—"}</p>
+                    <p className="text-xs font-semibold pb-0.5">Destino</p>
+                    <p className="text-sm text-text">{data.rutaDestino ?? data.reservaDestino ?? "—"}</p>
                   </div>
                 </div>
               </div>
-              <div className="mt-5 pt-4 border-t border-gray-100">
-                <p className="text-xs text-border/70 mb-0.5">Fecha de inicio</p>
-                <p className="text-sm font-semibold text-text">{formatFecha(data.rutaFechaInicio)}</p>
-              </div>
-              {data.rutaCargas && (
-                <div className="mt-3">
-                  <p className="text-xs text-border/70 mb-0.5">Cargas</p>
-                  <p className="text-sm font-semibold text-text">{data.rutaCargas}</p>
+              <div className="flex justify-start items-center gap-44 border-t border-black">
+                <div className="mt-5 pt-4">
+                  <p className="text-xs font-semibold pb-0.5">Fecha de inicio</p>
+                  <p className="text-sm text-text">{formatFecha(data.rutaFechaInicio)}</p>
                 </div>
-              )}
+                {data.rutaCargas && (
+                  <div className="mt-5 pt-4">
+                    <p className="text-xs font-semibold pb-0.5">Cargas</p>
+                    <p className="text-sm text-text">{data.rutaCargas}</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
           {/* Conductor */}
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-5">Conductor asignado</p>
-            <div className="flex items-center gap-4 mb-5">
+            <p className="text-xs font-semibold uppercase tracking-widest pb-5">Conductor asignado</p>
+            <div className="flex items-center gap-4 pb-5">
               <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -325,24 +327,24 @@ export default function DetallePedidoPage() {
               </div>
               <div>
                 <p className="text-base font-bold text-text">{data.conductorNombre}</p>
-                <p className="text-xs text-border/70">Conductor</p>
+                <p className="text-xs">Conductor</p>
               </div>
             </div>
-            <div className="space-y-3 pt-4 border-t border-gray-100">
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-border/70">Teléfono</span>
-                <span className="text-sm font-semibold text-text">{data.conductorTelf}</span>
+            <div className="space-y-3 pt-4 border-t border-black">
+              <div className="gap-2 flex items-center">
+                <span className="font-semibold text-text">Teléfono</span>
+                <span className="text-sm">{data.conductorTelf}</span>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-border/70">Licencia</span>
-                <span className="text-sm font-semibold text-text bg-gray-100 px-2 py-0.5 rounded">{data.conductorLicencia}</span>
+              <div className="gap-2 flex items-center">
+                <span className="font-semibold text-text">Licencia</span>
+                <span className="text-sm bg-gray-100 px-2 py-0.5 rounded">{data.conductorLicencia}</span>
               </div>
             </div>
           </div>
 
           {/* Reserva */}
           <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-            <p className="text-xs font-semibold text-border/70 uppercase tracking-widest mb-5">Detalles de la reserva</p>
+            <p className="text-xs font-semibold uppercase tracking-widest pb-5">Detalles de la reserva</p>
             <div className="space-y-3">
               {[
                 { label: "Motivo",        value: data.reservaMotivo },
@@ -353,19 +355,19 @@ export default function DetallePedidoPage() {
                 { label: "Representante", value: data.reservaRepresentante },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-start gap-4">
-                  <span className="text-xs text-border/70 shrink-0">{label}</span>
-                  <span className="text-sm font-medium text-text text-right">{value ?? "—"}</span>
+                  <span className="font-bold shrink-0">{label}</span>
+                  <span className="text-sm font-medium text-text text-right">{value ?? "-"}</span>
                 </div>
               ))}
               {data.reservaDescripcion && (
-                <div className="pt-3 border-t border-gray-100">
-                  <p className="text-xs text-border/70 mb-1">Descripción</p>
-                  <p className="text-sm text-text">{data.reservaDescripcion}</p>
+                <div className="py-4">
+                  <hr className="border-t border-black" />
+                  <p className="font-bold pt-4 pb-1">Descripción</p>
+                  <p>{data.reservaDescripcion}</p>
                 </div>
               )}
             </div>
           </div>
-
         </div>
       </div>
     </div>

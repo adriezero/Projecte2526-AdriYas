@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Cliente } from '@interfaces/interfaces';
 import { getClienteCompleto, enviarSolicitud } from '../logic';
+import { ArrowLeft } from 'lucide-react';
 
 function Modal({ ok, onClose }: { ok: boolean; onClose: () => void }) {
   return (
@@ -73,18 +74,15 @@ export default function NuevaSolicitudPage() {
           }}
         />
       )}
-      <div className="max-w-lg w-full">
-        <button onClick={() => router.back()} className="text-sm text-border hover:text-text flex items-center gap-1 mb-6">
-          ← Volver a mis solicitudes
-        </button>
+      <div className="max-w-lg w-full pt-8">
         <div className="bg-white rounded-lg shadow p-8">
-          <h2 className="text-3xl font-bold mb-8 text-text">Solicitar un Servicio</h2>
-          <form onSubmit={handleSolicitud} className="space-y-6">
+          <h2 className="text-3xl font-bold pb-4 text-text">Solicitar un servicio</h2>
+          <form onSubmit={handleSolicitud} className="space-y-6 gap-4 flex flex-col">
             <input
               type="text"
               name="servicio"
               placeholder="Nombre del servicio"
-              className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
+              className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
               required
             />
             <input
@@ -92,68 +90,72 @@ export default function NuevaSolicitudPage() {
               name="cliente"
               value={cliente?.Nombre || ''}
               disabled
-              className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl bg-bg text-text cursor-not-allowed"
+              className="w-full px-5 py-3 text-base border border-border/30 rounded-xl bg-bg text-text cursor-not-allowed"
             />
             <input
               type="email"
               name="email"
               value={cliente?.Email || ''}
               disabled
-              className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl bg-bg text-text cursor-not-allowed"
+              className="w-full px-5 py-3 text-base border border-border/30 rounded-xl bg-bg text-text cursor-not-allowed"
             />
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text"
                 name="origen"
                 placeholder="Origen *"
-                className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
+                className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
                 required
               />
               <input
                 type="text"
                 name="destino"
                 placeholder="Destino *"
-                className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
+                className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
                 required
               />
             </div>
             <div>
-              <label className="block text-base font-medium text-text mb-2">Rango de fechas del servicio:</label>
+              <label className="block text-base font-bold pb-2">Rango de fechas del servicio:</label>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-border mb-1">Fecha inicio:</label>
+                  <label className="block text-sm pb-1">Fecha inicio:</label>
                   <input
                     type="date"
                     name="fechaServicio"
-                    className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
+                    className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-border mb-1">Fecha fin (opcional):</label>
+                  <label className="block text-sm pb-1">Fecha fin (opcional):</label>
                   <input
                     type="date"
                     name="fechaFin"
-                    className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
+                    className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
                   />
                 </div>
               </div>
             </div>
             <div>
-              <label className="block text-base font-medium text-text mb-2">Detalles del servicio:</label>
+              <label className="block text-base font-bold pb-2">Detalles del servicio:</label>
               <textarea
                 name="detalles"
                 placeholder="Indica los detalles..."
                 rows={6}
-                className="w-full px-5 py-3 text-lg border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition resize-none"
+                className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition resize-none"
                 required
               />
             </div>
-            <button type="submit" className="w-full bg-primary text-white py-3 px-6 text-lg rounded-xl hover:bg-[#163a5f] transition shadow-sm">
+            <button type="submit" className="w-full bg-primary text-white py-3 px-6 text-base rounded-xl hover:bg-[#163a5f] transition shadow-sm">
               Enviar solicitud
             </button>
           </form>
         </div>
+        <br/>
+        <button onClick={() => router.back()} className="text-sm text-white hover:text-bg bg-accent-orange flex items-center gap-1 pb-4 px-8 py-4 rounded-xl font-semibold hover:bg-[#d66a1a]">
+          <ArrowLeft /> Volver a mis solicitudes
+        </button>
       </div>
     </div>
   );
