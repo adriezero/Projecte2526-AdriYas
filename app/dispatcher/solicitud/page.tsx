@@ -540,7 +540,7 @@ export default function Solicitudes() {
       )}
 
       <div className="p-6 lg:p-8" style={{ marginLeft: '256px' }}>
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w mx-auto">
 
           {/* Header */}
           <div className="flex items-center justify-between mb-8">

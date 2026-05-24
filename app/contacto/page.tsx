@@ -48,7 +48,7 @@ export default function Contacto() {
         {/* Header */}
         <div className="text-center mb-10">
           
-          <h2 className="text-4xl md:text-5xl font-extrabold text-[#1a1a2e] leading-tight mt-3 mb-2">
+          <h2 className="text-4xl pt-10 md:text-5xl font-extrabold text-[#1a1a2e] leading-tight mt-3 mb-2">
             {t("title")}
           </h2>
           <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-accent-orange mb-4 bg-accent-orange/10 px-4 py-1.5 rounded-full">

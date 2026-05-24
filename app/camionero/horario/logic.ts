@@ -17,11 +17,49 @@ export interface CamioneroTurno {
   FechaFinal: Date | string;
 }
 
+export interface ServicioCamionero {
+  id: number;
+  cliente: string;
+  tipo: string;
+  asunto: string;
+  descripcion?: string | null;
+  fechaServicio: Date | string;
+  fechaFin?: Date | string | null;
+  hora?: string | null;
+  origen?: string | null;
+  destino?: string | null;
+}
+
 export async function obtenerCamionerosTurnos(mes?: number, year?: number): Promise<CamioneroTurno[]> {
   const params = mes && year ? `?mes=${mes}&year=${year}` : '';
   const res = await fetch(`/api/camioneros/turnos${params}`);
   if (!res.ok) throw new Error('Error al obtener turnos');
   return res.json();
+}
+
+export async function obtenerServiciosCamionero(mes?: number, year?: number): Promise<ServicioCamionero[]> {
+  const params = mes && year ? `?mes=${mes}&year=${year}` : '';
+  const res = await fetch(`/api/camionero/servicios${params}`);
+  if (!res.ok) throw new Error('Error al obtener servicios');
+  return res.json();
+}
+
+export async function finalizarServicio(id: number): Promise<void> {
+  const res = await fetch(`/api/camionero/servicios`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ idSolicitud: id }),
+  });
+  if (!res.ok) throw new Error('Error al finalizar servicio');
+}
+
+export async function reportarIncidencia(descripcion: string, tipo: string): Promise<void> {
+  const res = await fetch('/api/reportes', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ Tipo: 'Incidencia', Descripcion: `[${tipo}] ${descripcion}` }),
+  });
+  if (!res.ok) throw new Error('Error al reportar incidencia');
 }
 
 export function obtenerDiasDelMes(mes: number, year: number): Date[] {

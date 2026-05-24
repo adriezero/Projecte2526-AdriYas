@@ -75,7 +75,7 @@ export default function Recordatorios() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F2F2F2', marginLeft: '256px' }}>
       <div className="p-6 md:p-8 md:ml-64">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w mx-auto">
 
         {/* Título de la página */}
         <div className="mb-6 md:mb-8">

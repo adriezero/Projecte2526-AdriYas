@@ -309,7 +309,7 @@ export default function Documentacion() {
       )}
 
       <div className="p-6 lg:p-8" style={{ marginLeft: '256px' }}>
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w mx-auto">
 
           {/* Header */}
           <div className="mb-8">
