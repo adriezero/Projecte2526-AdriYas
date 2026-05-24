@@ -44,19 +44,14 @@ export default function Contacto() {
     <>
     <div className="min-h-screen bg-linear-to-br from-[#EEF2F7] via-bg to-[#E8EDF5] flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-6xl">
-
         {/* Header */}
-        <div className="text-center mb-10">
-          
-          <h2 className="text-4xl pt-10 md:text-5xl font-extrabold text-[#1a1a2e] leading-tight mt-3 mb-2">
+        <div className="text-center pb-10">
+          <h2 className="text-4xl pt-10 md:text-5xl font-extrabold text-[#1a1a2e] leading-tight mt-3 mb-2 font-arsenal">
             {t("title")}
           </h2>
           <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-accent-orange mb-4 bg-accent-orange/10 px-4 py-1.5 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-orange inline-block" />
             {t("subtitle")}
           </span>
-          <br />
-          <br />
         </div>
 
         {/* Card */}
@@ -66,13 +61,11 @@ export default function Contacto() {
           <div className="h-1.5 bg-linear-to-r from-accent-orange via-primary to-accent-orange" />
 
           <div className="grid md:grid-cols-5 min-h-150">
-
             {/* Panel lateral izquierdo */}
             <div className="md:col-span-2 bg-linear-to-b from-primary to-[#163d60] p-12 flex flex-col justify-between text-white">
               <div>
                 <h3 className="text-2xl font-bold mb-2">Información de contacto</h3>
-                <p className="text-white/60 text-sm mb-10">Estamos aquí para ayudarte</p>
-<br />
+                <p className="text-white/60 text-sm pb-8">Estamos aquí para ayudarte</p>
                 <div className="space-y-6">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
@@ -82,8 +75,8 @@ export default function Contacto() {
                     </div>
                     <span className="text-sm text-white/80">info@truckwave.com</span>
                   </div>
-                  <br />
-                  <div className="flex items-center gap-4">
+
+                  <div className="flex items-center gap-4 py-8">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -91,7 +84,7 @@ export default function Contacto() {
                     </div>
                     <span className="text-sm text-white/80">+34 900 123 456</span>
                   </div>
-                  <br />
+
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -113,9 +106,8 @@ export default function Contacto() {
 
             {/* Formulario */}
             <form onSubmit={manejarEnvio} className="md:col-span-3 px-12 py-14 md:px-16 md:py-16 space-y-7">
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 pb-4">
                   <label htmlFor="nombre" className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">
                     {t("fullName")}
                   </label>
@@ -126,7 +118,7 @@ export default function Contacto() {
                     className={inputClass}
                   />
                 </div>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2 pb-4">
                   <label htmlFor="correo" className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">
                     {t("email")}
                   </label>
@@ -139,7 +131,7 @@ export default function Contacto() {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2 pb-4">
                 <label htmlFor="asunto" className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">
                   {t("subject")}
                 </label>
@@ -151,7 +143,7 @@ export default function Contacto() {
                 />
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2 pb-4">
                 <label htmlFor="mensaje" className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">
                   {t("message")}
                 </label>
@@ -163,7 +155,7 @@ export default function Contacto() {
                 />
               </div>
 
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2 pb-4">
                 <label htmlFor="fechaServicio" className="text-xs font-bold uppercase tracking-widest text-[#6B7280]">
                   Fecha de servicio (opcional)
                 </label>
@@ -174,7 +166,7 @@ export default function Contacto() {
                 />
               </div>
 
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-2 py-4">
                 <div className="relative flex items-center justify-center mt-0.5 shrink-0">
                   <input
                     type="checkbox" id="privacidad" required
@@ -202,7 +194,7 @@ export default function Contacto() {
                 type="submit"
                 className="w-full py-4 px-6 bg-linear-to-r from-accent-orange to-[#e06a10] text-white text-base font-bold rounded-2xl hover:shadow-lg hover:shadow-accent-orange/30 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none transition-all duration-200 tracking-wide cursor-pointer"
               >
-                {t("send")} →
+                {t("send")} <span className="text-xl"><i className="bi bi-arrow-right"></i></span>
               </button>
 
             </form>

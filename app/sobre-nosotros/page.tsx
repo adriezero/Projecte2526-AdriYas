@@ -70,14 +70,12 @@ export default function SobreNosotros() {
         </div>
 
         <div className="relative z-8 py-2 px-2 sm:px-8 flex flex-col items-center">
-    
-
           {/* Encabezado centrado */}
           <div className="text-center w-full max-w-2xl mx-auto mb-10 space-y-3">
-            <h1 className="text-3xl sm:text-5xl py-8 pt-2 font-bold text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-5xl py-8 pt-2 font-bold text-white tracking-tight leading-tight font-arsenal">
               {t("title")}
             </h1>
-            <p className="text-base   pb-4 font-bold leading-relaxed bg-gradient-to-r from-accent-orange to-accent-yellow bg-clip-text text-transparent drop-shadow-sm">
+            <p className="text-base   pb-4 font-bold leading-relaxed bg-linear-to-r from-accent-orange to-accent-yellow bg-clip-text text-transparent drop-shadow-sm">
               {t("subtitle")}
             </p>
             <div className="mx-auto w-12 h-1 bg-accent-orange rounded-full" />
@@ -107,9 +105,9 @@ export default function SobreNosotros() {
               className="relative min-h-80 md:min-h-0
                          bg-[url('/img/camionFamilia.jpg')] bg-cover bg-center"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary/40 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 h-28
-                              bg-gradient-to-t from-primary/80 to-transparent" />
+                              bg-linear-to-t from-primary/80 to-transparent" />
             </div>
           </div>
 
@@ -145,18 +143,17 @@ export default function SobreNosotros() {
             <h2 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
               {tr("title")}
             </h2>
-            <p className="text-text/65 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            <p className="text-text/65 text-sm sm:text-base max-w-lg mx-auto leading-relaxed py-2">
               {tr("subtitle")}
             </p>
 
             {/* Pills de puntuación */}
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center justify-center gap-3 py-4">
               <span className="inline-flex items-center gap-2 bg-green-50 border border-green-200
                                text-green-700 text-sm font-semibold px-4 py-2 rounded-full shadow-sm">
                 <i className="bi bi-hand-thumbs-up-fill text-green-500" />
                 {positivas} {tr("positive")}
               </span>
-              <span className="text-border">·</span>
               <span className="inline-flex items-center gap-2 bg-red-50 border border-red-200
                                text-red-700 text-sm font-semibold px-4 py-2 rounded-full shadow-sm">
                 <i className="bi bi-hand-thumbs-down-fill text-red-400" />
@@ -166,14 +163,14 @@ export default function SobreNosotros() {
           </div>
 
           {/* Controles: filtros + búsqueda */}
-          <div className="flex flex-col sm:flex-row flex-wrap gap-10 items-center justify-center">
-            <div className="flex flex-wrap gap-8 justify-center">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center py-2">
+            <div className="flex flex-wrap gap-2">
               {filtros.map((f) => (
                 <button
                   key={f.valor}
                   onClick={() => { setFiltro(f.valor); setPaginaActual(1); }}
                   className={`
-                    px-5 py-2.5 text-sm font-medium rounded-xl border transition duration-150
+                    px-4 py-2.5 text-sm font-medium rounded-xl border transition duration-150
                     ${filtro === f.valor
                       ? "bg-primary text-white border-primary shadow-sm"
                       : "bg-white text-text border-border hover:border-accent-orange hover:text-accent-orange"
@@ -224,8 +221,8 @@ export default function SobreNosotros() {
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center
                                 text-sm font-bold shrink-0 shadow-sm
                                 ${r.isPositive
-                                  ? "bg-gradient-to-br from-green-100 to-green-200 text-green-700"
-                                  : "bg-gradient-to-br from-red-100 to-red-200 text-red-700"}`}
+                                  ? "bg-linear-to-br from-green-100 to-green-200 text-green-700"
+                                  : "bg-linear-to-br from-red-100 to-red-200 text-red-700"}`}
                   >
                     {r.name.slice(0, 2).toUpperCase()}
                   </div>

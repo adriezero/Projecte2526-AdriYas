@@ -56,7 +56,7 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-linear-to-br from-primary via-primary to-[#163a5f] opacity-90" />
         <div className="relative z-10 text-center px-6 py-20 max-w-5xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-3xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-3xl mx-auto font-arsenal">
             {t('hero.title')}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed py-8">
@@ -105,17 +105,33 @@ export default function Home() {
         <div className="mx-auto">
           <h2 className="text-3xl sm:text-4xl font-bold text-text text-center mb-12 pb-8">{t('testimonials.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.raw('testimonials.reviews').map((testimonial: {text: string, name: string, role: string}, idx: number) => (
+            {t.raw('testimonials.reviews').map((testimonial: {text: string, name: string, role: string}, idx: number) => {
+              const ratings = [4.5, 4, 5];
+              const images = ['review-web1.png', 'review-web2.png', 'review-web3.png'];
+              const rating = ratings[idx];
+              const fullStars = Math.floor(rating);
+              const hasHalfStar = rating % 1 !== 0;
+              
+              return (
               <div key={idx} className="bg-gray-50 rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow">
-                <div className="flex justify-center mb-4">
-                  {[...Array(5)].map((_, i) => (
+                <div className="flex justify-center pb-4">
+                  {[...Array(fullStars)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-accent-orange text-accent-orange" />
                   ))}
+                  {hasHalfStar && (
+                    <div className="relative w-5 h-5">
+                      <Star className="w-5 h-5 text-accent-orange absolute" />
+                      <Star className="w-5 h-5 fill-accent-orange text-accent-orange absolute" style={{clipPath: 'inset(0 50% 0 0)'}} />
+                    </div>
+                  )}
+                  {[...Array(5 - Math.ceil(rating))].map((_, i) => (
+                    <Star key={`empty-${i}`} className="w-5 h-5 text-accent-orange" />
+                  ))}
                 </div>
-                <p className="text-gray-700 italic mb-6 leading-relaxed text-sm">&quot;{testimonial.text}&quot;</p>
+                <p className="text-gray-700 italic pb-6 leading-relaxed text-sm">&quot;{testimonial.text}&quot;</p>
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full overflow-hidden relative shrink-0">
-                    <Image src="/img/review-web.png" alt={testimonial.name} fill className="object-cover" />
+                    <Image src={`/img/reviews/${images[idx]}`} alt={testimonial.name} fill className="object-cover" />
                   </div>
                   <div>
                     <div className="font-bold text-gray-900 text-sm">{testimonial.name}</div>
@@ -123,14 +139,15 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* LOGOS CLIENTES */}
       <section className="bg-gray-50 py-12 px-4 overflow-hidden flex flex-col items-center justify-center">
-        <h3 className="text-center text-gray-500 text-2xl font-bold uppercase tracking-wider pb-8 font-arsenal">{t('clients.title')}</h3>
+        <h2 className="text-center text-gray-500 text-3xl sm:text-4xl font-bold uppercase tracking-wider pb-8 font-arsenal">{t('clients.title')}</h2>
         <div className="relative w-full">
           <div className="flex gap-12 animate-scroll-infinite">
             {[...Array(3)].map((_, idx) => (
@@ -146,10 +163,10 @@ export default function Home() {
 
       {/* SERVICIOS */}
       <section id="servicios" className="bg-linear-to-b from-gray-50 to-bg py-16 sm:py-20 px-4 sm:px-6">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold text-text text-center pb-4">
           {t('services.title')}
         </h2>
-        <p className="text-center text-border text-lg sm:text-xl mb-10 sm:mb-16 mx-auto p-12">
+        <p className="text-center text-border text-lg sm:text-xl mb-10 sm:mb-16 mx-auto pb-10">
           {t('services.subtitle')}
         </p>
         <div className="flex items-center justify-center">
@@ -209,8 +226,8 @@ export default function Home() {
       {/* WHY US */}
       <section className="bg-bg py-16 sm:py-20 mb-0 flex items-center justify-center px-4 sm:px-6">
         <div className="max-w-7xl w-full text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-text pb-4">{t('whyUs.title')}</h2>
-          <p className="text-black pb-10 sm:mb-12 text-sm sm:text-base">{t('whyUs.subtitle')}</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-text pb-4">{t('whyUs.title')}</h2>
+          <p className="pb-10 sm:mb-12 text-sm sm:text-base">{t('whyUs.subtitle')}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center text-left">
             <div>
               <ul className="space-y-8 sm:space-y-12">
@@ -243,7 +260,7 @@ export default function Home() {
 
       {/* COBERTURA GEOGRÁFICA */}
       <section className="bg-white py-16 sm:py-20 px-4 sm:px-6">
-        <div className="mx-auto text-center">
+        <div className="md:px-60 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-text pb-4">{t('coverage.title')}</h2>
           <p className="text-gray-600 pb-10">{t('coverage.subtitle')}</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -270,7 +287,7 @@ export default function Home() {
 
       {/* FAQ */}
       <section className="bg-gray-50 py-16 sm:py-20 px-4 sm:px-6">
-        <div className="mx-auto">
+        <div className="md:px-96">
           <h2 className="text-3xl sm:text-4xl font-bold text-text text-center pb-10">{t('faq.title')}</h2>
           <div className="space-y-4">
             {t.raw('faq.questions').map((faq: {question: string, answer: string}, idx: number) => (
