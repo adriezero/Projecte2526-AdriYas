@@ -7,12 +7,10 @@ import {
   Clock, Flag, Calendar, User, Settings, Plus, 
   CheckCircle2, Trash2, MoreVertical, Inbox, Hourglass, List, Truck
 } from 'lucide-react';
-
 import { 
   filtrarTareas, 
   contarPendientes, 
-  contarCompletadas, 
-  crearTarea, 
+  contarCompletadas,
   toggleTareaCompletada, 
   eliminarTareaPorId,
   formatearFecha
@@ -37,7 +35,7 @@ export default function Tareas() {
     fetch('/api/tareas')
       .then(res => res.json())
       .then(data => {
-        const tareasMapeadas = data.map((t: any) => {
+        const tareasMapeadas = data.map((t: { id: number; titulo: string; prioridad?: string; descripcion?: string; estado: string }) => {
           let fecha = 'Por definir';
           let usuario = iniciales;
           
@@ -174,8 +172,8 @@ export default function Tareas() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-slate-800">Gestión de Tareas</h1>
-              <p className="text-slate-500 mt-1 text-sm">Organiza y controla tus tareas diarias</p>
+              <h1 className="text-4xl font-bold text-slate-800 font-arsenal">Gestión de tareas</h1>
+              <p className="text-slate-500 py-2 text-sm">Organiza y controla tus tareas diarias</p>
             </div>
           </div>
 
@@ -193,14 +191,14 @@ export default function Tareas() {
               `}</style>
             </div>
           ) : (
-            <>
+            <div className="pt-4">
               {/* Filtros */}
               <div className="bg-white rounded-xl border border-slate-200 p-1.5 mb-5">
                 <div className="flex gap-1">
                   {[
+                    { key: 'todas', label: 'Todas', count: tareas.length, icon: <List size={14} /> },
                     { key: 'pendientes', label: 'Pendientes', count: pendientes, icon: <Hourglass size={14} /> },
                     { key: 'completadas', label: 'Completadas', count: completadas, icon: <CheckCircle2 size={14} /> },
-                    { key: 'todas', label: 'Todas', count: tareas.length, icon: <List size={14} /> },
                   ].map(({ key, label, count, icon }) => (
                     <button
                       key={key}
@@ -221,25 +219,27 @@ export default function Tareas() {
                 </div>
               </div>
 
+              <br/>
+
               {/* Tabla */}
               <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-slate-200 bg-slate-50">
-                        <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5"><List size={13} /> Tarea</span>
                         </th>
-                        <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5"><Flag size={13} /> Prioridad</span>
                         </th>
-                        <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha</span>
                         </th>
-                        <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <th className="px-5 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5"><User size={13} /> Asignado</span>
                         </th>
-                        <th className="px-5 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                        <th className="px-5 py-4 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center justify-center gap-1.5"><Settings size={13} /> Acciones</span>
                         </th>
                       </tr>
@@ -305,7 +305,7 @@ export default function Tareas() {
                 <div className="border-t border-slate-200 bg-slate-50 p-5">
                   <div className="grid grid-cols-12 gap-3 items-end">
                     <div className="col-span-4">
-                      <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
+                      <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 pb-1.5">
                         <List size={13} /> Nueva tarea
                       </label>
                       <input
@@ -318,7 +318,7 @@ export default function Tareas() {
                       />
                     </div>
                     <div className="col-span-2">
-                      <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
+                      <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 pb-1.5">
                         <Flag size={13} /> Prioridad
                       </label>
                       <select
@@ -331,7 +331,7 @@ export default function Tareas() {
                       </select>
                     </div>
                     <div className="col-span-3">
-                      <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 mb-1.5">
+                      <label className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 pb-1.5">
                         <Calendar size={13} /> Fecha y hora
                       </label>
                       <div className="flex gap-2">
@@ -365,7 +365,7 @@ export default function Tareas() {
                   </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

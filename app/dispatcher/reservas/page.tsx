@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Spinner, EmptyState } from "@componentes/ui";
 import { 
   Plus, Search, ChevronLeft, ChevronRight, Calendar as CalendarIcon,
-  Clock, MapPin, User, XCircle
+  Clock, MapPin, User, XCircle, ArrowRight
 } from 'lucide-react';
 import {
   Reserva,
@@ -155,8 +155,8 @@ export default function Reservas() {
       {modalAbierto && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalAbierto(false)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-slate-800">Nueva Reserva</h2>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Nueva reserva</h2>
               <button onClick={() => setModalAbierto(false)} className="text-slate-400 hover:text-slate-600">
                 <XCircle size={24} />
               </button>
@@ -164,13 +164,13 @@ export default function Reservas() {
             
             <div className="space-y-4">
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 pb-2">
                   <User size={14} /> Cliente
                 </label>
                 <select
                   value={nuevoRepresentante}
                   onChange={e => setNuevoRepresentante(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Seleccionar cliente...</option>
                   {clientes.map(cliente => (
@@ -182,16 +182,18 @@ export default function Reservas() {
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <CalendarIcon size={14} /> Rango de Fechas
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  <CalendarIcon size={14} /> Rango de fechas
                 </label>
                 <div className="grid grid-cols-2 gap-3">
+                  <label className="text-xs text-slate-500">Fecha inicio</label>
+                  <label className="text-xs text-slate-500">Fecha fin</label>
                   <input
                     type="date"
                     value={nuevaFechaInicio}
                     onChange={e => setNuevaFechaInicio(e.target.value)}
                     placeholder="Fecha inicio"
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <input
                     type="date"
@@ -199,25 +201,25 @@ export default function Reservas() {
                     onChange={e => setNuevaFechaFin(e.target.value)}
                     placeholder="Fecha fin"
                     min={nuevaFechaInicio}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   <Clock size={14} /> Hora
                 </label>
                 <input
                   type="time"
                   value={nuevaHora}
                   onChange={e => setNuevaHora(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   <MapPin size={14} /> Origen - Destino
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -226,20 +228,20 @@ export default function Reservas() {
                     value={nuevoOrigen}
                     onChange={e => setNuevoOrigen(e.target.value)}
                     placeholder="Origen..."
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <input
                     type="text"
                     value={nuevoDestino}
                     onChange={e => setNuevoDestino(e.target.value)}
                     placeholder="Destino..."
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   Descripción (opcional)
                 </label>
                 <textarea
@@ -247,12 +249,12 @@ export default function Reservas() {
                   onChange={e => setNuevaDescripcion(e.target.value)}
                   placeholder="Detalles adicionales..."
                   rows={3}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
                 />
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-6">
               <button
                 onClick={() => setModalAbierto(false)}
                 className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50"
@@ -262,10 +264,10 @@ export default function Reservas() {
               <button
                 onClick={handleCrearReserva}
                 disabled={!nuevaFechaInicio || !nuevaHora || !nuevoRepresentante || !nuevoOrigen || !nuevoDestino}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Plus size={16} />
-                Crear Reserva
+                Crear reserva
               </button>
             </div>
           </div>
@@ -275,8 +277,8 @@ export default function Reservas() {
       <div className="p-6 lg:p-8" style={{ marginLeft: '256px' }}>
         <div className="max-w-screen-2xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-800">Gestión de Reservas</h1>
-            <p className="text-slate-500 mt-1 text-sm">Administra y visualiza las reservas en el calendario</p>
+            <h1 className="text-4xl font-bold text-slate-800 font-arsenal">Gestión de reservas</h1>
+            <p className="text-slate-500 py-2 text-sm">Administra y visualiza las reservas en el calendario</p>
           </div>
 
           <div className="flex gap-6">
@@ -372,8 +374,8 @@ export default function Reservas() {
               <div className="bg-white rounded-xl border border-slate-200 p-6 sticky top-6">
                 {/* Búsqueda */}
                 <div className="mb-6">
-                  <label className="text-sm font-semibold text-slate-700 mb-2 block">
-                    Buscar Reservas
+                  <label className="text-sm font-semibold text-slate-700 pb-2 block">
+                    Buscar reservas
                   </label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -389,8 +391,8 @@ export default function Reservas() {
 
                 {/* Lista de Reservas */}
                 <div className="mb-6">
-                  <h3 className="text-sm font-semibold text-slate-700 mb-3">
-                    Reservas del Mes ({reservasFiltradas.length})
+                  <h3 className="text-sm font-semibold text-slate-700 py-2">
+                    Reservas del mes ({reservasFiltradas.length})
                   </h3>
                   <div className="space-y-2 max-h-96 overflow-y-auto">
                     {cargando ? (
@@ -400,7 +402,7 @@ export default function Reservas() {
                     ) : reservasFiltradas.length === 0 ? (
                       <div className="py-8">
                         <EmptyState 
-                          icon="bi-calendar3" 
+                          icon="bi-calendar3 text-gray-500 text-4xl" 
                           title="No hay reservas" 
                         />
                       </div>
@@ -417,13 +419,10 @@ export default function Reservas() {
                           <div className="text-sm font-semibold text-slate-800 mb-1">
                             {reserva.Representante}
                           </div>
-                          <div className="flex items-center gap-1 text-xs text-slate-600 mb-1">
-                            <Clock size={12} />
-                            {reserva.Hora}
-                          </div>
-                          <div className="flex items-center gap-1 text-xs text-slate-600">
+                          <div className="flex items-center gap-1 text-xs text-slate-600 py-1">
+                            <Clock size={12} /> {reserva.Hora}
                             <MapPin size={12} />
-                            {reserva.Origen} → {reserva.Destino}
+                            {reserva.Origen || 'Origen no especificado'} <ArrowRight size={12} /> {reserva.Destino || 'Destino no especificado'}
                           </div>
                         </div>
                       ))
@@ -434,10 +433,10 @@ export default function Reservas() {
                 {/* Botón Nueva Reserva */}
                 <button
                   onClick={() => setModalAbierto(true)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
                 >
                   <Plus size={18} />
-                  Nueva Reserva
+                  Nueva reserva
                 </button>
               </div>
             </div>

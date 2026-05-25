@@ -34,7 +34,10 @@ export default function Documentacion() {
   // Modales
   const [modalDetalles, setModalDetalles] = useState(false);
   const [modalEditar, setModalEditar] = useState(false);
+  const [modalEliminar, setModalEliminar] = useState(false);
   const [documentoSeleccionado, setDocumentoSeleccionado] = useState<Documento | null>(null);
+  const [idEliminar, setIdEliminar] = useState<number | null>(null);
+  const [errorEliminar, setErrorEliminar] = useState('');
   
   // Edición
   const [nombreEdit, setNombreEdit] = useState('');
@@ -139,15 +142,22 @@ export default function Documentacion() {
     }
   }
 
-  async function handleEliminar(id: number) {
-    if (confirm('¿Eliminar este documento?')) {
-      try {
-        await eliminarDocumento(id);
-        await cargarDocumentos();
-      } catch (error) {
-        console.error('Error al eliminar documento:', error);
-        alert('Error al eliminar documento');
-      }
+  function handleEliminar(id: number) {
+    setIdEliminar(id);
+    setErrorEliminar('');
+    setModalEliminar(true);
+  }
+
+  async function confirmarEliminar() {
+    if (!idEliminar) return;
+    try {
+      await eliminarDocumento(idEliminar);
+      await cargarDocumentos();
+      setModalEliminar(false);
+      setIdEliminar(null);
+    } catch (error) {
+      console.error('Error al eliminar documento:', error);
+      setErrorEliminar('Error al eliminar documento');
     }
   }
 
@@ -183,37 +193,37 @@ export default function Documentacion() {
       {modalDetalles && documentoSeleccionado && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalDetalles(false)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-slate-800">Detalles del Documento</h2>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Detalles del documento</h2>
               <button onClick={() => setModalDetalles(false)} className="text-slate-400 hover:text-slate-600">
-                ✕
+                <i className="bi bi-x-circle"></i>
               </button>
             </div>
             
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase">Nombre</label>
-                <p className="text-slate-800 font-medium mt-1">{documentoSeleccionado.nombre}</p>
+                <p className="text-slate-800 font-medium pt-1">{documentoSeleccionado.nombre}</p>
               </div>
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase">Tipo</label>
-                <p className="text-slate-800 font-medium mt-1">{documentoSeleccionado.tipo}</p>
+                <p className="text-slate-800 font-medium py-1">{documentoSeleccionado.tipo}</p>
               </div>
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase">Fecha de Subida</label>
-                <p className="text-slate-800 font-medium mt-1">{formatearFecha(documentoSeleccionado.fechaSubida)}</p>
+                <p className="text-slate-800 font-medium py-1">{formatearFecha(documentoSeleccionado.fechaSubida)}</p>
               </div>
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase">Asociado A</label>
-                <p className="text-slate-800 font-medium mt-1">{documentoSeleccionado.asociadoA}</p>
+                <p className="text-slate-800 font-medium py-1">{documentoSeleccionado.asociadoA}</p>
               </div>
               <div>
                 <label className="text-xs font-semibold text-slate-500 uppercase">Tamaño</label>
-                <p className="text-slate-800 font-medium mt-1">{documentoSeleccionado.tamano}</p>
+                <p className="text-slate-800 font-medium py-1">{documentoSeleccionado.tamano}</p>
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-6">
               <button
                 onClick={() => setModalDetalles(false)}
                 className="flex-1 px-4 py-2.5 bg-slate-800 text-white rounded-lg text-sm font-semibold hover:bg-slate-700"
@@ -225,38 +235,75 @@ export default function Documentacion() {
         </div>
       )}
 
+      {/* Modal Eliminar */}
+      {modalEliminar && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalEliminar(false)}>
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Confirmar eliminación</h2>
+              <button onClick={() => setModalEliminar(false)} className="text-slate-400 hover:text-slate-600">
+                <i className="bi bi-x-circle"></i>
+              </button>
+            </div>
+            
+            <p className="text-slate-600 py-4">¿Estás seguro de que deseas eliminar este documento? Esta acción no se puede deshacer.</p>
+            
+            {errorEliminar && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm mb-4">
+                {errorEliminar}
+              </div>
+            )}
+
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setModalEliminar(false)}
+                className="flex-1 px-4 py-2.5 bg-slate-200 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-300"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={confirmarEliminar}
+                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Modal Editar */}
       {modalEditar && documentoSeleccionado && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalEditar(false)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-slate-800">Editar Documento</h2>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Editar documento</h2>
               <button onClick={() => setModalEditar(false)} className="text-slate-400 hover:text-slate-600">
-                ✕
+                <i className="bi bi-x-circle"></i>
               </button>
             </div>
             
             <div className="space-y-4">
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <FileText size={14} /> Nombre del Documento
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 pb-2">
+                  <FileText size={14} /> Nombre del documento
                 </label>
                 <input
                   type="text"
                   value={nombreEdit}
                   onChange={e => setNombreEdit(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   Tipo
                 </label>
                 <select
                   value={tipoEdit}
                   onChange={e => setTipoEdit(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   {TIPOS_DOCUMENTO.filter(t => t !== 'Todos').map(tipo => (
                     <option key={tipo} value={tipo}>{tipo}</option>
@@ -265,31 +312,31 @@ export default function Documentacion() {
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   <Calendar size={14} /> Fecha
                 </label>
                 <input
                   type="date"
                   value={fechaEdit}
                   onChange={e => setFechaEdit(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  Asociado A
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  Asociado a
                 </label>
                 <input
                   type="text"
                   value={asociadoEdit}
                   onChange={e => setAsociadoEdit(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-6">
               <button
                 onClick={() => setModalEditar(false)}
                 className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50"
@@ -298,7 +345,7 @@ export default function Documentacion() {
               </button>
               <button
                 onClick={handleGuardarEdicion}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
               >
                 <Edit size={16} />
                 Guardar Cambios
@@ -313,8 +360,8 @@ export default function Documentacion() {
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-800">Gestión de Documentación</h1>
-            <p className="text-slate-500 mt-1 text-sm">Administra todos los documentos del sistema</p>
+            <h1 className="text-4xl font-bold text-slate-800 font-arsenal">Gestión de documentación</h1>
+            <p className="text-slate-500 py-2 text-sm">Administra todos los documentos del sistema</p>
           </div>
 
           {cargando ? (
@@ -322,7 +369,7 @@ export default function Documentacion() {
               <div className="animate-[slide_1.5s_ease-in-out_infinite]">
                 <Truck size={48} className="text-slate-600" />
               </div>
-              <p className="text-slate-600 font-medium mt-4">Cargando documentos...</p>
+              <p className="text-slate-600 font-medium pt-4">Cargando documentos...</p>
               <style jsx>{`
                 @keyframes slide {
                   0%, 100% { transform: translateX(-20px); }
@@ -333,14 +380,14 @@ export default function Documentacion() {
           ) : (
             <>
               {/* Filtros */}
-              <div className="bg-white rounded-xl border border-slate-200 p-5 mb-5">
+              <div className="bg-white rounded-xl border border-slate-200 p-5 pb-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div>
-                    <label className="text-sm font-semibold text-slate-700 mb-2 block">Tipo</label>
+                    <label className="text-sm font-semibold text-slate-700 pb-2 block">Tipo</label>
                     <select
                       value={tipoFiltro}
                       onChange={e => setTipoFiltro(e.target.value)}
-                      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     >
                       {TIPOS_DOCUMENTO.map(tipo => (
                         <option key={tipo} value={tipo}>{tipo}</option>
@@ -349,43 +396,43 @@ export default function Documentacion() {
                   </div>
 
                   <div>
-                    <label className="text-sm font-semibold text-slate-700 mb-2 block">Desde</label>
+                    <label className="text-sm font-semibold text-slate-700 pb-2 block">Desde</label>
                     <input
                       type="date"
                       value={desdeFiltro}
                       onChange={e => setDesdeFiltro(e.target.value)}
-                      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
                   <div>
-                    <label className="text-sm font-semibold text-slate-700 mb-2 block">Hasta</label>
+                    <label className="text-sm font-semibold text-slate-700 pb-2 block">Hasta</label>
                     <input
                       type="date"
                       value={hastaFiltro}
                       onChange={e => setHastaFiltro(e.target.value)}
-                      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
 
                   <div className="flex items-end">
                     <button
                       onClick={handleAplicarFiltros}
-                      className="w-full px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
+                      className="w-full px-4 py-2.5 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
                     >
                       Consultar
                     </button>
                   </div>
                 </div>
 
-                <div className="flex gap-3 mt-4 pt-4 border-t border-slate-200">
+                <div className="flex gap-3 mt-4 pt-4">
                   <button
                     onClick={handleDescargarSeleccionados}
                     disabled={seleccionados.length === 0}
                     className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-lg text-sm font-semibold hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Download size={16} />
-                    Descargar Seleccionados ({seleccionados.length})
+                    Descargar seleccionados ({seleccionados.length})
                   </button>
                   <button
                     onClick={handleEliminarSeleccionados}
@@ -393,10 +440,12 @@ export default function Documentacion() {
                     className="flex items-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Trash2 size={16} />
-                    Eliminar Seleccionados ({seleccionados.length})
+                    Eliminar seleccionados ({seleccionados.length})
                   </button>
                 </div>
               </div>
+
+              <br/>
 
               {/* Tabla */}
               <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
@@ -524,7 +573,7 @@ export default function Documentacion() {
                 {documentosFiltrados.length > 0 && (
                   <div className="flex items-center justify-between px-5 py-4 border-t border-slate-200">
                     <div className="text-sm text-slate-600">
-                      Mostrando {inicio + 1}-{Math.min(fin, documentosFiltrados.length)} de {documentosFiltrados.length} documentos
+                      Mostrando {Math.min(fin, documentosFiltrados.length)} de {documentosFiltrados.length} documentos
                     </div>
                     <div className="flex items-center gap-2">
                       <button

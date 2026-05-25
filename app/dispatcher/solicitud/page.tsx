@@ -207,8 +207,8 @@ export default function Solicitudes() {
       {modalAbierto && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalAbierto(false)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-slate-800">Nueva Solicitud</h2>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Nueva solicitud</h2>
               <button onClick={() => setModalAbierto(false)} className="text-slate-400 hover:text-slate-600">
                 <XCircle size={24} />
               </button>
@@ -216,13 +216,13 @@ export default function Solicitudes() {
             
             <div className="space-y-4">
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 pb-2">
                   <User size={14} /> Cliente
                 </label>
                 <select
                   value={nuevoCliente}
                   onChange={e => setNuevoCliente(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Seleccionar cliente...</option>
                   {clientes.map(cliente => (
@@ -234,13 +234,13 @@ export default function Solicitudes() {
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <Package size={14} /> Tipo de Solicitud
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  <Package size={14} /> Tipo de solicitud
                 </label>
                 <select
                   value={nuevoTipo}
                   onChange={e => setNuevoTipo(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   {TIPOS_SOLICITUD.map(tipo => (
                     <option key={tipo} value={tipo}>{tipo}</option>
@@ -249,20 +249,20 @@ export default function Solicitudes() {
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  Asunto / Servicio Solicitado
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  Asunto / Servicio solicitado
                 </label>
                 <input
                   type="text"
                   value={nuevoAsunto}
                   onChange={e => setNuevoAsunto(e.target.value)}
                   placeholder="Asunto de la solicitud..."
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   Descripción
                 </label>
                 <textarea
@@ -270,30 +270,30 @@ export default function Solicitudes() {
                   onChange={e => setNuevaDescripcion(e.target.value)}
                   placeholder="Descripción detallada (opcional)..."
                   rows={4}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <Calendar size={14} /> Fecha de Servicio
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  <Calendar size={14} /> Fecha de servicio
                 </label>
                 <input
                   type="datetime-local"
                   value={nuevaFechaServicio}
                   onChange={e => setNuevaFechaServicio(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   Estado
                 </label>
                 <select
                   value={nuevoEstado}
                   onChange={e => setNuevoEstado(e.target.value as EstadoSolicitud)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="Pendiente">Pendiente</option>
                   <option value="En Proceso">En Proceso</option>
@@ -303,7 +303,7 @@ export default function Solicitudes() {
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-6">
               <button
                 onClick={() => setModalAbierto(false)}
                 className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50"
@@ -313,10 +313,10 @@ export default function Solicitudes() {
               <button
                 onClick={handleCrearSolicitud}
                 disabled={!nuevoCliente.trim() || !nuevoAsunto.trim()}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
               >
                 <Plus size={16} />
-                Crear Solicitud
+                Crear solicitud
               </button>
             </div>
           </div>
@@ -327,87 +327,114 @@ export default function Solicitudes() {
       {modalDetalles && solicitudSeleccionada && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalDetalles(false)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-slate-800">Detalles de Solicitud</h2>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Detalles de solicitud</h2>
               <button onClick={() => setModalDetalles(false)} className="text-slate-400 hover:text-slate-600">
                 <XCircle size={24} />
               </button>
             </div>
             
-            <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              {/* Fila 1: ID | Cliente */}
               <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">ID</label>
-                <p className="text-slate-800 font-medium mt-1">#{solicitudSeleccionada.id}</p>
+                <label className="font-semibold text-slate-500 uppercase text-xs">ID</label>
+                <p className="text-slate-800 font-medium pt-1">#{solicitudSeleccionada.id}</p>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">Cliente</label>
-                <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.cliente}</p>
+                <label className="font-semibold text-slate-500 uppercase text-xs">Cliente</label>
+                <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.cliente}</p>
+              </div>
+
+              {/* Fila 2: Asunto | Tipo */}
+              <div>
+                <label className="font-semibold text-slate-500 uppercase text-xs">Asunto</label>
+                <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.asunto}</p>
               </div>
               <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">Tipo</label>
-                <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.tipo}</p>
+                <label className="font-semibold text-slate-500 uppercase text-xs">Tipo</label>
+                <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.tipo}</p>
               </div>
-              <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">Asunto</label>
-                <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.asunto}</p>
-              </div>
+
+              {/* Fila 3: Descripción (ancho completo) */}
               {solicitudSeleccionada.descripcion && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Descripción</label>
-                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.descripcion}</p>
+                <div className="col-span-2">
+                  <label className="font-semibold text-slate-500 uppercase text-xs">Descripción</label>
+                  <textarea
+                    readOnly
+                    className="pt-1 w-full border border-slate-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 bg-slate-50 resize-none"
+                    rows={3}
+                    defaultValue={solicitudSeleccionada.descripcion}
+                  />
                 </div>
               )}
+
+              {/* Fila 4: Fecha Solicitud | Fecha Servicio | Hora */}
               <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">Fecha Solicitud</label>
-                <p className="text-slate-800 font-medium mt-1">{formatearFecha(solicitudSeleccionada.fecha)}</p>
+                <label className="font-semibold text-slate-500 uppercase text-xs">Fecha Solicitud</label>
+                <p className="text-slate-800 font-medium pt-1">{formatearFecha(solicitudSeleccionada.fecha)}</p>
               </div>
-              {solicitudSeleccionada.fechaServicio && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Fecha Servicio</label>
-                  <p className="text-slate-800 font-medium mt-1">{formatearFecha(solicitudSeleccionada.fechaServicio)}</p>
-                </div>
+              <div className="flex gap-6">
+                {solicitudSeleccionada.fechaServicio && (
+                  <div>
+                    <label className="font-semibold text-slate-500 uppercase text-xs">Fecha Servicio</label>
+                    <p className="text-slate-800 font-medium pt-1">{formatearFecha(solicitudSeleccionada.fechaServicio)}</p>
+                  </div>
+                )}
+                {solicitudSeleccionada.hora && (
+                  <div>
+                    <label className="font-semibold text-slate-500 uppercase text-xs">Hora</label>
+                    <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.hora}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Fila 5: Origen | Destino */}
+              {(solicitudSeleccionada.origen || solicitudSeleccionada.destino) && (
+                <>
+                  <div>
+                    <label className="font-semibold text-slate-500 uppercase text-xs">Origen</label>
+                    <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.origen ?? '—'}</p>
+                  </div>
+                  <div>
+                    <label className="font-semibold text-slate-500 uppercase text-xs">Destino</label>
+                    <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.destino ?? '—'}</p>
+                  </div>
+                </>
               )}
-              {solicitudSeleccionada.hora && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Hora</label>
-                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.hora}</p>
-                </div>
-              )}
-              {solicitudSeleccionada.origen && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Origen</label>
-                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.origen}</p>
-                </div>
-              )}
-              {solicitudSeleccionada.destino && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Destino</label>
-                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.destino}</p>
-                </div>
-              )}
+
+              {/* Fila 6: Representante */}
               {solicitudSeleccionada.representante && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Representante</label>
-                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.representante}</p>
+                <div className="col-span-2">
+                  <label className="font-semibold text-slate-500 uppercase text-xs">Representante</label>
+                  <p className="text-slate-800 font-medium pt-1">{solicitudSeleccionada.representante}</p>
                 </div>
               )}
-              <div>
-                <label className="text-xs font-semibold text-slate-500 uppercase">Estado</label>
+
+              {/* Fila 7: Estado (ancho completo) */}
+              <div className="col-span-2">
+                <label className="font-semibold text-slate-500 uppercase text-xs">Estado</label>
                 <div className="mt-1">
                   <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border ${getEstadoColor(solicitudSeleccionada.estado)}`}>
                     {solicitudSeleccionada.estado}
                   </span>
                 </div>
               </div>
+
+              {/* Fila 8: Motivo de Rechazo (ancho completo, textarea readonly) */}
               {solicitudSeleccionada.motivoRechazo && (
-                <div>
-                  <label className="text-xs font-semibold text-slate-500 uppercase">Motivo de Rechazo</label>
-                  <p className="text-slate-800 font-medium mt-1">{solicitudSeleccionada.motivoRechazo}</p>
+                <div className="col-span-2">
+                  <label className="font-semibold text-slate-500 uppercase text-xs">Motivo de Rechazo</label>
+                  <textarea
+                    readOnly
+                    className="mt-1 w-full border border-slate-300 rounded-md py-2 px-3 text-slate-800 bg-slate-50 resize-none focus:outline-none"
+                    rows={3}
+                    defaultValue={solicitudSeleccionada.motivoRechazo}
+                  />
                 </div>
               )}
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-6">
               <button
                 onClick={() => setModalDetalles(false)}
                 className="flex-1 px-4 py-2.5 bg-slate-800 text-white rounded-lg text-sm font-semibold hover:bg-slate-700"
@@ -423,8 +450,8 @@ export default function Solicitudes() {
       {modalEditar && solicitudSeleccionada && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setModalEditar(false)}>
           <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-slate-800">Editar Solicitud</h2>
+            <div className="flex items-center justify-between pb-4">
+              <h2 className="text-xl font-bold text-slate-800">Editar solicitud</h2>
               <button onClick={() => setModalEditar(false)} className="text-slate-400 hover:text-slate-600">
                 <XCircle size={24} />
               </button>
@@ -432,13 +459,13 @@ export default function Solicitudes() {
             
             <div className="space-y-4">
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 pb-2">
                   <User size={14} /> Cliente
                 </label>
                 <select
                   value={nuevoCliente}
                   onChange={e => setNuevoCliente(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="">Seleccionar cliente...</option>
                   {clientes.map(cliente => (
@@ -450,13 +477,13 @@ export default function Solicitudes() {
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <Package size={14} /> Tipo de Solicitud
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  <Package size={14} /> Tipo de solicitud
                 </label>
                 <select
                   value={nuevoTipo}
                   onChange={e => setNuevoTipo(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   {TIPOS_SOLICITUD.map(tipo => (
                     <option key={tipo} value={tipo}>{tipo}</option>
@@ -465,20 +492,20 @@ export default function Solicitudes() {
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  Asunto / Servicio Solicitado
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  Asunto / Servicio solicitado
                 </label>
                 <input
                   type="text"
                   value={nuevoAsunto}
                   onChange={e => setNuevoAsunto(e.target.value)}
                   placeholder="Asunto de la solicitud..."
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   Descripción
                 </label>
                 <textarea
@@ -486,30 +513,30 @@ export default function Solicitudes() {
                   onChange={e => setNuevaDescripcion(e.target.value)}
                   placeholder="Descripción detallada (opcional)..."
                   rows={4}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
-                  <Calendar size={14} /> Fecha de Servicio
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
+                  <Calendar size={14} /> Fecha de servicio
                 </label>
                 <input
                   type="datetime-local"
                   value={nuevaFechaServicio}
                   onChange={e => setNuevaFechaServicio(e.target.value)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
-                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 mb-2">
+                <label className="flex items-center gap-1.5 text-sm font-semibold text-slate-700 py-2">
                   Estado
                 </label>
                 <select
                   value={nuevoEstado}
                   onChange={e => setNuevoEstado(e.target.value as EstadoSolicitud)}
-                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm text-slate-800 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="Pendiente">Pendiente</option>
                   <option value="En Proceso">En Proceso</option>
@@ -519,7 +546,7 @@ export default function Solicitudes() {
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="flex gap-3 pt-6">
               <button
                 onClick={() => setModalEditar(false)}
                 className="flex-1 px-4 py-2.5 border border-slate-300 text-slate-700 rounded-lg text-sm font-semibold hover:bg-slate-50"
@@ -529,10 +556,10 @@ export default function Solicitudes() {
               <button
                 onClick={handleEditarSolicitud}
                 disabled={!nuevoCliente.trim() || !nuevoAsunto.trim()}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <Edit size={16} />
-                Guardar Cambios
+                Guardar cambios
               </button>
             </div>
           </div>
@@ -545,15 +572,15 @@ export default function Solicitudes() {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-slate-800">Gestión de Solicitudes de Servicio</h1>
-              <p className="text-slate-500 mt-1 text-sm">Administra las solicitudes de tus clientes</p>
+              <h1 className="text-4xl font-bold text-slate-800 font-arsenal">Gestión de solicitudes de servicio</h1>
+              <p className="text-slate-500 py-2 text-sm">Administra las solicitudes de tus clientes</p>
             </div>
             <button 
               onClick={() => setModalAbierto(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700"
+              className="flex items-center gap-2 px-4 py-2.5 bg-accent-orange hover:bg-amber-600 text-white rounded-lg text-sm font-semibold cursor-pointer"
             >
               <Plus size={18} />
-              Nueva Solicitud
+              Nueva solicitud
             </button>
           </div>
 
@@ -592,6 +619,8 @@ export default function Solicitudes() {
                 </div>
               </div>
 
+              <br />
+
               {/* Tabla */}
               <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
@@ -611,10 +640,10 @@ export default function Solicitudes() {
                           <span className="flex items-center gap-1.5">Asunto</span>
                         </th>
                         <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha Solicitud</span>
+                          <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha solicitud</span>
                         </th>
                         <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                          <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha Servicio</span>
+                          <span className="flex items-center gap-1.5"><Calendar size={13} /> Fecha servicio</span>
                         </th>
                         <th className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                           <span className="flex items-center gap-1.5">Estado</span>
@@ -629,7 +658,7 @@ export default function Solicitudes() {
                         <tr>
                           <td colSpan={8} className="px-5 py-16">
                             <EmptyState 
-                              icon="bi-inbox" 
+                              icon="bi-inbox text-gray-500 text-4xl" 
                               title={`No hay solicitudes ${filtro === 'todas' ? '' : filtro}`}
                               subtitle="Las solicitudes aparecerán aquí"
                             />
