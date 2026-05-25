@@ -74,7 +74,7 @@ export default function NuevaSolicitudPage() {
           }}
         />
       )}
-      <div className="max-w w-full pt-20">
+      <div className="max-w-2xl w-full pt-12">
         <div className="flex justify-end mb-4">
           <button onClick={() => router.back()} className="text-sm text-white hover:text-bg bg-accent-orange flex items-center gap-1 px-8 py-4 rounded-xl font-semibold hover:bg-[#d66a1a]">
             <ArrowLeft /> Volver a mis solicitudes

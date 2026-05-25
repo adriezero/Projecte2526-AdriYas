@@ -50,7 +50,7 @@ function ModalValoracion({ onClose, rutaId, origen, destino }: { onClose: () => 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl relative">
-        <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
+        <div className="flex items-center justify-between px-8 py-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-yellow-100 flex items-center justify-center">
               <i className="bi bi-star-fill text-yellow-500 text-lg"></i>
@@ -74,14 +74,14 @@ function ModalValoracion({ onClose, rutaId, origen, destino }: { onClose: () => 
             <div className="px-8 py-6 space-y-5">
               <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
                 <p className="text-xs font-semibold uppercase tracking-wide mb-1">Ruta valorada</p>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4 pt-2">
                   <i className="bi bi-truck text-lg"></i>
-                  <span className="text-sm font-medium text-gray-700">{origen} <i className="bi bi-arrow-right"></i> {destino}</span>
+                  <span className="text-sm font-medium text-gray-700">{origen} <i className="bi bi-arrow-right px-2"></i> {destino}</span>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-text block pb-3">¿Cómo fue tu experiencia?</label>
+                <label className="text-sm font-semibold text-text block py-2">¿Cómo fue tu experiencia?</label>
                 <div className="flex gap-3">
                   <button
                     onClick={() => setEsPositivo(true)}
@@ -103,7 +103,7 @@ function ModalValoracion({ onClose, rutaId, origen, destino }: { onClose: () => 
               </div>
 
               <div>
-                <label className="text-sm font-semibold text-text block pb-2">Tu comentario</label>
+                <label className="text-sm font-semibold text-text block py-2">Tu comentario</label>
                 <textarea
                   value={contenido}
                   onChange={e => setContenido(e.target.value)}
@@ -275,8 +275,8 @@ export default function DetallePedidoPage() {
         <ModalValoracion
           onClose={() => setModalValoracion(false)}
           rutaId={data.rutaId ?? 0}
-          origen={data.rutaOrigen ?? data.reservaOrigen ?? "—"}
-          destino={data.rutaDestino ?? data.reservaDestino ?? "—"}
+          origen={data.rutaOrigen ?? data.reservaOrigen ?? "-"}
+          destino={data.rutaDestino ?? data.reservaDestino ?? "-"}
         />
       )}
 
@@ -284,8 +284,8 @@ export default function DetallePedidoPage() {
         <ModalReporte
           onClose={() => setModalReporte(false)}
           reservaId={data.idReserva}
-          origen={data.rutaOrigen ?? data.reservaOrigen ?? "—"}
-          destino={data.rutaDestino ?? data.reservaDestino ?? "—"}
+          origen={data.rutaOrigen ?? data.reservaOrigen ?? "-"}
+          destino={data.rutaDestino ?? data.reservaDestino ?? "-"}
         />
       )}
 

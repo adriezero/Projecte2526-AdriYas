@@ -143,24 +143,24 @@ export default function ModerarResenasPage() {
                           : "bg-red-50 text-red-700 border-red-200"
                       }`}
                     >
-                      <i className={`bi ${r.isPositive ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-down-fill"} mr-1`} />
+                      <i className={`bi ${r.isPositive ? "bi-hand-thumbs-up-fill" : "bi-hand-thumbs-down-fill"} pr-1`} />
                       {r.isPositive ? "Positiva" : "Negativa"}
                     </span>
                     {r.moderado ? (
                       <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-green-50 text-green-700 border border-green-200">
-                        <i className="bi bi-check-circle-fill mr-1" />Aprobada
+                        <i className="bi bi-check-circle-fill pr-1" />Aprobada
                       </span>
                     ) : (
                       <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-orange-50 text-orange-600 border border-orange-200">
-                        <i className="bi bi-hourglass-split mr-1" />Pendiente
+                        <i className="bi bi-hourglass-split pr-1" />Pendiente
                       </span>
                     )}
                   </div>
-                  <p className="text-sm text-text/75 italic mb-1">&ldquo;{r.comment}&rdquo;</p>
+                  <p className="text-sm text-text/75 italic pb-1">&ldquo;{r.comment}&rdquo;</p>
                   <div className="flex items-center gap-4 text-xs text-text/50">
-                    <span><i className="bi bi-geo-alt mr-1" />{r.route}</span>
+                    <span><i className="bi bi-geo-alt pr-1" />{r.route}</span>
                     <span>
-                      <i className="bi bi-calendar3 mr-1" />
+                      <i className="bi bi-calendar3 pr-1" />
                       {new Date(r.date).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" })}
                     </span>
                   </div>
@@ -173,7 +173,7 @@ export default function ModerarResenasPage() {
                       onClick={() => aprobar(r.id)}
                       className="px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-600 hover:text-white rounded-lg transition border border-green-200 hover:border-green-600 uppercase tracking-wide"
                     >
-                      <i className="bi bi-check-lg mr-1" />Aprobar
+                      <i className="bi bi-check-lg pr-1" />Aprobar
                     </button>
                   )}
                   {r.moderado && (
@@ -182,14 +182,14 @@ export default function ModerarResenasPage() {
                       disabled
                       className="px-3 py-2 text-xs font-bold text-green-700 rounded-lg border border-green-200 opacity-40 uppercase tracking-wide cursor-default"
                     >
-                      <i className="bi bi-check-lg mr-1" />Aprobada
+                      <i className="bi bi-check-lg pr-1" />Aprobada
                     </button>
                   )}
                   <button
                     onClick={() => rechazar(r.id)}
                     className="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition border border-red-200 hover:border-red-600 uppercase tracking-wide"
                   >
-                    <i className="bi bi-trash3 mr-1" />Eliminar
+                    <i className="bi bi-trash3 pr-1" />Eliminar
                   </button>
                 </div>
               </div>

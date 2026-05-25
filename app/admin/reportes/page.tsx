@@ -684,7 +684,7 @@ export default function ReportesPage() {
                       variant="success"
                     >
                       <i className="bi bi-check-circle-fill pr-2" />
-                      Marcar Resuelto
+                      Marcar resuelto
                     </Button>
                   )
                 )}
