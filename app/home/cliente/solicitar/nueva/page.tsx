@@ -74,7 +74,14 @@ export default function NuevaSolicitudPage() {
           }}
         />
       )}
-      <div className="max-w-lg w-full pt-8">
+      <div className="max-w w-full pt-20">
+        <div className="flex justify-end mb-4">
+          <button onClick={() => router.back()} className="text-sm text-white hover:text-bg bg-accent-orange flex items-center gap-1 px-8 py-4 rounded-xl font-semibold hover:bg-[#d66a1a]">
+            <ArrowLeft /> Volver a mis solicitudes
+          </button>
+        </div>
+     <br />
+
         <div className="bg-white rounded-lg shadow p-8">
           <h2 className="text-3xl font-bold pb-4 text-text">Solicitar un servicio</h2>
           <form onSubmit={handleSolicitud} className="space-y-6 gap-4 flex flex-col">
@@ -152,10 +159,7 @@ export default function NuevaSolicitudPage() {
             </button>
           </form>
         </div>
-        <br/>
-        <button onClick={() => router.back()} className="text-sm text-white hover:text-bg bg-accent-orange flex items-center gap-1 pb-4 px-8 py-4 rounded-xl font-semibold hover:bg-[#d66a1a]">
-          <ArrowLeft /> Volver a mis solicitudes
-        </button>
+
       </div>
     </div>
   );
