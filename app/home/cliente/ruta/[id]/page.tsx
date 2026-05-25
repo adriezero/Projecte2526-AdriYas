@@ -29,6 +29,110 @@ function formatFecha(f: string | null | undefined) {
   return new Date(f).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
 }
 
+function ModalValoracion({ onClose, rutaId, origen, destino }: { onClose: () => void; rutaId: number; origen: string; destino: string }) {
+  const [contenido, setContenido] = useState("");
+  const [esPositivo, setEsPositivo] = useState<boolean | null>(null);
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+
+  async function enviarValoracion() {
+    if (!contenido || esPositivo === null) return;
+    setEnviando(true);
+    await fetch("/api/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contenido, esPositivo, idRuta: rutaId }),
+    });
+    setEnviando(false);
+    setEnviado(true);
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xl relative">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-yellow-100 flex items-center justify-center">
+              <i className="bi bi-star-fill text-yellow-500 text-lg"></i>
+            </div>
+            <h2 className="text-lg font-bold text-text">Deja tu valoración</h2>
+          </div>
+          <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 text-xl leading-none transition">&times;</button>
+        </div>
+
+        {enviado ? (
+          <div className="px-8 py-12 flex flex-col items-center gap-4 text-center">
+            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
+              <i className="bi bi-check-circle-fill text-green-500 text-3xl"></i>
+            </div>
+            <p className="text-lg font-bold text-text">¡Gracias por tu valoración!</p>
+            <p className="text-sm text-gray-500">Tu reseña está pendiente de moderación.</p>
+            <button onClick={onClose} className="mt-2 px-6 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-[#163a5f] transition">Cerrar</button>
+          </div>
+        ) : (
+          <>
+            <div className="px-8 py-6 space-y-5">
+              <div className="bg-gray-50 rounded-xl px-4 py-3 border border-gray-200">
+                <p className="text-xs font-semibold uppercase tracking-wide mb-1">Ruta valorada</p>
+                <div className="flex items-center gap-2">
+                  <i className="bi bi-truck text-lg"></i>
+                  <span className="text-sm font-medium text-gray-700">{origen} <i className="bi bi-arrow-right"></i> {destino}</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-semibold text-text block pb-3">¿Cómo fue tu experiencia?</label>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setEsPositivo(true)}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-semibold transition ${
+                      esPositivo === true ? "border-green-500 bg-green-50 text-green-700" : "border-gray-200 text-gray-500 hover:border-green-300"
+                    }`}
+                  >
+                    <i className="bi bi-hand-thumbs-up-fill text-xl"></i> Positiva
+                  </button>
+                  <button
+                    onClick={() => setEsPositivo(false)}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-semibold transition ${
+                      esPositivo === false ? "border-red-500 bg-red-50 text-red-700" : "border-gray-200 text-gray-500 hover:border-red-300"
+                    }`}
+                  >
+                    <i className="bi bi-hand-thumbs-down-fill text-xl"></i> Negativa
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-semibold text-text block pb-2">Tu comentario</label>
+                <textarea
+                  value={contenido}
+                  onChange={e => setContenido(e.target.value)}
+                  rows={4}
+                  maxLength={200}
+                  placeholder="Cuéntanos cómo fue el servicio..."
+                  className="w-full border border-border/20 rounded-xl px-4 py-3 text-sm text-text resize-none bg-bg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                />
+                <p className="text-xs text-gray-400 text-right mt-1">{contenido.length}/200</p>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 px-8 py-5 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+              <button onClick={onClose} className="px-5 py-2.5 rounded-xl border border-border/30 text-sm font-medium text-text hover:bg-bg transition">Cancelar</button>
+              <button
+                onClick={enviarValoracion}
+                disabled={!contenido || esPositivo === null || enviando}
+                className="px-5 py-2.5 rounded-xl bg-yellow-500 text-white text-sm font-semibold hover:bg-yellow-600 shadow-sm transition disabled:opacity-50"
+              >
+                {enviando ? "Enviando..." : "Enviar valoración"}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ModalReporte({ onClose, reservaId, origen, destino }: { onClose: () => void; reservaId: number; origen: string; destino: string }) {
   const [tipo, setTipo] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -118,6 +222,7 @@ export default function DetallePedidoPage() {
   const router = useRouter();
   const [data, setData] = useState<{
     idReserva: number;
+    rutaId?: number;
     rutaEstado: string | null;
     rutaOrigen?: string;
     rutaDestino?: string;
@@ -137,6 +242,7 @@ export default function DetallePedidoPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [modalReporte, setModalReporte] = useState(false);
+  const [modalValoracion, setModalValoracion] = useState(false);
 
   useEffect(() => {
     fetch(`/api/cliente/ruta/${id}`)
@@ -165,6 +271,15 @@ export default function DetallePedidoPage() {
   return (
     <div className="min-h-screen bg-bg pt-20">
 
+      {modalValoracion && (
+        <ModalValoracion
+          onClose={() => setModalValoracion(false)}
+          rutaId={data.rutaId ?? 0}
+          origen={data.rutaOrigen ?? data.reservaOrigen ?? "—"}
+          destino={data.rutaDestino ?? data.reservaDestino ?? "—"}
+        />
+      )}
+
       {modalReporte && (
         <ModalReporte
           onClose={() => setModalReporte(false)}
@@ -192,6 +307,15 @@ export default function DetallePedidoPage() {
               <p className="text-sm mt-1">{formatFecha(data.reservaFecha)} - {data.reservaHora}</p>
             </div>
             <div className="flex items-center gap-3">
+              {estado === "Finalizado" && (
+                <button
+                  onClick={() => setModalValoracion(true)}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-bold text-sm shadow-md shadow-yellow-200 transition animate-pulse hover:animate-none"
+                >
+                  <i className="bi bi-star-fill text-base"></i>
+                  ¡Deja tu valoración!
+                </button>
+              )}
               <button
                 onClick={() => setModalReporte(true)}
                 className="flex items-center gap-2 px-4 py-2 border border-red-300 text-red-600 bg-white rounded-lg text-sm font-semibold hover:bg-red-50 transition"

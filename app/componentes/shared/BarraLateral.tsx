@@ -28,6 +28,7 @@ const ROLE_CONFIG: Record<Role, RoleConfig> = {
       { href: '/home',                icon: 'bi-house-fill',        label: 'Home'     },
       { href: '/admin/gestionUsers',  icon: 'bi-people-fill',       label: 'Usuarios' },
       { href: '/admin/reportes',      icon: 'bi-flag-fill',         label: 'Reportes' },
+      { href: '/admin/resenas',       icon: 'bi-star-half',         label: 'Reseñas'  },
     ],
   },
   camionero: {
