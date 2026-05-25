@@ -9,13 +9,14 @@ export type Reporte = {
   nombreReportante: string | null;
 };
 
-export const TIPOS = ["Problema técnico", "Incidencia", "Sugerencia"];
+export const TIPOS = ["Problema técnico", "Incidencia", "Sugerencia", "Solicitud de Rol"];
 export const PAGE_SIZE = 10;
 
 export const badgeTipo: Record<string, string> = {
   "Problema técnico": "bg-red-50 text-red-700 border-red-200",
   Incidencia: "bg-accent-orange/10 text-accent-orange border-accent-orange/30",
   Sugerencia: "bg-accent-yellow/20 text-accent-yellow border-accent-yellow/40",
+  "Solicitud de Rol": "bg-purple-50 text-purple-700 border-purple-200",
 };
 
 export const badgeEstado: Record<string, string> = {
@@ -29,6 +30,7 @@ export const iconoTipo: Record<string, string> = {
   "Problema técnico": "bi-wrench-adjustable-circle-fill",
   Incidencia: "bi-exclamation-triangle-fill",
   Sugerencia: "bi-lightbulb-fill",
+  "Solicitud de Rol": "bi-person-badge-fill",
 };
 
 export const meses = [
@@ -62,6 +64,14 @@ export async function cambiarEstado(id: number, estado: string) {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ Estado: estado }),
+  });
+}
+
+export async function aceptarSolicitudRol(id: number) {
+  await fetch(`/api/admin/reportes/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ aceptar: true }),
   });
 }
 

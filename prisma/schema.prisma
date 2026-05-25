@@ -294,6 +294,7 @@ enum reportes_Tipo {
   Problema_T_cnico @map("Problema Técnico")
   Incidencia
   Sugerencia
+  Solicitud_Rol    @map("Solicitud de Rol")
 }
 
 enum documentos_RolSubidor {

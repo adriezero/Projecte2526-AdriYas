@@ -118,13 +118,17 @@ export default function Register() {
                                 value={rol}
                                 onChange={(e) => setRol(e.target.value)}
                             >
-                                <option value="">{t('selectRole')}</option>
                                 {roles.map((r) => (
                                     <option key={r.ID} value={r.Nombre}>
                                         {r.Nombre}
                                     </option>
                                 ))}
                             </select>
+                            {rol && rol !== "Cliente" && (
+                                <p className="text-xs text-amber-600 mt-1">
+                                    ⚠️ Te registrarás como Cliente. El rol <strong>{rol}</strong> será solicitado al administrador para su aprobación.
+                                </p>
+                            )}
                         </div>
 
                         {error && <Alert variant="error">{error}</Alert>}

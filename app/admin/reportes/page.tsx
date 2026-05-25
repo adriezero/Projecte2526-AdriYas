@@ -14,6 +14,7 @@ import {
   meses,
   fetchReportes,
   cambiarEstado as cambiarEstadoAPI,
+  aceptarSolicitudRol,
   eliminarReportes,
   formatId,
   diasEnMes,
@@ -465,21 +466,38 @@ export default function ReportesPage() {
                           >
                             Ver
                           </button>
-                          {r.Estado !== "Cerrado" && (
-                            <>
-                              <button
-                                onClick={() => cambiarEstado(r.ID, "Resuelto")}
-                                className="px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-600 hover:text-white rounded-lg transition-all border border-green-200 hover:border-green-600 uppercase tracking-wide"
-                              >
-                                <i className="bi bi-check-lg" />
-                              </button>
-                              <button
-                                onClick={() => cambiarEstado(r.ID, "Cerrado")}
-                                className="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-red-200 hover:border-red-600 uppercase tracking-wide"
-                              >
-                                <i className="bi bi-x-lg" />
-                              </button>
-                            </>
+                          {r.Estado !== "Cerrado" && r.Estado !== "Resuelto" && (
+                            r.Tipo === "Solicitud de Rol" ? (
+                              <>
+                                <button
+                                  onClick={async () => { await aceptarSolicitudRol(r.ID); setReportes(prev => prev.map(x => x.ID === r.ID ? { ...x, Estado: "Resuelto" } : x)); }}
+                                  className="px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-600 hover:text-white rounded-lg transition-all border border-green-200 hover:border-green-600 uppercase tracking-wide"
+                                >
+                                  <i className="bi bi-check-lg" /> Aceptar
+                                </button>
+                                <button
+                                  onClick={() => cambiarEstado(r.ID, "Cerrado")}
+                                  className="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-red-200 hover:border-red-600 uppercase tracking-wide"
+                                >
+                                  <i className="bi bi-x-lg" /> Rechazar
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={() => cambiarEstado(r.ID, "Resuelto")}
+                                  className="px-3 py-2 text-xs font-bold text-green-700 hover:bg-green-600 hover:text-white rounded-lg transition-all border border-green-200 hover:border-green-600 uppercase tracking-wide"
+                                >
+                                  <i className="bi bi-check-lg" />
+                                </button>
+                                <button
+                                  onClick={() => cambiarEstado(r.ID, "Cerrado")}
+                                  className="px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-600 hover:text-white rounded-lg transition-all border border-red-200 hover:border-red-600 uppercase tracking-wide"
+                                >
+                                  <i className="bi bi-x-lg" />
+                                </button>
+                              </>
+                            )
                           )}
                         </div>
                       </td>
@@ -633,16 +651,42 @@ export default function ReportesPage() {
               </Button>
               {reporteVer.Estado !== "Resuelto" &&
                 reporteVer.Estado !== "Cerrado" && (
-                  <Button
-                    onClick={() => {
-                      cambiarEstado(reporteVer.ID, "Resuelto");
-                      setReporteVer(null);
-                    }}
-                    variant="success"
-                  >
-                    <i className="bi bi-check-circle-fill pr-2" />
-                    Marcar Resuelto
-                  </Button>
+                  reporteVer.Tipo === "Solicitud de Rol" ? (
+                    <>
+                      <Button
+                        onClick={async () => {
+                          await aceptarSolicitudRol(reporteVer.ID);
+                          setReportes(prev => prev.map(r => r.ID === reporteVer.ID ? { ...r, Estado: "Resuelto" } : r));
+                          setReporteVer(null);
+                        }}
+                        variant="success"
+                      >
+                        <i className="bi bi-check-circle-fill pr-2" />
+                        Aceptar solicitud
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          cambiarEstado(reporteVer.ID, "Cerrado");
+                          setReporteVer(null);
+                        }}
+                        variant="danger"
+                      >
+                        <i className="bi bi-x-circle-fill pr-2" />
+                        Rechazar
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        cambiarEstado(reporteVer.ID, "Resuelto");
+                        setReporteVer(null);
+                      }}
+                      variant="success"
+                    >
+                      <i className="bi bi-check-circle-fill pr-2" />
+                      Marcar Resuelto
+                    </Button>
+                  )
                 )}
             </div>
           </div>

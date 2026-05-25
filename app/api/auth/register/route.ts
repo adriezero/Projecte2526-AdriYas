@@ -36,69 +36,27 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Crear usuario según el rol
-    switch (rol) {
-      case "Cliente":
-        await prisma.cliente.create({
-          data: {
-            Nombre: username,
-            Email: email,
-            Contrase_a: hashedPassword,
-            NombreEmpresa: "Sin especificar",
-            Telf: "0000000000",
-          },
-        });
-        break;
+    // Siempre crear como Cliente
+    const nuevoCliente = await prisma.cliente.create({
+      data: {
+        Nombre: username,
+        Email: email,
+        Contrase_a: hashedPassword,
+        NombreEmpresa: "Sin especificar",
+        Telf: "0000000000",
+      },
+    });
 
-      case "Camionero":
-        const turnoDefault = await prisma.turnos.findFirst();
-        if (!turnoDefault) {
-          return NextResponse.json(
-            { error: "No hay turnos disponibles" },
-            { status: 400 }
-          );
-        }
-        await prisma.camionero.create({
-          data: {
-            Nombre: username,
-            Email: email,
-            Contrase_a: hashedPassword,
-            Licencia: "B",
-            Telf: "0000000000",
-            idTurno: turnoDefault.ID,
-            FechaInicio: new Date(),
-            FechaFinal: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-          },
-        });
-        break;
-
-      case "Dispatcher":
-        await prisma.dispatcher.create({
-          data: {
-            Nombre: username,
-            Email: email,
-            Contrase_a: hashedPassword,
-            CentroOperacion: "Sin especificar",
-          },
-        });
-        break;
-
-      case "Administrador":
-        await prisma.administrador.create({
-          data: {
-            Nombre: username,
-            Email: email,
-            Contrase_a: hashedPassword,
-            Permisos: "Básicos",
-          },
-        });
-        break;
-
-      default:
-        return NextResponse.json(
-          { error: "Rol no válido" },
-          { status: 400 }
-        );
+    // Si solicitó un rol distinto a Cliente, crear reporte de solicitud
+    if (rol !== "Cliente") {
+      await prisma.reportes.create({
+        data: {
+          Tipo: "Solicitud_Rol",
+          Descripcion: `El usuario con email ${email} ha solicitado registrarse con el rol: ${rol}.`,
+          idReportante: nuevoCliente.ID,
+          rolReportante: "Cliente",
+        },
+      });
     }
 
     await resend.emails.send({

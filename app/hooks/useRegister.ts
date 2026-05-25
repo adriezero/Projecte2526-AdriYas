@@ -7,7 +7,7 @@ export function useRegister() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmarContraseña, setConfirmarContraseña] = useState("");
-  const [rol, setRol] = useState("");
+  const [rol, setRol] = useState("Cliente");
   const [mostrarClave, setMostrarClave] = useState(false);
   const [mostrarConfirmarClave, setMostrarConfirmarClave] = useState(false);
   const [error, setError] = useState("");
