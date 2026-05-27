@@ -37,6 +37,7 @@ export default function NuevaSolicitudPage() {
   const router = useRouter();
   const [cliente, setCliente] = useState<Cliente | null>(null);
   const [modal, setModal] = useState<{ show: boolean; ok: boolean }>({ show: false, ok: false });
+  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     if (session?.user?.id) {
@@ -57,7 +58,6 @@ export default function NuevaSolicitudPage() {
       origen: formData.get('origen') as string,
       destino: formData.get('destino') as string,
       fechaServicio: formData.get('fechaServicio') as string,
-      fechaFin: formData.get('fechaFin') as string,
     });
     setModal({ show: true, ok: success });
     if (success) form.reset();
@@ -74,7 +74,7 @@ export default function NuevaSolicitudPage() {
           }}
         />
       )}
-      <div className="max-w-2xl w-full pt-12">
+      <div className="max-w w-full pt-20">
         <div className="flex justify-end mb-4">
           <button onClick={() => router.back()} className="text-sm text-white hover:text-bg bg-accent-orange flex items-center gap-1 px-8 py-4 rounded-xl font-semibold hover:bg-[#d66a1a]">
             <ArrowLeft /> Volver a mis solicitudes
@@ -123,26 +123,14 @@ export default function NuevaSolicitudPage() {
               />
             </div>
             <div>
-              <label className="block text-base font-bold pb-2">Rango de fechas del servicio:</label>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm pb-1">Fecha inicio:</label>
-                  <input
-                    type="date"
-                    name="fechaServicio"
-                    className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm pb-1">Fecha fin (opcional):</label>
-                  <input
-                    type="date"
-                    name="fechaFin"
-                    className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
-                  />
-                </div>
-              </div>
+              <label className="block text-base font-bold pb-2">Fecha del servicio:</label>
+              <input
+                type="date"
+                name="fechaServicio"
+                min={today}
+                className="w-full px-5 py-3 text-base border border-border/30 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-text bg-white transition"
+                required
+              />
             </div>
             <div>
               <label className="block text-base font-bold pb-2">Detalles del servicio:</label>

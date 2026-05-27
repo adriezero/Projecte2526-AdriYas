@@ -10,6 +10,7 @@ export default function Contacto() {
   const [mensaje, setMensaje] = useState("");
   const [fechaServicio, setFechaServicio] = useState("");
   const [aceptaPrivacidad, setAceptaPrivacidad] = useState(false);
+  const today = new Date().toISOString().split('T')[0];
   const [error, setError] = useState("");
   const [enviado, setEnviado] = useState(false);
 
@@ -161,6 +162,7 @@ export default function Contacto() {
                 </label>
                 <input
                   id="fechaServicio" type="date"
+                  min={today}
                   value={fechaServicio} onChange={(e) => setFechaServicio(e.target.value)}
                   className={inputClass}
                 />
